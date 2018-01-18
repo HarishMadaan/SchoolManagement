@@ -271,6 +271,37 @@ namespace School.DAL.Repositories
             return TotalStudent;
         }
 
+        public int CancelAllocatedStudentSection(int Id)
+        {
+            int Result = 0;
+            using (response = new Response())
+            {
+                using (dbcontext = new SchoolManagementEntities())
+                {
+                    try
+                    {
+                        response.success = true;
+                        var rs = dbcontext.tblPromoteToClasses.FirstOrDefault(x => x.PromoteToClassId == Id);
+                        if (rs != null)
+                        {
+                            rs.SectionId = null;
+                            rs.RollNo = null;
+                            rs.Status = null;
+                        }
+                        dbcontext.SaveChanges();
+                        Result = 1;
+                    }
+                    catch (Exception ex)
+                    {
+                        response.success = false;
+                        response.message = ex.Message;
+                        Result = 0;
+                    }
+                }
+            }
+            return Result;
+        }
+
         public void Dispose()
         {
             dbcontext.Dispose();

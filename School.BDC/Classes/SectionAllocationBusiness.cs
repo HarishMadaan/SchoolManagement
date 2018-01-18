@@ -46,6 +46,14 @@ namespace School.BDC.Classes
             }
         }
         
+        public int CancelAllocatedStudentSection(int Id)
+        {
+            using (objDAL = new SectionAllocationRepo())
+            {
+                return objDAL.CancelAllocatedStudentSection(Id);
+            }
+        }
+
         public void Dispose()
         {
             objDAL.Dispose();

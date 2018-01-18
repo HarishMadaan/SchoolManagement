@@ -40,6 +40,9 @@ namespace School.Web.Controllers
             var SessionType = objBDCCommon.GetSessionMaster();
             objSessionModel.SessionList = new SelectList(SessionType, "SessionId", "Title");
             ViewBag.SessionInfo = objSessionModel.SessionList;
+
+            ViewBag.SessionValueToSet = Session[CommonStrings.DefaultSession].ToString();
+
             return View();
         }
 
@@ -209,6 +212,26 @@ namespace School.Web.Controllers
             }
             
             return View(ResultMessage);
+        }
+        public ActionResult CancelAllocatedStudent(int Id)
+        {
+            if (Id != 0)
+            {
+                objBDC = new SectionAllocationBusiness();
+                int _Result = objBDC.CancelAllocatedStudentSection(Id);
+                if (_Result == 1)
+                {
+                    return Json(new { IsSuccess = true });
+                }
+                else
+                {
+                    return Json(new { IsSuccess = false });
+                }
+            }
+            else
+            {
+                return Json(new { IsSuccess = false });
+            }
         }
 
     }

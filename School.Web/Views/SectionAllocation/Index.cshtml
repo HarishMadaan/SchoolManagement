@@ -39,7 +39,17 @@
                                     @Html.LabelFor(model => model.SessionId, new { @class = "control-label col-md-2" })
                                 </label>
                                 <div class="col-md-8">
-                                    @Html.DropDownListFor(model => model.SessionId, ViewBag.SessionInfo as IEnumerable<SelectListItem>, "-- Select Session --", new { @class = "form-control", @id = "SessionId", @onchange = "FillClass()" })
+                                    @*@Html.DropDownListFor(model => model.SessionId, ViewBag.SessionInfo as IEnumerable<SelectListItem>, "-- Select Session --", new { @class = "form-control", @id = "SessionId", @onchange = "FillClass()" })*@
+
+                                    <select id="SessionId" name="SessionId" class="form-control" onchange="FillClass()">
+                                        <option value="0">-- Select Session --</option>
+                                        @foreach (SelectListItem option in ViewBag.SessionInfo)
+                                        {
+                                            <option value="@option.Value" @(option.Value == ViewBag.SessionValueToSet ? "selected='selected'" : "")>@option.Text</option>
+
+                                        }
+                                    </select>
+
                                     @Html.ValidationMessageFor(model => model.SessionId)
                                 </div>
                             </div>
@@ -251,6 +261,40 @@
             });   //end ajax
         }
     });
+
+    function CancelAllocatedStudentSection(id) {
+        alert(id);
+        documentId = id;
+        
+        if (documentId != 0) {
+            $.ajax({
+                url: '@Url.Action("CancelAllocatedStudent", "SectionAllocation")',
+                type: "POST",
+                async: false,
+                cache: false,
+                data: { Id: documentId },
+                success: function (data) {
+                    debugger;
+                    if (data != null && data != '') {
+                        if (data.IsSuccess == true) {
+                            SearchAllocation();
+                            alert("students successfully cancel from the section.");
+                        }
+                        else {
+                            SearchAllocation();
+                        }
+                    } else {
+                        alert('An error Occured while processing you request.');
+                    }
+                },
+                error: function (xhr, status, error) {
+                }
+            });
+            $("#modelShowFollowupDetails").modal('show');
+            $("#modelShowFollowupDetails").show();
+        }
+    }
+
 </script>
 
 

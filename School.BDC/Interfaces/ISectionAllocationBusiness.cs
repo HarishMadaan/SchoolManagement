@@ -17,6 +17,7 @@ namespace School.BDC.Interfaces
 
         int InsertStudentSectionAllocation(int SessionId, int ClassId, int EnquiryId, int AdmissionId, int SectionId, bool isactive, string status);
 
+        int CancelAllocatedStudentSection(int Id);
 
     }
 }
