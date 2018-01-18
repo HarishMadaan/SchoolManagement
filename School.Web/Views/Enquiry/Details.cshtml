@@ -1,0 +1,277 @@
+﻿@model School.Shared.CustomModels.EnquiryDetailCustomModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+}
+
+<div class="page-title">
+    <div>
+        <h1><i class="fa fa-edit"></i> Enquiry Detail</h1>
+    </div>
+    <div>
+        <ul class="breadcrumb">
+            <li><a href="@Url.Action("Index", "Dashboard")"><i class="fa fa-home fa-lg"></i></a></li>
+            <li>@Html.ActionLink("Enquiry", "Index")</li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="well bs-component">
+                        <dl class="dl-horizontal">
+
+                            <hr />
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.SessionName)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.SessionName)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.ClassName)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.ClassName)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.SectionName)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.SectionName)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.FName)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.FName)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.FName)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.FName)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.MobileNo)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.MobileNo)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.EmailId)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.EmailId)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.FatherName)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.FatherName)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.MotherName)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.MotherName)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.Address)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.Address)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.Village)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.Village)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.City)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.City)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.State)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.State)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.PinCode)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.PinCode)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.Gender)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.Gender)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.BloodGroup)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.BloodGroup)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.AadharNumber)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.AadharNumber)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.Landline)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.Landline)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.Qualification)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.Qualification)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.DateOfBirth)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.DateOfBirth)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.EnquiryDate)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.EnquiryDate)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.HowToKnowUs)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.HowToKnowUs)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.CounsellorName)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.CounsellorName)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.Comments)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.Comments)
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.Status)
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.Status)
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.Image)
+                                </label>
+                                <div class="col-md-8">
+                                    @{String EmpImage = Model.Image;}
+                                    @{
+                                        if (!String.IsNullOrEmpty(EmpImage))
+                                        {
+                                            EmpImage = "/Uploads/Enquiry/e_" + EmpImage;
+                                            <img src="@EmpImage" alt=" " height="50" width="50" style="float:left;" />
+                                        }
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-4 control-label">
+                                    @Html.DisplayNameFor(model => model.IsActive)
+                                </label>
+                                <div class="col-md-8">
+                                    <i class="@(Model.IsActive == true ? "edt fa fa-check" : "dlt fa fa-times")"></i>
+                                </div>
+                            </div>
+
+                        </dl>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <p>
+                            @Html.ActionLink("Edit", "Create", new { id = Model.EnquiryId }) |
+                            @Html.ActionLink("Back to List", "Index")
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Javascripts-->
+<script src="~/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(window).load(function () {
+            $('#loader').hide();
+        });
+    });
+
+</script>

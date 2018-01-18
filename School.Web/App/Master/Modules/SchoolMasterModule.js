@@ -1,0 +1,1 @@
+﻿var mod = angular.module("schoolModule", ['datatables', 'toaster', 'ngAnimate', 'ui.bootstrap']);

@@ -1,0 +1,112 @@
+﻿@model School.Shared.CustomModels.BusChargesMasterCustomModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>SectionAllocationCustomModel</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SessionId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.SessionId, ViewBag.SessionInfo as IEnumerable<SelectListItem>, "-- Select Session --", new { @class = "form-control", @id = "SessionId", @onchange = "FillCity()" })
+                @Html.ValidationMessageFor(model => model.SessionId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ClassId, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.ClassId,
+           new SelectList(Enumerable.Empty<SelectListItem>(), "ClassId", "Title"),
+                  "Select class",
+                  new { @class = "form-control" })
+
+                @Html.EditorFor(model => model.ClassId)
+                @Html.ValidationMessageFor(model => model.ClassId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div id="dvAllocationListing">
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input style="width: 500px" class="form-control" type="text" id="txtSearch" name="txtSearch" onkeyup="return searchEvents(this.value)" placeholder="Search Upcoming dates" />
+                <input type="submit" value="Search" class="btn btn-default" onclick="return SearchAllocation();" />
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+<script src="~/js/jquery-2.1.4.min.js"></script>
+
+<script type="text/javascript">
+    function FillCity() {
+        var sessionId = $('#SessionId').val();
+        $.ajax({
+            url: '/SectionAllocation/FillCity',
+            type: "GET",
+            dataType: "JSON",
+            data: { State: sessionId },
+            success: function (cities) {
+                $("#ClassId").html(""); // clear before appending new list
+                $.each(cities, function (i, city) {
+                    $("#ClassId").append(
+                        $('<option></option>').val(city.ClassId).html(city.Title));
+                });
+            }
+        });
+    }
+
+    function SearchAllocation() {
+        $("#dvAllocationListing").html("");
+        $("#dvAllocationListing").html("<div style='text-align: center;background :rgba(0,0,0,0.5);  background-repeat: no-repeat; background-attachment: fixed; background-position: center;width:100%;        height:100%;        position:fixed;        top:0;        left:0;        z-index:999;'><img src='/includes/images/loaders/loader10.gif' style='position:relative;margin: 400px auto;'/></div>");
+        var title = "kkk";
+        var ai = {
+            title: title
+        }
+        $.ajax({
+            type: "post",
+            url: '@Url.Action("SearchAllocationList", "SectionAllocation")',
+            data: JSON.stringify(ai),
+            datatype: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                if (data.trim() != "") {
+                    $("#dvAllocationListing").fadeIn("fast");
+                    $("#dvAllocationListing").html("");
+                    $("#dvAllocationListing").html(data);
+                }
+                else {
+                    $("#dvAllocationListing").html("");
+                    $("#dvAllocationListing").html('<p style="color:#FF0000;font-weight:bold;text-align: center;">No Records Found!</p>');
+                }
+            },
+            error: function (data) {
+                $("#dvAllocationListing").html("");
+                $("#dvAllocationListing").html(data);
+            }
+        });
+    }
+</script>
+
+

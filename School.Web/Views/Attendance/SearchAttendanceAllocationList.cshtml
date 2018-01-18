@@ -1,0 +1,85 @@
+﻿@Html.Editor("AttendanceResult", new { htmlAttributes = new { @class = "form-control", id = "AttendanceResult", @readonly = "true", @Value = ViewBag.AllocationAction } })
+<table class="table">
+        <tr>
+            <th>
+                @Html.DisplayName("StudentName")
+            </th>
+            <th>
+                @Html.DisplayName("MobileNo")
+            </th>
+            <th>
+                @Html.DisplayName("EmailId")
+            </th>
+            <th>
+                Attendance
+            </th>
+        </tr>
+
+        @*@foreach (var item in ViewBag.AllocationDetail)*@
+        @for (int i = 0; i < ViewBag.AllocationDetail.Count; i++)
+        {
+            <tr>
+                <td>
+                    @ViewBag.AllocationDetail[i].StudentName
+                </td>
+                <td>
+                    @ViewBag.AllocationDetail[i].MobileNo
+                </td>
+                <td>
+                    @ViewBag.AllocationDetail[i].EmailId
+                </td>
+                <td>
+                    <table width="100%">
+                        <tr>
+                            <td>
+                                <label>
+                                    @*@Html.RadioButton("Answer" + @item.PromoteToClassId, "P", new { @Id = item.PromoteToClassId, @Value = item.RollNo, name = item.PromoteToClassId }) , @checked = "checked"*@
+                                    @if (ViewBag.AllocationDetail[i].Attendance == "P")
+                                    {
+                                        @Html.RadioButton("item_CheckerApproved_" + i, "P", new { @Id = ViewBag.AllocationDetail[i].AdmissionId, @checked = "checked" })
+                                    }
+                                    else
+                                    {
+                                        @Html.RadioButton("item_CheckerApproved_" + i, "P", new { @Id = ViewBag.AllocationDetail[i].AdmissionId })
+                                    }
+                                    P
+                                </label>
+                            </td>
+                            <td>
+                                <label>
+                                    @if (ViewBag.AllocationDetail[i].Attendance == "A")
+                                    {
+                                        @Html.RadioButton("item_CheckerApproved_" + i, "A", new { @Id = ViewBag.AllocationDetail[i].AdmissionId, @checked = "checked" })
+                                    }
+                                    else
+                                    {
+                                        @Html.RadioButton("item_CheckerApproved_" + i, "A", new { @Id = ViewBag.AllocationDetail[i].AdmissionId })
+                                    }
+                                    @*@Html.RadioButton(item.PromoteToClassId.ToString(), "A", new { @Id = item.PromoteToClassId, @Value = item.RollNo, name = item.PromoteToClassId })*@
+                                    A
+                                </label>
+                            </td>
+                            <td>
+                                <label>
+                                    @*@Html.RadioButton("Answer" + @item.PromoteToClassId, "L", new { @Id = item.PromoteToClassId, @Value = item.RollNo, name = item.PromoteToClassId })   @checked = (ViewBag.AllocationDetail[i].Attendance == "L" ? "checked" : String.Empty) *@
+                                    @if (ViewBag.AllocationDetail[i].Attendance == "L")
+                                    {
+                                        @Html.RadioButton("item_CheckerApproved_" + i, "L", new { @Id = ViewBag.AllocationDetail[i].AdmissionId, @checked = "checked" })
+                                    }
+                                    else
+                                    {
+                                        @Html.RadioButton("item_CheckerApproved_" + i, "L", new { @Id = ViewBag.AllocationDetail[i].AdmissionId })
+                                    }
+                                    L
+                                </label>
+                            </td>
+                        </tr>
+                    </table>
+
+                    @*@Html.TextBox("PromoteToClassId", null, new { @Id = item.PromoteToClassId, @Value = item.RollNo, @class = "form -control", style = "width: 100px;" })*@
+                </td>
+            </tr>
+        }
+
+    </table>
+

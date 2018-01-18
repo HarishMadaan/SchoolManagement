@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="52819b997bed466d9bdbf26e2f4de3ae" Name="Diagram1" ZoomLevel="77">
+        <EntityTypeShape EntityType="SchoolManagementModel.tblSection" Width="1.5" PointX="5.25" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolManagementModel.tblSuggestion" Width="1.5" PointX="3" PointY="16.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolManagementModel.tblThought" Width="1.5" PointX="3" PointY="21.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolManagementModel.tblEvent" Width="1.5" PointX="3" PointY="25.25" />
+        <EntityTypeShape EntityType="SchoolManagementModel.tblSchool" Width="1.5" PointX="0.75" PointY="9.875" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblEvent_tblSchool" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblSection_tblSchool" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblSuggestion_tblSchool" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblThought_tblSchool" />
+        <EntityTypeShape EntityType="SchoolManagementModel.tblAdmissionFee" Width="1.5" PointX="12.625" PointY="1.75" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblAdmissionFee_tblSchool" />
+        <EntityTypeShape EntityType="SchoolManagementModel.tblClass" Width="1.5" PointX="17.625" PointY="7.5" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblAdmissionFee_tblClass" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblClass_tblSchool" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblSection_tblClass" />
+        <EntityTypeShape EntityType="SchoolManagementModel.tblBusChargesMaster" Width="1.5" PointX="15.625" PointY="3" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblBusChargesMaster_tblSchool" />
+        <EntityTypeShape EntityType="SchoolManagementModel.tblAdmission" Width="1.5" PointX="25.125" PointY="5.625" />
+        <EntityTypeShape EntityType="SchoolManagementModel.tblEmployee" Width="1.5" PointX="3" PointY="9.375" />
+        <EntityTypeShape EntityType="SchoolManagementModel.tblEnquiryDetail" Width="1.5" PointX="22.875" PointY="3.625" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblAdmission_tblEnquiryDetail" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblEnquiryDetail_tblClass" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblEmployee_tblSchool" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblEnquiryDetail_tblSchool" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblEnquiryDetail_tblSection" />
+        <EntityTypeShape EntityType="SchoolManagementModel.tblSectionAllocation" Width="1.5" PointX="27.375" PointY="2.125" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblSectionAllocation_tblAdmission" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblSectionAllocation_tblClass" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblSectionAllocation_tblEnquiryDetail" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblSectionAllocation_tblSection" />
+        <EntityTypeShape EntityType="SchoolManagementModel.tblUserLogin" Width="1.5" PointX="5.25" PointY="12.375" />
+        <EntityTypeShape EntityType="SchoolManagementModel.tblUserTypeMaster" Width="1.5" PointX="3" PointY="6.625" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblUserLogin_tblEmployee" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblUserLogin_tblUserTypeMaster" />
+        <EntityTypeShape EntityType="SchoolManagementModel.tblSession" Width="1.5" PointX="0.75" PointY="1" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblAdmissionFee_tblSession" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblBusChargesMaster_tblSession" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblClass_tblSession" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblEnquiryDetail_tblSession" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblSectionAllocation_tblSession" />
+        <EntityTypeShape EntityType="SchoolManagementModel.tblClassFeeDetail" Width="1.5" PointX="27.375" PointY="7.625" />
+        <EntityTypeShape EntityType="SchoolManagementModel.tblFeeCollection" Width="1.5" PointX="30.375" PointY="7.625" />
+        <EntityTypeShape EntityType="SchoolManagementModel.tblFeeMaster" Width="1.5" PointX="19.875" PointY="6.875" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblClassFeeDetail_tblAdmission" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblFeeCollection_tblAdmission" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblClassFeeDetail_tblClass" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblFeeCollection_tblClass" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblFeeMaster_tblClass" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblFeeCollection_tblEnquiryDetail" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblFeeCollection_tblSchool" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblFeeCollection_tblSection" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblFeeMaster_tblSchool" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblFeeMaster_tblSession" />
+        <EntityTypeShape EntityType="SchoolManagementModel.tblPromoteToClass" Width="1.5" PointX="30.375" PointY="0.875" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblPromoteToClass_tblAdmission" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblPromoteToClass_tblClass" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblPromoteToClass_tblEnquiryDetail" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblPromoteToClass_tblSection" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblPromoteToClass_tblSession" />
+        <EntityTypeShape EntityType="SchoolManagementModel.tblAttendance" Width="1.5" PointX="33.375" PointY="6.875" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblAttendance_tblAdmission" />
+        <AssociationConnector Association="SchoolManagementModel.FK_tblAttendance_tblEnquiryDetail" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,40 @@
+﻿@model School.Shared.CustomModels.MessageModel
+<style>
+    .alert {
+        color: #333333;
+        font-size: 12px;
+        margin: 10px;
+        padding: 10px 36px;
+    }
+
+    .Success {
+        background: url("/Content/images/success.png") no-repeat scroll 10px 50% #E9FFD9;
+        border: 1px solid #A6CA8A;
+    }
+
+    .Warning {
+        background: url("/Content/images/warning.png") no-repeat scroll 10px 50% #FFF8C4;
+        border: 1px solid #F2C779;
+    }
+
+    .Error {
+        background: url("/Content/images/error.png") no-repeat scroll 10px 50% #FFECEC;
+        border: 1px solid #F5ACA6;
+    }
+</style>
+@if (Model != null)
+{
+    if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <div class="separator"></div>
+        <div class="alert @Model.MessageType">
+            <strong> @Html.Raw(Model.Message) </strong>
+            <span class="close"> <a id="atipp" title="close" onclick="$('.alert').fadeOut();"> <img src="@Url.Content("~/Content/Images/cross_png.png")" title="Close" /></a></span>
+        </div>
+        if (TempData != null)
+        {
+            TempData["Message"] = null;
+        }
+    }
+}
+

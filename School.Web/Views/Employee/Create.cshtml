@@ -1,0 +1,273 @@
+﻿@model School.Shared.CustomModels.EmployeeMasterCustomModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+}
+
+<div class="page-title">
+    <div>
+        <h1><i class="fa fa-edit"></i> Employee Master</h1>
+    </div>
+    <div>
+        <ul class="breadcrumb">
+            <li><a href="@Url.Action("Index", "Dashboard")"><i class="fa fa-home fa-lg"></i></a></li>
+            <li>@Html.ActionLink("Employee", "Index")</li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="well bs-component">
+
+                        @using (Html.BeginForm("Create", "Employee", FormMethod.Post,
+                        new { ReturnUrl = ViewBag.ReturnUrl, enctype = "multipart/form-data" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-horizontal">
+                                
+                                <hr />
+                                @Html.ValidationSummary(true)
+                                @Html.HiddenFor(model => model.EmployeeId)
+                                <div class="form-group col-lg-6">
+                                    <label class="col-lg-4 control-label" for="inputFName">
+                                        @Html.LabelFor(model => model.FName, new { @class = "control-label col-md-4" })
+                                    </label>
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.FName, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.FName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    <label class="col-lg-4 control-label" for="inputLName">
+                                        @Html.LabelFor(model => model.LName, new { @class = "control-label col-md-4" })
+                                    </label>
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.LName, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.LName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    <label class="col-lg-4 control-label" for="inputMobile">
+                                        @Html.LabelFor(model => model.MobileNo, new { @class = "control-label col-md-4" })
+                                    </label>
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.MobileNo, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.MobileNo, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    <label class="col-lg-4 control-label" for="inputEmailId">
+                                        @Html.LabelFor(model => model.EmailId, new { @class = "control-label col-md-4" })
+                                    </label>
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.EmailId, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.EmailId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    <label class="col-lg-4 control-label" for="inputCity">
+                                        @Html.LabelFor(model => model.City, new { @class = "control-label col-md-4" })
+                                    </label>
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.City)
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    <label class="col-lg-4 control-label" for="inputState">
+                                        @Html.LabelFor(model => model.State, new { @class = "control-label col-md-4" })
+                                    </label>
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.State, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.State)
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    <label class="col-lg-4 control-label" for="inputCountry">
+                                        @Html.LabelFor(model => model.Country, new { @class = "control-label col-md-4" })
+                                    </label>
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.Country, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Country)
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    <label class="col-lg-4 control-label" for="inputAddress">
+                                        @Html.LabelFor(model => model.Address, new { @class = "control-label col-md-4" })
+                                    </label>
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Address)
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    <label class="col-lg-4 control-label" for="inputAddress2">
+                                        @Html.LabelFor(model => model.Address2, new { @class = "control-label col-md-4" })
+                                    </label>
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.Address2, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Address2)
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group col-lg-6">
+                                    <label class="col-lg-4 control-label" for="inputQualification">
+                                        @Html.LabelFor(model => model.Qualification, new { @class = "control-label col-md-4" })
+                                    </label>
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.Qualification, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Qualification)
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    <label class="col-lg-4 control-label" for="inputExperience">
+                                        @Html.LabelFor(model => model.Experience, new { @class = "control-label col-md-4" })
+                                    </label>
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.Experience, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Experience)
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    <label class="col-lg-4 control-label" for="inputDescription">
+                                        @Html.LabelFor(model => model.Designation, new { @class = "control-label col-md-4" })
+                                    </label>
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.Designation, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Designation)
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    <label class="col-lg-4 control-label" for="inputDateOfJoining">
+                                        @Html.LabelFor(model => model.DateOfJoining, new { @class = "control-label col-md-4" })
+                                    </label>
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.DateOfJoining, new { htmlAttributes = new { @class = "form-control", id = "DateOfJoining", placeholder = "Date Of Joining", @readonly = "true" } })
+                                        @Html.ValidationMessageFor(model => model.DateOfJoining)
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    <label class="col-lg-4 control-label" for="inputDateOfBirth">
+                                        @Html.LabelFor(model => model.DateOfBirth, new { @class = "control-label col-md-4" })
+                                    </label>
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", id = "DateOfBirth", placeholder = "Date Of Birth", @readonly = "true" } })
+                                        @Html.ValidationMessageFor(model => model.DateOfBirth)
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    <label class="col-lg-4 control-label" for="inputBloodGroup">
+                                        @Html.LabelFor(model => model.BloodGroup, new { @class = "control-label col-md-4" })
+                                    </label>
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.BloodGroup, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.BloodGroup)
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    <label class="col-lg-4 control-label" for="inputDDate">
+                                        @Html.LabelFor(model => model.DDate, new { @class = "control-label col-md-4" })
+                                    </label>
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.DDate, new { htmlAttributes = new { @class = "form-control", id = "demoDate", placeholder = "Select Date", @readonly = "true", @Value = @DateTime.Now.ToString("dd-MM-yyyy") } })
+                                        @Html.ValidationMessageFor(model => model.DDate)
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    <label class="col-lg-4 control-label" for="inputDDate">
+                                        @Html.LabelFor(model => model.Image, new { @class = "control-label col-md-4" })
+                                    </label>
+                                    <div class="col-md-8">
+                                        @Html.TextBoxFor(model => model.Image, new { @type = "file", @id = "Image", @name = "[0].files", @accept = "image/x-png, image/gif, image/jpeg, image/jpg", @onChange = "load_image(this.id,this.value)", @style = "width:200px;" })
+                                        @Html.ValidationMessageFor(model => model.Image)
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-12">
+                                    <div class="col-md-offset-4 col-md-10">
+                                        <input type="submit" value="Create" class="btn btn-default" /> | 
+                                        @Html.ActionLink("Back to List", "Index")
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+
+                                </div>
+                            </div>
+
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Javascripts-->
+<script src="~/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="~/js/plugins/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="~/js/plugins/select2.min.js"></script>
+<script type="text/javascript" src="~/js/plugins/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(window).load(function () {
+            $('#loader').hide();
+        });
+    });
+    $('#demoDate').datepicker({
+        format: "dd-mm-yyyy",
+        autoclose: true,
+        todayHighlight: true
+    });
+    $('#DateOfBirth').datepicker({
+        format: "dd-mm-yyyy",
+        autoclose: true,
+        todayHighlight: true
+    });
+    $('#DateOfJoining').datepicker({
+        format: "dd-mm-yyyy",
+        autoclose: true,
+        todayHighlight: true
+    });
+
+    function load_image(id, ext) {
+        if (validateExtension(ext) == false) {
+            alert("Upload only JPG or PNG or GIF format ");
+            document.getElementById("imagePreview").innerHTML = "";
+            document.getElementById("file").focus();
+            return;
+        }
+    }
+
+    function validateExtension(v) {
+        var allowedExtensions = new Array("jpg", "JPG", "jpeg", "JPEG", "png", "PNG", "gif", "GIF");
+        for (var ct = 0; ct < allowedExtensions.length; ct++) {
+            sample = v.lastIndexOf(allowedExtensions[ct]);
+            if (sample != -1) { return true; }
+        }
+        return false;
+    }
+
+</script>
+
+

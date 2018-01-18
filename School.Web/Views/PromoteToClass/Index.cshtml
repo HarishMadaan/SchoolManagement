@@ -1,0 +1,358 @@
+﻿@model School.Shared.CustomModels.PromoteToClassCustomModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+}
+
+
+<div class="page-title">
+    <div>
+        <h1><i class="fa fa-dashboard"></i> Promote To Class</h1>
+    </div>
+    <div>
+        <ul class="breadcrumb">
+            <li><a href="@Url.Action("Index", "Dashboard")"><i class="fa fa-home fa-lg"></i></a></li>
+            <li>@Html.ActionLink("PromoteToClass", "Index")</li>
+        </ul>
+    </div>
+</div>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true)
+
+        <div class="row">
+            <div class="col-lg-12 text-left">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Search Panel
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-horizontal">
+
+                            <div class="form-group  col-lg-4">
+                                <label class="col-lg-4 control-label" for="inputSessionId">
+                                    @Html.Label("Session")
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(model => model.SessionId, ViewBag.SessionInfo as IEnumerable<SelectListItem>, "-- Select Session --", new { @class = "form-control", @id = "SessionId", @onchange = "FillClass()" })
+                                    @Html.ValidationMessageFor(model => model.SessionId)
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-4">
+                                <label class="col-lg-4 control-label" for="inputClassId">
+                                    @Html.Label("Class")
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(model => model.ClassId,
+                new SelectList(Enumerable.Empty<SelectListItem>(), "ClassId", "Title"),
+                "-- Select Class --",
+                new { @class = "form-control", @onchange = "FillSection()" })
+                                    @Html.ValidationMessageFor(model => model.ClassId)
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-4">
+                                <label class="col-lg-4 control-label" for="inputSectionId">
+                                    @Html.Label("Section")
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DropDownList("SectionId", new SelectList(Enumerable.Empty<SelectListItem>(), "SectionId", "Title"), "-- Select Section --", new { @class = "form-control", @id = "SectionId" })
+                                </div>
+                            </div>
+
+                            <hr />
+                            <div class="form-group  col-lg-12">
+                                <label class="col-lg-12">
+                                    @Html.Label("Promote To New Class")
+                                </label>
+                                
+                            </div>
+
+                            <div class="form-group  col-lg-4">
+                                <label class="col-lg-4 control-label" for="inputSessionId">
+                                    @Html.Label("Session")
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DropDownList("NewSessionId", ViewBag.SessionInfo as IEnumerable<SelectListItem>, "-- Select Session --", new { @class = "form-control", @id = "NewSessionId", @onchange = "FillPromoteClass()" })
+                                    @Html.ValidationMessageFor(model => model.SessionId)
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-4">
+                                <label class="col-lg-4 control-label" for="inputClassId">
+                                    @Html.Label("Class")
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DropDownList("NewClassId",
+                new SelectList(Enumerable.Empty<SelectListItem>(), "ClassId", "Title"),
+                "-- Select Class --",
+                new { @class = "form-control", @onchange = "FillPromoteSection()" })
+                                    @Html.ValidationMessageFor(model => model.ClassId)
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-4">
+                                <label class="col-lg-4 control-label" for="inputSectionId">
+                                    @Html.Label("Section")
+                                </label>
+                                <div class="col-md-8">
+                                    @Html.DropDownList("NewSectionId", new SelectList(Enumerable.Empty<SelectListItem>(), "SectionId", "Title"), "-- Select Section --", new { @class = "form-control", @id = "NewSectionId" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-lg-2"></div>
+                                <div class="col-lg-12" id="dvAllocationListing">
+
+                                </div>
+                                <div class="col-lg-2"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="button" value="Search" class="btn btn-default" onclick="return SearchAllocation();" />
+                                    <input type="button" value="Promote To New Class" class="btn btn-default" id="btnPromoteToNewClass" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script src="~/js/jquery-2.1.4.min.js"></script>
+
+<script type="text/javascript">
+    $('#loader').hide();
+
+    function FillClass() {
+        $('#loader').show();
+        var sessionId = $('#SessionId').val();
+        if (sessionId != "") {
+            $.ajax({
+                url: '/CommonMaster/FillClass',
+                type: "GET",
+                dataType: "JSON",
+                data: { SessionId: sessionId },
+                success: function (classes) {
+                    $("#ClassId").html(""); // clear before appending new list
+                    $("#ClassId").append
+                    ($('<option></option>').val(null).html("-- Select Class --"));
+                    $.each(classes, function (i, classinfo)
+                    { $("#ClassId").append($('<option></option>').val(classinfo.ClassId).html(classinfo.Title)) })
+                }
+            });
+        }
+        else {
+            $("#ClassId").html(""); // clear before appending new list
+            $("#ClassId").append
+                    ($('<option></option>').val(null).html("-- Select Class --"));
+
+            $("#SectionId").html(""); // clear before appending new list
+            $("#SectionId").append
+                    ($('<option></option>').val(null).html("-- Select Section --"));
+        }
+        $('#loader').hide();
+    }
+
+    function FillSection() {
+        $('#loader').show();
+        //debugger;
+        var classId = $('#ClassId').val();
+        if (classId != "") {
+            $.ajax({
+                url: '/CommonMaster/FillSection',
+                type: "GET",
+                dataType: "JSON",
+                data: { ClassId: classId },
+                success: function (sections) {
+                    $("#SectionId").html(""); // clear before appending new list
+                    $("#SectionId").append
+                    ($('<option></option>').val(null).html("-- Select Section --"));
+                    $.each(sections, function (i, sectioninfo)
+                    { $("#SectionId").append($('<option></option>').val(sectioninfo.SectionId).html(sectioninfo.Title)) })
+                }
+            });
+        }
+        else {
+            $("#SectionId").html(""); // clear before appending new list
+            $("#SectionId").append
+                    ($('<option></option>').val(null).html("-- Select Section --"));
+        }
+        $('#loader').hide();
+    }
+
+    function FillPromoteClass() {
+        $('#loader').show();
+        var sessionId = $('#NewSessionId').val();
+        if (sessionId != "") {
+            $.ajax({
+                url: '/CommonMaster/FillClass',
+                type: "GET",
+                dataType: "JSON",
+                data: { SessionId: sessionId },
+                success: function (classes) {
+                    $("#NewClassId").html(""); // clear before appending new list
+                    $("#NewClassId").append
+                    ($('<option></option>').val(null).html("-- Select Class --"));
+                    $.each(classes, function (i, classinfo)
+                    { $("#NewClassId").append($('<option></option>').val(classinfo.ClassId).html(classinfo.Title)) })
+                }
+            });
+        }
+        else {
+            $("#NewClassId").html(""); // clear before appending new list
+            $("#NewClassId").append
+                    ($('<option></option>').val(null).html("-- Select Class --"));
+
+            $("#NewSectionId").html(""); // clear before appending new list
+            $("#NewSectionId").append
+                    ($('<option></option>').val(null).html("-- Select Section --"));
+        }
+        $('#loader').hide();
+    }
+
+    function FillPromoteSection() {
+        $('#loader').show();
+        //debugger;
+        var classId = $('#NewClassId').val();
+        if (classId != "") {
+            $.ajax({
+                url: '/CommonMaster/FillSection',
+                type: "GET",
+                dataType: "JSON",
+                data: { ClassId: classId },
+                success: function (sections) {
+                    $("#NewSectionId").html(""); // clear before appending new list
+                    $("#NewSectionId").append
+                    ($('<option></option>').val(null).html("-- Select Section --"));
+                    $.each(sections, function (i, sectioninfo)
+                    { $("#NewSectionId").append($('<option></option>').val(sectioninfo.SectionId).html(sectioninfo.Title)) })
+                }
+            });
+        }
+        else {
+            $("#NewSectionId").html(""); // clear before appending new list
+            $("#NewSectionId").append
+                    ($('<option></option>').val(null).html("-- Select Section --"));
+        }
+        $('#loader').hide();
+    }
+
+    function SearchAllocation() {
+        var sessionId = $('#SessionId').val();
+        var classId = $('#ClassId').val();
+        var sectionId = $('#SectionId').val();
+        //alert(sectionId);
+        if (sessionId == "") {
+            alert("Please select session");
+            $('#SessionId').focus();
+            return false;
+        }
+        else if (classId == "") {
+            alert("Please select class");
+            $('#ClassId').focus();
+            return false;
+        }
+        else if (sessionId != "" && classId != "") {
+            //alert(sessionId + " -- " + classId);
+            $("#dvAllocationListing").html("");
+            $("#dvAllocationListing").html("<div style='text-align: center;background :rgba(0,0,0,0.5);  background-repeat: no-repeat; background-attachment: fixed; background-position: center;width:100%;        height:100%;        position:fixed;        top:0;        left:0;        z-index:999;'><img src='/includes/images/loaders/loader10.gif' style='position:relative;margin: 400px auto;'/></div>");
+            var ai = {
+                SessionId: sessionId,
+                ClassId: classId,
+                SectionId: sectionId,
+                StudentName: ""
+            }
+            $.ajax({
+                type: "post",
+                url: '@Url.Action("SearchPromoteList", "PromoteToClass")',
+                data: JSON.stringify(ai),
+                datatype: "json",
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.trim() != "") {
+                        $("#dvAllocationListing").fadeIn("fast");
+                        $("#dvAllocationListing").html("");
+                        $("#dvAllocationListing").html(data);
+                    }
+                    else {
+                        $("#dvAllocationListing").html("");
+                        $("#dvAllocationListing").html('<p style="color:#FF0000;font-weight:bold;text-align: center;">No Records Found!</p>');
+                    }
+                },
+                error: function (data) {
+                    $("#dvAllocationListing").html("");
+                    $("#dvAllocationListing").html(data);
+                }
+            });
+        }
+    }
+
+    $('#btnPromoteToNewClass').click(function () {
+        var sessionId = $('#NewSessionId').val();
+        var classId = $('#NewClassId').val();
+        var sectionId = $('#NewSectionId').val();
+        if (sessionId == "") {
+            alert("Please select new session");
+            $('#NewSessionId').focus();
+            return false;
+        }
+        else if (classId == "") {
+            alert("Please select new class");
+            $('#NewClassId').focus();
+            return false;
+        }
+        else if (sectionId == "") {
+            alert("Please select new section");
+            $('#NewSectionId').focus();
+            return false;
+        }
+        else if (sessionId != "" && classId != "" && sectionId != "") {
+            var list = [];
+            $('#dvAllocationListing input:checked').each(function () {
+                list.push(this.value);
+                //alert(this.value);
+            });
+            // now names contains all of the names of checked checkboxes
+            // do something with it for excamle post with ajax
+            var data = {
+                'Parameters': list,
+                'SessionId': sessionId,
+                'ClassId': classId,
+                'SectionId': sectionId
+            };
+            $.ajax({
+                url: '@Url.Action("UpdateAllocationList", "PromoteToClass")',
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                success: function (result) {
+                    //SearchAllocation();
+                    alert("students successfully allocated in section.");
+                },
+                error: function (result) {
+                    SearchAllocation();
+                    alert("students successfully allocated in section.");
+                }
+            });   //end ajax
+        }
+    });
+</script>
+
+

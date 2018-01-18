@@ -1,0 +1,120 @@
+﻿@model School.Shared.CustomModels.ClassMasterCustomModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+    School.Shared.CustomModels.MessageModel objMessageModel = new School.Shared.CustomModels.MessageModel();
+}
+
+
+<div class="page-title">
+    <div>
+        <h1><i class="fa fa-edit"></i> Class Master</h1>
+    </div>
+    <div>
+        <ul class="breadcrumb">
+            <li><a href="@Url.Action("Index", "Dashboard")"><i class="fa fa-home fa-lg"></i></a></li>
+            <li>@Html.ActionLink("Class", "Index")</li>
+        </ul>
+    </div>
+</div>
+<div style="width: 100%;" id="MessageBox">
+    @Html.Partial("~/Views/Shared/PartialViews/_Message.cshtml", objMessageModel)
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="well bs-component">
+
+
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-horizontal">
+
+                                <hr />
+                                @Html.ValidationSummary(true)
+                                @Html.HiddenFor(model => model.ClassId)
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label" for="inputSessionId">
+                                        @Html.LabelFor(model => model.SessionId, new { @class = "control-label col-md-4" })
+                                    </label>
+                                    <div class="col-md-8">
+                                        @Html.DropDownListFor(model => model.SessionId, ViewBag.SessionInfo as IEnumerable<SelectListItem>, "-- Select Session --", new { @class = "form-control", @id = "SessionId" })
+                                        @*@Html.EditorFor(model => model.SessionId, new { htmlAttributes = new { @class = "form-control" } })*@
+                                        @Html.ValidationMessageFor(model => model.SessionId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label" for="inputTitle">
+                                        @Html.LabelFor(model => model.Title, new { @class = "control-label col-lg-4" })
+                                    </label>
+                                    <div class="col-lg-8">
+                                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                                        @*@Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @placeholder = "Title", maxlength = 100 } })
+                                            @Html.ValidationMessageFor(model => model.Title)*@
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label" for="inputShortDesc">
+                                        @Html.LabelFor(model => model.ShortDescription, new { @class = "control-label col-lg-4" })
+                                    </label>
+                                    <div class="col-md-8">
+                                        @Html.TextAreaFor(model => model.ShortDescription, 3, 50, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label" for="inputDDate">
+                                        @Html.LabelFor(model => model.DDate, new { @class = "control-label col-lg-2" })
+                                    </label>
+                                    <div class="col-md-8">
+                                        @Html.EditorFor(model => model.DDate, new { htmlAttributes = new { @class = "form-control", id = "DateOfClass", placeholder = "Date Of Class", @readonly = "true", @Value = @DateTime.Now.ToString("dd-MM-yyyy") } })
+                                        @Html.ValidationMessageFor(model => model.DDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-offset-4 col-md-10">
+                                        <input type="submit" value="Create" class="btn btn-primary" />
+                                        | @Html.ActionLink("Back to List", "Index")
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Javascripts-->
+<script src="~/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="~/js/plugins/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="~/js/plugins/select2.min.js"></script>
+<script type="text/javascript" src="~/js/plugins/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(window).load(function () {
+            $('#loader').hide();
+        });
+    });
+    $('#DateOfClass').datepicker({
+        format: "dd-mm-yyyy",
+        autoclose: true,
+        todayHighlight: true
+    });
+
+    $('#MessageBox').delay(2000).fadeOut();
+
+</script>
+
+

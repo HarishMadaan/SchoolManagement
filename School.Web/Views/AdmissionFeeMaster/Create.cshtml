@@ -1,0 +1,93 @@
+﻿@model School.Shared.CustomModels.AdmissionFeeMasterCustomModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+}
+
+<div class="page-title">
+    <div>
+        <h1><i class="fa fa-edit"></i> Admission Fee Master</h1>
+    </div>
+    <div>
+        <ul class="breadcrumb">
+            <li><a href="@Url.Action("Index", "Dashboard")"><i class="fa fa-home fa-lg"></i></a></li>
+            <li>@Html.ActionLink("AdmissionFeeMaster", "Index")</li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="well bs-component">
+
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-horizontal">
+                                
+                                <hr />
+                                @Html.ValidationSummary(true)
+                                @Html.HiddenFor(model => model.AdmissionFeeId)
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label" for="inputSessionId">
+                                        @Html.LabelFor(model => model.SessionId, new { @class = "control-label col-md-4" })
+                                    </label>
+                                    <div class="col-md-8">
+                                        @Html.DropDownListFor(model => model.SessionId, ViewBag.SessionInfo as IEnumerable<SelectListItem>, "-- Select Session --", new { @class = "form-control", @id = "SessionId" })
+                                        @*@Html.EditorFor(model => model.SessionId, new { htmlAttributes = new { @class = "form-control" } })*@
+                                        @Html.ValidationMessageFor(model => model.SessionId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label" for="inputClassId">
+                                        @Html.LabelFor(model => model.ClassId, new { @class = "control-label col-md-2" })
+                                    </label>
+                                        <div class="col-md-8">
+                                            @Html.DropDownListFor(model => model.ClassId, ViewBag.ClassInfo as IEnumerable<SelectListItem>, "-- Select Class --", new { @class = "form-control", @id = "ClassId" })
+                                            @*@Html.EditorFor(model => model.ClassId, new { htmlAttributes = new { @class = "form-control" } })*@
+                                            @Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
+                                        </div>
+</div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label" for="inputAdmissionFee">
+                                        @Html.LabelFor(model => model.AdmissionFee, new { @class = "control-label col-md-4" })
+                                    </label>
+                                        <div class="col-md-8">
+                                            @Html.EditorFor(model => model.AdmissionFee, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.AdmissionFee, "", new { @class = "text-danger" })
+                                        </div>
+</div>
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-4 col-md-10">
+                                        <input type="submit" value="Create" class="btn btn-default" />
+                                        | @Html.ActionLink("Back to List", "Index")
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Javascripts-->
+<script src="~/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(window).load(function () {
+            $('#loader').hide();
+        });
+    });
+
+</script>

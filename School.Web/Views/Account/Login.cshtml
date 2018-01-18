@@ -1,0 +1,184 @@
+﻿@*@{
+
+    Layout = null;
+}
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Login</title>
+
+    <link href="~/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="~/css/my-style.css" rel="stylesheet" type="text/css">
+    <link href="~/Scripts/Angular_Plugins/Angular_Toasters/toaster.min.css" rel="stylesheet" />
+    <link href="~/css/font-awesome.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-1.js" type="text/javascript" language="javascript"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.js" type="text/javascript" language="javascript"></script>
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Scripts/angular-animate.min.js"></script>
+    <script src="~/Scripts/Angular_Plugins/Angular_Toasters/toaster.min.js"></script>
+
+    <script src="~/App/GlobalSetting.js"></script>
+    <script src="~/App/Account/Modules/AccountModule.js"></script>
+    <script src="~/App/Account/Factories/AccountFactory.js"></script>
+    <script src="~/App/Account/Controllers/AccountController.js"></script>
+
+
+    <style type="text/css">
+        .required {
+            border: 1px solid red;
+        }
+    </style>
+</head>
+
+<body class="login-back" ng-app="loginApp" ng-controller="loginController">
+    <toaster-container></toaster-container>
+    <div id="loader" style="display:none" class="outer-load"> <div class="inner-load"><img src="~/Images/loader2.gif" /> </div>  </div>
+    <div class="logo"><img src="~/img/hindi_logo.png"> e-Kharid Haryana</div>
+    <div class="login-bg">
+
+        <form name="signinForm" novalidate>
+            <div class="login-inner" ng-if="!IsOTPFormActive">
+
+                <div class="form-group">
+                    <input type="text" required name="UserName" ng-class="{'required':signinForm.UserName.$invalid && signinForm.UserName.$dirty}" autocomplete="on" placeholder="Username" ng-model="loginModel.UserName" class="form-control inputbg">
+
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" ng-class="{'required':signinForm.Password.$invalid && signinForm.Password.$dirty}" required name="Password" ng-model="loginModel.Password" class="form-control inputbg">
+
+                </div>
+                <button class="btn btn-default login-btn" ng-click="LogIn(signinForm.UserName.$invalid,signinForm.Password.$invalid)">Login</button>
+                <br />
+                <a href="#" data-toggle="modal" data-target="#ForgotPassword"><small>Forgot password?</small></a>
+
+            </div>
+
+            <div class="login-inner" ng-if="IsOTPFormActive">
+
+                <div class="form-group">
+                    <input type="text" ng-class="{'required':signinForm.OTP.$invalid && signinForm.OTP.$dirty}" placeholder="Enter OTP" required name="OTP" ng-model="OTPModel.OTP" class="form-control inputbg">
+
+                </div>
+
+                <button class="btn btn-default login-btn" ng-click="ConfirmOTP(signinForm.OTP.$invalid)">Confirm OTP</button>
+
+
+                <div class="form-group text-center margin-bott">
+                    <div class="face-icon"><a href="#"><i aria-hidden="true" class="fa fa-facebook face-size"></i></a></div>
+                    <div class="google-plus"><a href="#"><i aria-hidden="true" class="fa fa-google-plus"></i></a></div>
+                </div>
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+    <div class="modal fade" id="ForgotPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="position: relative; left: 0%;width:400px; margin-top:60px;">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #2e4d50;">
+                    <button type="button" style="color: #fff;" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 style="color: #fff;" class="modal-title" id="myModalLabel">Forgot Password</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <table width="100%">
+                            <tr><td>User Name: <span class="requiredClassSpan">*</span></td><td align="left"><input style="width:100%; border:none; box-shadow:0 0 4px 0 rgba(0, 0, 0, 0.3); padding:0 5px; height:28px; line-height:28px;" type="text" id="txtUserName" placeholder="User name" ng-model="lgmodel.UserName"></td> </tr>
+
+                            <tr style="margin-top:5px;">
+                                <td><input ng-model="lgmodel.IsMobile" type="radio" name="ComMedium" value="false" checked="checked"> Email</td>
+                                <td align="left"><input ng-model="lgmodel.IsMobile" type="radio" name="ComMedium" value="true"> Mobile No.</td>
+                            </tr>
+
+                            <tr style="margin-top:5px;" ng-show="lgmodel.IsMobile == 'false'"><td>Email Address : <span class="requiredClassSpan">*</span></td><td align="left"><input style="width:100%; border:none; box-shadow:0 0 4px 0 rgba(0, 0, 0, 0.3); padding:0 5px; height:28px; line-height:28px;" maxlength="100" type="text" id="txtEmailid" placeholder="Enter email" ng-model="lgmodel.Email"></td> </tr>
+                            <tr ng-show="lgmodel.IsMobile == 'true'"><td> Mobile No. : <span class="requiredClassSpan">*</span></td><td align="left"><input style="width:100%; border:none; box-shadow:0 0 4px 0 rgba(0, 0, 0, 0.3); padding:0 5px; height:28px; line-height:28px;" maxlength="10" type="text" id="txtMobileNo" placeholder="Enter  Mobile No." ng-model="lgmodel.DeviceId"></td> </tr>
+                            <tr><td height="5px;" colspan="2"></td></tr>
+                            <tr>
+                                <td></td>
+                                <td align="left"><span style="color:red;display:none;" id="lblalert"></span></td>
+                            </tr>
+                        </table>
+
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnCloseForgotPassword" data-ng-click="EmptyData()" type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+                    <button class="btn btn-default" data-ng-click="ForgotPassword()" aria-hidden="true">Send Password</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+</html>*@
+
+
+@using School.Web.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+}
+
+<h2>@ViewBag.Title.</h2>
+<div class="row">
+    <div class="col-md-8">
+        <section id="loginForm">
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <h4>Use a local account to log in.</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <div class="checkbox">
+                            @Html.CheckBoxFor(m => m.RememberMe)
+                            @Html.LabelFor(m => m.RememberMe)
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Log in" class="btn btn-default" />
+                    </div>
+                </div>
+                <p>
+                    @Html.ActionLink("Register as a new user", "Register")
+                </p>                
+            }
+        </section>
+    </div>
+    <div class="col-md-4">
+        <section id="socialLoginForm">
+            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

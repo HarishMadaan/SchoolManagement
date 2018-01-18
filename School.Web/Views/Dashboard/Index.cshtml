@@ -1,0 +1,225 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+}
+
+<div class="page-title">
+    <div>
+        <h1><i class="fa fa-dashboard"></i> Dashboard</h1>
+    </div>
+    <div>
+        <ul class="breadcrumb">
+            <li><a href="@Url.Action("Index", "Dashboard")"><i class="fa fa-home fa-lg"></i></a></li>
+            <li>@Html.ActionLink("Dashboard", "Index")</li>
+        </ul>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-12 text-left">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Search Panel
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                @Html.DropDownList("SessionId", ViewBag.SessionInfo as IEnumerable<SelectListItem>, "-- Select Session --", new { @class = "form-control", @id = "SessionId", @onchange = "FillClass()" })
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                    <div class="col-md-12">
+                        @Html.DropDownList("ClassId",
+                        new SelectList(Enumerable.Empty<SelectListItem>(), "ClassId", "Title"),
+                        "-- Select Class --",
+                        new { @class = "form-control", @onchange = "FillSection()" })
+                    </div>
+                </div>
+
+                    <div class="col-lg-4 text-right">
+                        <div class="form-group">
+                            <input type="button" value="Search" class="btn btn-default" onclick="return SearchSessionWiseResult();" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" id="dvShowSearchResult" >
+    <div class="col-md-12">
+        <div class="col-lg-4 col-md-6">
+            <div class="small-box" style="background-color:#ff6a00 !important;color:white;">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-comments fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">
+                                @ViewBag.EnquiryCount[0].TotalEnquiry
+                            </div>
+                            <div>
+                                @Html.Label("TotalEnquiry", "Total Enquiry")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a id="ancEnquiryViewDetails" style="cursor: pointer">
+                    <div class="panel-footer">
+                        <span class="pull-left" id="spnEnquiry" runat="server">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="small-box" style="background-color:#d08ad9 !important;color:white;">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-tasks fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">
+                                @ViewBag.EnquiryCount[0].TotalRegistration
+                            </div>
+                            <div>
+                                @Html.Label("TotalAdmission", "Total Admission")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a id="ancAdmission" style="cursor: pointer">
+                    <div class="panel-footer">
+                        <span class="pull-left" id="spnAdmission" runat="server">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="small-box bg-yellow">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-shopping-cart fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">
+                                @ViewBag.EnquiryCount[0].TotalDropOut
+                            </div>
+                            <div>
+                                @Html.Label("Dropout", "Dropout")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a id="ancDropout" style="cursor: pointer">
+                    <div class="panel-footer">
+                        <span class="pull-left" id="spnDropout" runat="server">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        </div>
+</div>
+
+@*<div class="row">
+    <div class="col-lg-12 text-left">
+        @{
+            var chart = new Chart(width: 600, height: 500, theme: ChartTheme.Yellow)
+           .AddTitle("USA City Distribution")
+           .AddSeries("Default", chartType: "line",
+                xValue: ViewBag.EnquiryCount, xField: "TotalEnquiry",
+                yValues: ViewBag.EnquiryCount, yFields: "TotalRegistration")
+            .Write();
+        }
+    </div>
+</div>*@
+
+<script src="~/js/jquery-2.1.4.min.js"></script>
+<!-- Data table plugin-->
+<script type="text/javascript">
+
+        $(document).ready(function () {
+            $(window).load(function () {
+                //alert("This can run");
+                $('#loader').hide();
+            });
+        });
+
+        function FillClass() {
+            $('#loader').show();
+            var sessionId = $('#SessionId').val();
+            if (sessionId != "") {
+                $.ajax({
+                    url: '/CommonMaster/FillClass',
+                    type: "GET",
+                    dataType: "JSON",
+                    data: { SessionId: sessionId },
+                    success: function (classes) {
+                        $("#ClassId").html(""); // clear before appending new list
+                        $("#ClassId").append
+                        ($('<option></option>').val(null).html("-- Select Class --"));
+                        $.each(classes, function (i, classinfo)
+                        { $("#ClassId").append($('<option></option>').val(classinfo.ClassId).html(classinfo.Title)) })
+                    }
+                });
+            }
+            else {
+                $("#ClassId").html(""); // clear before appending new list
+                $("#ClassId").append
+                        ($('<option></option>').val(null).html("-- Select Class --"));
+            }
+            $('#loader').hide();
+        }
+
+        function SearchSessionWiseResult() {
+            $('#loader').show();
+            var sessionId = $('#SessionId').val();
+            var classId = $('#ClassId').val();
+
+            $("#dvShowSearchResult").html("");
+            $("#dvShowSearchResult").html("<div style='text-align: center;background :rgba(0,0,0,0.5);  background-repeat: no-repeat; background-attachment: fixed; background-position: center;width:100%;        height:100%;        position:fixed;        top:0;        left:0;        z-index:999;'><img src='/includes/images/loaders/loader10.gif' style='position:relative;margin: 400px auto;'/></div>");
+            var ai = {
+                SessionId: sessionId,
+                ClassId: classId
+            }
+            $.ajax({
+                type: "post",
+                url: '@Url.Action("SearchSessionWiseResult", "Dashboard")',
+                data: JSON.stringify(ai),
+                datatype: "json",
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.trim() != "") {
+                        $("#dvShowSearchResult").fadeIn("fast");
+                        $("#dvShowSearchResult").html("");
+                        $("#dvShowSearchResult").html(data);
+                    }
+                    else {
+                        $("#dvShowSearchResult").html("");
+                        $("#dvShowSearchResult").html('<p style="color:#FF0000;font-weight:bold;text-align: center;">No Records Found!</p>');
+                    }
+                },
+                error: function (data) {
+                    $("#dvShowSearchResult").html("");
+                    $("#dvShowSearchResult").html(data);
+                }
+            });
+            $('#loader').hide();
+        }
+</script>

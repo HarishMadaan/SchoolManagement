@@ -1,0 +1,178 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- CSS-->
+    <link rel="stylesheet" type="text/css" href="~/css/main.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Vali Admin</title>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries-->
+    <!--if lt IE 9
+    script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
+    script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
+    -->
+
+</head>
+
+<body class="sidebar-mini fixed">
+    <div id="loader" class="outer-load"> <div class="inner-load"><img src="~/Images/loader2.gif" /> </div>  </div>
+    <div class="wrapper">
+        <!-- Navbar-->
+        <header class="main-header hidden-print">
+            <a class="logo" href="index.html">@*School Management*@</a>
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button--><a class="sidebar-toggle" href="#" data-toggle="offcanvas"></a>
+                <!-- Navbar Right Menu-->
+                <div class="navbar-custom-menu">
+                    <ul class="top-nav">
+                        <!-- User Menu-->
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user fa-lg"></i></a>
+                            <ul class="dropdown-menu settings-menu">
+                                <li><a href="page-user.html"><i class="fa fa-cog fa-lg"></i> Settings</a></li>
+                                <li><a href="page-user.html"><i class="fa fa-user fa-lg"></i> Profile</a></li>
+                                <li><a href="@Url.Action("Logout", "Login")"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- Side-Nav-->
+        <aside class="main-sidebar hidden-print">
+            <section class="sidebar">
+                <div class="user-panel">
+                    <div class="pull-left image"><img class="img-circle" src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg" alt="User Image"></div>
+                    <div class="pull-left info">
+                        <p>John Doe</p>
+                        <p class="designation">Frontend Developer</p>
+                    </div>
+                </div>
+                <!-- Sidebar Menu-->
+                <ul class="sidebar-menu">
+                    <li class="active"><a href="@Url.Action("Index", "Dashboard")"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-share"></i><span>Masters</span><i class="fa fa-angle-right"></i></a>
+                        <ul class="treeview-menu">
+                            <li class="treeview">
+                                <a href="#"><i class="fa fa-file-text"></i><span>Session Master</span><i class="fa fa-angle-right"></i></a>
+                                <ul class="treeview-menu">
+                                    <li><a href="@Url.Action("Index", "Session")"><i class="fa fa-circle-o"></i> All Session</a></li>
+                                    <li><a href="@Url.Action("Create", "Session")"><i class="fa fa-circle-o"></i> Add New</a></li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
+                                <a href="#"><i class="fa fa-file-text"></i><span>Class</span><i class="fa fa-angle-right"></i></a>
+                                <ul class="treeview-menu">
+                                    <li><a href="@Url.Action("Index", "Class")"><i class="fa fa-circle-o"></i> All Class</a></li>
+                                    <li><a href="@Url.Action("Create", "Class")"><i class="fa fa-circle-o"></i> Add New</a></li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
+                                <a href="#"><i class="fa fa-file-text"></i><span>Section</span><i class="fa fa-angle-right"></i></a>
+                                <ul class="treeview-menu">
+                                    <li><a href="@Url.Action("Index", "Section")"><i class="fa fa-circle-o"></i> All Section</a></li>
+                                    <li><a href="@Url.Action("Create", "Section")"><i class="fa fa-circle-o"></i> Add New</a></li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
+                                <a href="#"><i class="fa fa-file-text"></i><span>Fee Master</span><i class="fa fa-angle-right"></i></a>
+                                <ul class="treeview-menu">
+                                    <li><a href="@Url.Action("Index", "FeeMaster")"><i class="fa fa-circle-o"></i> All Fee Master</a></li>
+                                    <li><a href="@Url.Action("Create", "FeeMaster")"><i class="fa fa-circle-o"></i> Add New</a></li>
+                                </ul>
+                            </li>                            
+                            <li class="treeview">
+                                <a href="#"><i class="fa fa-file-text"></i><span>Admission Fee Master</span><i class="fa fa-angle-right"></i></a>
+                                <ul class="treeview-menu">
+                                    <li><a href="@Url.Action("Index", "AdmissionFeeMaster")"><i class="fa fa-circle-o"></i> All Admission Fee</a></li>
+                                    <li><a href="@Url.Action("Create", "AdmissionFeeMaster")"><i class="fa fa-circle-o"></i> Add Admission Fee</a></li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
+                                <a href="#"><i class="fa fa-file-text"></i><span>Bus Charges</span><i class="fa fa-angle-right"></i></a>
+                                <ul class="treeview-menu">
+                                    <li><a href="@Url.Action("Index", "BusChargesMaster")"><i class="fa fa-circle-o"></i> All Bus Charges</a></li>
+                                    <li><a href="@Url.Action("Create", "BusChargesMaster")"><i class="fa fa-circle-o"></i> Add Bus Charges</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-file-text"></i><span>Employee</span><i class="fa fa-angle-right"></i></a>
+                        <ul class="treeview-menu">
+                            <li><a href="@Url.Action("Index", "Employee")"><i class="fa fa-circle-o"></i> All Employee</a></li>
+                            <li><a href="@Url.Action("Create", "Employee")"><i class="fa fa-circle-o"></i> Add New</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-file-text"></i><span>Enquiry</span><i class="fa fa-angle-right"></i></a>
+                        <ul class="treeview-menu">
+                            <li><a href="@Url.Action("Index", "Enquiry")"><i class="fa fa-circle-o"></i> All Enquiry</a></li>
+                            <li><a href="@Url.Action("Create", "Enquiry")"><i class="fa fa-circle-o"></i> Add New</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-file-text"></i><span>Fee Collection</span><i class="fa fa-angle-right"></i></a>
+                        <ul class="treeview-menu">
+                            <li><a href="@Url.Action("Index", "FeeCollection")"><i class="fa fa-circle-o"></i> All Fee Collection</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-file-text"></i><span>Section Allocation</span><i class="fa fa-angle-right"></i></a>
+                        <ul class="treeview-menu">
+                            <li><a href="@Url.Action("Index", "SectionAllocation")"><i class="fa fa-circle-o"></i> Section Allocation</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-file-text"></i><span>Roll No Allocation</span><i class="fa fa-angle-right"></i></a>
+                        <ul class="treeview-menu">
+                            <li><a href="@Url.Action("Index", "RollNoAllocation")"><i class="fa fa-circle-o"></i> Roll No Allocation</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-file-text"></i><span>Promote To Class</span><i class="fa fa-angle-right"></i></a>
+                        <ul class="treeview-menu">
+                            <li><a href="@Url.Action("Index", "PromoteToClass")"><i class="fa fa-circle-o"></i> Promote To Class</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-file-text"></i><span>Reports</span><i class="fa fa-angle-right"></i></a>
+                        <ul class="treeview-menu">
+                            <li><a href="@Url.Action("Index", "RPT/EnquiryReport")"><i class="fa fa-circle-o"></i> Enquiry Report</a></li>
+                            <li><a href="@Url.Action("Index", "RPT/AdmissionReport")"><i class="fa fa-circle-o"></i> Admission Report</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </section>
+        </aside>
+        <div class="content-wrapper">
+            @RenderBody()
+        </div>
+    </div>
+    <!-- Javascripts-->
+    <script src="~/js/jquery-2.1.4.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    @*<script src="js/plugins/pace.min.js"></script>*@
+    <script src="~/js/main.js"></script>
+    <!-- page content -->
+    @*<div class="right_col" role="main">
+
+        </div>*@
+    <!-- /page content -->
+
+</body>
+
+
+</html>

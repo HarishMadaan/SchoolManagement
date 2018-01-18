@@ -1,0 +1,149 @@
+﻿@model School.Shared.CustomModels.SectionMasterCustomModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+}
+
+<div class="page-title">
+    <div>
+        <h1><i class="fa fa-edit"></i> Section Master</h1>
+    </div>
+    <div>
+        <ul class="breadcrumb">
+            <li><a href="@Url.Action("Index", "Dashboard")"><i class="fa fa-home fa-lg"></i></a></li>
+            <li>@Html.ActionLink("Section", "Index")</li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="well bs-component">
+                        
+                                @using (Html.BeginForm())
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <div class="form-horizontal">
+                                        <hr />
+                                        @Html.ValidationSummary(true)
+                                        @Html.HiddenFor(model => model.SectionId)
+
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label" for="inputSessionId">
+                                                @Html.LabelFor(model => model.SessionId, new { @class = "control-label col-md-2" })
+                                            </label>
+                                            <div class="col-md-8">
+                                                @Html.DropDownListFor(model => model.SessionId, ViewBag.SessionInfo as IEnumerable<SelectListItem>, "-- Select Session --", new { @class = "form-control", @id = "SessionId", @onchange = "FillClass()" })
+                                                @Html.ValidationMessageFor(model => model.SessionId, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label" for="inputClassId">
+                                                @Html.LabelFor(model => model.ClassId, new { @class = "control-label col-md-4" })                                            
+                                            </label>
+                                                <div class="col-md-8">
+                                                    @*@Html.DropDownListFor(model => model.ClassId, ViewBag.ClassInfo as IEnumerable<SelectListItem>, "-- Select Class --", new { @class = "form-control", @id = "ClassId" })*@
+
+                                                    @Html.DropDownList("ClassId", new SelectList(Enumerable.Empty<SelectListItem>(), "ClassId", "Title"),"-- Select Class --", new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
+                                                </div>
+</div>
+                                        
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label" for="inputTitle">
+                                                @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
+                                            </label>
+                                                <div class="col-md-8">
+                                                    @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger"})
+                                                </div>
+</div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label" for="inputShortDesc">
+                                                @Html.LabelFor(model => model.ShortDescription, new { @class = "control-label col-md-2" })
+                                            </label>
+                                                <div class="col-md-8">
+                                                    @Html.EditorFor(model => model.ShortDescription, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+                                                </div>
+</div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label" for="inputDDate">
+                                                @Html.LabelFor(model => model.DDate, new { @class = "control-label col-md-2" })
+                                            </label>
+                                                <div class="col-md-8">
+                                                    @Html.EditorFor(model => model.DDate, new { htmlAttributes = new { @class = "form-control", id = "demoDate", placeholder = "Select Date", @readonly = "true", @Value = @DateTime.Now.ToString("dd-MM-yyyy") } })
+                                                    @Html.ValidationMessageFor(model => model.DDate, "", new { @class = "text-danger" })
+                                                </div>
+</div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-offset-4 col-md-10">
+                                                <input type="submit" value="Create" class="btn btn-default" />
+                                                | @Html.ActionLink("Back to List", "Index")
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Javascripts-->
+<script src="~/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="~/js/plugins/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="~/js/plugins/select2.min.js"></script>
+<script type="text/javascript" src="~/js/plugins/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(window).load(function () {
+            $('#loader').hide();
+        });
+    });
+    $('#demoDate').datepicker({
+        format: "dd-mm-yyyy",
+        autoclose: true,
+        todayHighlight: true
+    });
+
+    function FillClass() {
+        $('#loader').show();
+        var sessionId = $('#SessionId').val();
+        if (sessionId != "") {
+            $.ajax({
+                url: '/CommonMaster/FillClass',
+                type: "GET",
+                dataType: "JSON",
+                data: { SessionId: sessionId },
+                success: function (classes) {
+                    $("#ClassId").html(""); // clear before appending new list
+                    $("#ClassId").append
+                    ($('<option></option>').val(null).html("-- Select Class --"));
+                    $.each(classes, function (i, classinfo)
+                    { $("#ClassId").append($('<option></option>').val(classinfo.ClassId).html(classinfo.Title)) })
+                }
+            });
+        }
+        else {
+            $("#ClassId").html(""); // clear before appending new list
+            $("#ClassId").append
+                    ($('<option></option>').val(null).html("-- Select Class --"));
+
+        }
+        $('#loader').hide();
+    }
+
+
+</script>

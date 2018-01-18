@@ -1,0 +1,279 @@
+﻿@model School.Shared.CustomModels.FeeCollectionCustomModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+}
+
+<div class="page-title">
+    <div>
+        <h1><i class="fa fa-dashboard"></i> Fee Collection</h1>
+    </div>
+    <div>
+        <ul class="breadcrumb">
+            <li><a href="@Url.Action("Index", "Dashboard")"><i class="fa fa-home fa-lg"></i></a></li>
+            <li>@Html.ActionLink("FeeCollection", "Index")</li>
+        </ul>
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @*<h4>FeeCollectionCustomModel</h4>
+            <hr />*@
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Personal Details
+            </div>
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                    <table class="table">
+                        <tr>
+                            <th>
+                                Student Name
+                            </th>
+                            <th>
+                                MobileNo
+                            </th>
+                            <th>
+                                EmailId
+                            </th>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                @(ViewBag.StudentAdmissionDate.FName + " " + ViewBag.StudentAdmissionDate.LName)
+                            </td>
+                            <td>
+                                @ViewBag.StudentAdmissionDate.MobileNo
+                            </td>
+                            <td>
+                                @ViewBag.StudentAdmissionDate.EmailId
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Registration Details
+            </div>
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                    <table class="table">
+                        <tr>
+                            <th>
+                                Admission Date
+                            </th>
+                            <th>
+                                Total Fee
+                            </th>
+                            <th>
+                                Registration Fee
+                            </th>
+                            <th>
+                                Discount Amount
+                            </th>
+                            <th>
+                                Balance Amount
+                            </th>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                @ViewBag.StudentAdmissionDate.AdmissionModel.AdmissionDate.ToString("dd-MM-yyyy")
+                            </td>
+                            <td>
+                                @ViewBag.StudentAdmissionDate.ClassFeeDetailModel.TotalFees
+                            </td>
+                            <td>
+                                @ViewBag.StudentAdmissionDate.ClassFeeDetailModel.RegistrationFees
+                            </td>
+                            <td>
+                                @ViewBag.StudentAdmissionDate.ClassFeeDetailModel.DiscountAmount
+                            </td>
+                            <td>
+                                @ViewBag.StudentAdmissionDate.ClassFeeDetailModel.BalanceAmountDue
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Fee Details
+            </div>
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                    <table class="table">
+                        <tr>
+                            <th>
+                                Payment Date
+                            </th>
+                            <th>
+                                Fee Incharge
+                            </th>
+                            <th>
+                                Fee Type
+                            </th>
+                            <th>
+                                Installment Amount
+                            </th>
+                            <th>
+                                Fee Mode
+                            </th>
+                            <th></th>
+                        </tr>
+                        @if (ViewBag.FeeCollection != null)
+                        {
+                            foreach (var item in ViewBag.FeeCollection)
+                            {
+                            <tr>
+                                <td>
+                                    @item.FeeDate.ToString("dd-MM-yyyy")
+                                </td>
+                                <td>
+                                    @item.FeeInCharge
+                                </td>
+                                <td>
+                                    @item.FeeType
+                                </td>
+                                <td>
+                                    @item.AmountPaid
+                                </td>
+                                <td>
+                                    @item.FeeMode
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "Create", new { id = item.FeeCollectionId, Aid = item.AdmissionId })
+                                    <a onclick="DeleteStatus(@item.FeeCollectionId);" href="">Delete</a>
+                                    <a href="@Url.Action("FeeCollectionRecepiet", "FeeCollection", new { id = item.FeeCollectionId })" href="">Receipt</a>
+
+                                    @*<a href='<%# System.Configuration.ConfigurationManager.AppSettings["mysite"]
+                                            +"FeeCollectionPrintRecepiet.aspx?eid="+ Eval("enquiry_id").ToString()
+                                            +"&&receiptno="+ Eval("recieptno").ToString()
+                                            +"&IsException=1" %>'>                                    
+                                            <asp:Label ID="Label1" runat="server" Text="Print Receipt"></asp:Label></a>*@
+
+                                </td>
+                            </tr>
+                            }
+                        }
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Add New Fee Details
+                @Html.HiddenFor(model => model.FeeCollectionId)
+            </div>
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                    <div class="form-group col-lg-6">
+                        @Html.LabelFor(model => model.AmountPaid, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.AmountPaid, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.AmountPaid, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-6">
+                        @Html.LabelFor(model => model.FeeType, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.FeeType, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.FeeType, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-6">
+                        @Html.LabelFor(model => model.FeeDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.FeeDate, new { htmlAttributes = new { @class = "form-control", id = "FeeDate", placeholder = "Fee Date", @readonly = "true", @Value = @DateTime.Now.ToString("dd-MM-yyyy") } })
+                            @Html.ValidationMessageFor(model => model.FeeDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-6">
+                        @Html.LabelFor(model => model.FeeInCharge, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(model => model.FeeInCharge, ViewBag.EmployeeInfo as IEnumerable<SelectListItem>, "-- Select FeeIncharge --", new { @class = "form-control", @id = "FeeIncharge" })
+                            @Html.ValidationMessageFor(model => model.FeeInCharge, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-6">
+                        @Html.LabelFor(model => model.FeeMode, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.FeeMode, new { htmlAttributes = new { @class = "form-control", @readonly = "true", @Value = "Cash" } })
+                            @Html.ValidationMessageFor(model => model.FeeMode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Create" class="btn btn-default" />
+                            | @Html.ActionLink("Back to List", "Index")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<!-- Javascripts-->
+<script src="~/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="~/js/plugins/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="~/js/plugins/select2.min.js"></script>
+<script type="text/javascript" src="~/js/plugins/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript">
+    $('#loader').hide();
+
+    $('#FeeDate').datepicker({
+        format: "dd-mm-yyyy",
+        autoclose: true,
+        todayHighlight: true
+    });
+
+    function DeleteStatus(id) {
+        var ai = {
+            id: id
+        }
+        $.ajax({
+            type: "Post",
+            url: '@Url.Action("DeleteStatus", "FeeCollection")',
+            data: JSON.stringify(ai),
+            datatype: "JSON",
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                var field = 'notify' + id;
+                if (data.result == true) {
+                    $('#'+field).removeClass('dlt fa fa-times').addClass('edt fa fa-check');
+                }
+                else if (data.result == false) {
+                    $('#' + field).removeClass('edt fa fa-check').addClass('dlt fa fa-times');
+                }
+            },
+            error: function (data) {
+
+            }
+        });
+    }
+</script>

@@ -1,0 +1,80 @@
+﻿<div class="col-md-12">
+    <div class="col-lg-4 col-md-6">
+        <div class="small-box" style="background-color:#ff6a00 !important;color:white;">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-comments fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">
+                            @ViewBag.EnquiryCount[0].TotalEnquiry
+                        </div>
+                        <div>
+                            @Html.Label("TotalEnquiry", "Total Enquiry")
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a id="ancEnquiryViewDetails" style="cursor: pointer">
+                <div class="panel-footer">
+                    <span class="pull-left" id="spnEnquiry" runat="server">View Details</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+        <div class="small-box" style="background-color:#d08ad9 !important;color:white;">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-tasks fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">
+                            @ViewBag.EnquiryCount[0].TotalRegistration
+                        </div>
+                        <div>
+                            @Html.Label("TotalAdmission", "Total Admission")
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a id="ancAdmission" style="cursor: pointer">
+                <div class="panel-footer">
+                    <span class="pull-left" id="spnAdmission" runat="server">View Details</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+        <div class="small-box bg-yellow">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-shopping-cart fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">
+                            @ViewBag.EnquiryCount[0].TotalDropOut
+                        </div>
+                        <div>
+                            @Html.Label("Dropout", "Dropout")
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a id="ancDropout" style="cursor: pointer">
+                <div class="panel-footer">
+                    <span class="pull-left" id="spnDropout" runat="server">View Details</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>

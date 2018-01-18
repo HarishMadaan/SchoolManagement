@@ -1,0 +1,35 @@
+﻿<table class="table">
+    <tr>
+        <th>
+            Action
+        </th>
+        <th>
+            @Html.DisplayName("StudentName")
+        </th>
+        <th>
+            @Html.DisplayName("MobileNo")
+        </th>
+        <th>
+            @Html.DisplayName("EmailId")
+        </th>
+    </tr>
+
+    @foreach (var item in ViewBag.AllocationDetail)
+    {
+        <tr>
+            <td>
+                @Html.CheckBox("AdmissionId", new { value = item.AdmissionModel.AdmissionId, name = "SelectedFruits" })
+            </td>
+            <td>
+                @(item.FName + " " + item.LName)
+            </td>
+            <td>
+                @item.MobileNo
+            </td>
+            <td>
+                @item.EmailId
+            </td>
+        </tr>
+    }
+
+</table>

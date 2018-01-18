@@ -1,0 +1,230 @@
+﻿@model IEnumerable<School.Shared.CustomModels.BusChargesMasterCustomModel>
+
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+        School.Shared.CustomModels.MessageModel objMessageModel = new School.Shared.CustomModels.MessageModel();
+    }
+@if (TempData["Message"] != null)
+{
+    string Message = TempData["Message"].ToString();
+    TempData.Remove("Message");
+    objMessageModel.MessageType = Message.Split('^')[0];
+    objMessageModel.Message = Message.Split('^')[1];
+}
+    <div class="page-title">
+        <div>
+            <h1><i class="fa fa-dashboard"></i> Bus Charges Master</h1>
+        </div>
+        <div>
+            <ul class="breadcrumb">
+                <li><a href="@Url.Action("Index", "Dashboard")"><i class="fa fa-home fa-lg"></i></a></li>
+                <li>@Html.ActionLink("BusChargesMaster", "Index")</li>
+            </ul>
+        </div>
+    </div>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <div class="row">
+    <div class="col-lg-12 text-left">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Search Panel
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                @Html.DropDownList("SessionId", ViewBag.SessionInfo as IEnumerable<SelectListItem>, "-- Select Session --", new { @class = "form-control", @id = "SessionId" })
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 text-right">
+                        <div class="form-group">
+                            <input type="button" value="Search" class="btn btn-default" onclick="return SearchSessionWiseResult();" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div style="width: 100%;" id="MessageBox">
+        @Html.Partial("~/Views/Shared/PartialViews/_Message.cshtml", objMessageModel)
+    </div>
+
+    <div class="row" id="dvShowSearchResult">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-hover table-bordered" id="sampleTable">
+                        <thead>
+                            <tr>
+                                <th width="8%" align="center">
+                                    Sr. No
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.SessionName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.StartPoint)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.EndPoint)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Amount)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.IsActive)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @{ int rowNo = 0; }
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td width="8%" align="center">
+                                        @(rowNo += 1)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.SessionName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.StartPoint)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.EndPoint)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Amount)
+                                    </td>
+                                    <td>
+                                        <i class="@(item.IsActive == true ? "edt fa fa-check" : "dlt fa fa-times")" id="@item.BusChargesMasterId" onclick="ChangeStatus('@item.BusChargesMasterId');"></i>
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink("Edit", "Create", new { id=item.BusChargesMasterId }) |
+                                        @Html.ActionLink("Details", "Details", new { id=item.BusChargesMasterId }) |
+                                        <a href="javascript:void(0)" onclick="DeleteStatus(@item.BusChargesMasterId);">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="~/js/jquery-2.1.4.min.js"></script>
+    <!-- Data table plugin-->
+    <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript">$('#sampleTable').DataTable();</script>
+
+    
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(window).load(function () {
+            $('#loader').hide();
+        });
+    });
+
+    $('#MessageBox').delay(2000).fadeOut();
+
+    function DeleteStatus(id) {
+        if (confirm('Are you sure your want to delete?')) {
+            $('#loader').show();
+            var ai = {
+                id: id
+            }
+            $.ajax({
+                type: "Post",
+                url: '@Url.Action("DeleteStatus", "BusChargesMaster")',
+                data: JSON.stringify(ai),
+                datatype: "JSON",
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    alert("Record deleted successfully!");
+                    // redirect us to the new page
+                    window.location.href = '@Url.Action("Index", "BusChargesMaster")';
+                },
+                error: function (data) {
+
+                }
+            });
+            $('#loader').hide();
+        }
+    }
+
+    function ChangeStatus(id) {
+        $('#loader').show();
+        var ai = {
+            id: id
+        }
+        $.ajax({
+            type: "Post",
+            url: '@Url.Action("UpdateStatus", "BusChargesMaster")',
+            data: JSON.stringify(ai),
+            datatype: "JSON",
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                if (data.result == true) {
+                    $('#' + id).removeClass('dlt fa fa-times').addClass('edt fa fa-check');
+                }
+                else if (data.result == false) {
+                    $('#' + id).removeClass('edt fa fa-check').addClass('dlt fa fa-times');
+                }
+                alert("Status changed successfullu!");
+            },
+            error: function (data) {
+
+            }
+        });
+        $('#loader').hide();
+    }
+
+    function SearchSessionWiseResult() {
+        $('#loader').show();
+        var sessionId = $('#SessionId').val();
+
+        $("#dvShowSearchResult").html("");
+        $("#dvShowSearchResult").html("<div style='text-align: center;background :rgba(0,0,0,0.5);  background-repeat: no-repeat; background-attachment: fixed; background-position: center;width:100%;        height:100%;        position:fixed;        top:0;        left:0;        z-index:999;'><img src='/includes/images/loaders/loader10.gif' style='position:relative;margin: 400px auto;'/></div>");
+        var ai = {
+            SessionId: sessionId,
+        }
+        $.ajax({
+            type: "post",
+            url: '@Url.Action("SearchSessionWiseResult", "BusChargesMaster")',
+            data: JSON.stringify(ai),
+            datatype: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                if (data.trim() != "") {
+                    $("#dvShowSearchResult").fadeIn("fast");
+                    $("#dvShowSearchResult").html("");
+                    $("#dvShowSearchResult").html(data);
+                }
+                else {
+                    $("#dvShowSearchResult").html("");
+                    $("#dvShowSearchResult").html('<p style="color:#FF0000;font-weight:bold;text-align: center;">No Records Found!</p>');
+                }
+            },
+            error: function (data) {
+                $("#dvShowSearchResult").html("");
+                $("#dvShowSearchResult").html(data);
+            }
+        });
+        $('#loader').hide();
+    }
+
+</script>

@@ -1,0 +1,199 @@
+﻿@model IEnumerable<School.Shared.CustomModels.SessionMasterCustomModel>
+
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+        School.Shared.CustomModels.MessageModel objMessageModel = new School.Shared.CustomModels.MessageModel();
+    }
+@if (TempData["Message"] != null)
+{
+    string Message = TempData["Message"].ToString();
+    TempData.Remove("Message");
+    objMessageModel.MessageType = Message.Split('^')[0];
+    objMessageModel.Message = Message.Split('^')[1];
+}
+
+    <div class="page-title">
+        <div>
+            <h1><i class="fa fa-dashboard"></i> Session</h1>
+        </div>
+        <div>
+            <ul class="breadcrumb">
+                <li><a href="@Url.Action("Index", "Dashboard")"><i class="fa fa-home fa-lg"></i></a></li>
+                <li>@Html.ActionLink("Session", "Index")</li>
+            </ul>
+        </div>
+    </div>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <div style="width: 100%;" id="MessageBox">
+        @Html.Partial("~/Views/Shared/PartialViews/_Message.cshtml", objMessageModel)
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-hover table-bordered" id="sampleTable">
+                        <thead>
+                            <tr>
+                                <th width="8%" align="center">
+                                    Sr. No
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Session)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Description)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.IsDefault)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.IsActive)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @{ int rowNo = 0; }
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td width="8%" align="center">
+                                        @(rowNo += 1)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Session)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </td>
+                                    <td>
+                                        <i class="@(item.IsDefault == true ? "edt fa fa-check" : "dlt fa fa-times")" id="@item.SessionId" onclick="ChangeDefaultStatus('@item.SessionId');"></i>
+                                    </td>
+                                    <td>
+                                        <i class="@(item.IsActive == true ? "edt fa fa-check" : "dlt fa fa-times")" id="@item.SessionId" onclick="ChangeStatus('@item.SessionId');"></i>
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink("Edit", "Create", new { id = item.SessionId }) |
+                                        @Html.ActionLink("Details", "Details", new { id = item.SessionId }) |
+                                        <a href="javascript:void(0)" onclick="DeleteStatus(@item.SessionId);">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                            }
+                        </tbody>
+                    </table>
+                    @*<span data-ng-show="spnPaggingGrid">
+                        <span class="pagingInfoLeft" ng-if="totalRecords>=((((currentPage -1) * itemsPerPage + 1) + itemsPerPage) - 1)" ng-bind="'Showing '+((currentPage -1) * itemsPerPage + 1)+' to '+((((currentPage -1) * itemsPerPage + 1) + itemsPerPage) - 1)+' of '+totalRecords+' entries'"></span>
+                        <span class="pagingInfoLeft" ng-if="totalRecords<((((currentPage -1) * itemsPerPage + 1) + itemsPerPage) - 1)" ng-bind="'Showing '+((currentPage -1) * itemsPerPage + 1)+' to '+totalRecords+' of '+totalRecords+' entries'">
+                        </span>
+                        <ul uib-pagination total-items="totalRecords" ng-change="FarmerRegistrationManagement.setPage(currentPage)" ng-model="currentPage" max-size="itemsPerPage" class="pagination-sm pull-right" boundary-links="true" force-ellipses="true"></ul>
+                    </span>*@
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="~/js/jquery-2.1.4.min.js"></script>
+    <!-- Data table plugin-->
+    <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript">$('#sampleTable').DataTable();</script>
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $(window).load(function () {
+            $('#loader').hide();
+        });
+    });
+
+    $('#MessageBox').delay(2000).fadeOut();
+
+    function ChangeDefaultStatus(id) {
+        $('#loader').show();
+        var ai = {
+            id: id
+        }
+        $.ajax({
+            type: "Post",
+            url: '@Url.Action("UpdateDefaultStatus", "Session")',
+            data: JSON.stringify(ai),
+            datatype: "JSON",
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                if (data.result == true) {
+                    $('#' + id).removeClass('dlt fa fa-times').addClass('edt fa fa-check');
+                    alert("Status changed successfullu!");
+                }
+                else if (data.result == false) {
+                    //$('#' + id).removeClass('edt fa fa-check').addClass('dlt fa fa-times');
+                    alert("Only one session can be active at a time!");
+                }                
+            },
+            error: function (data) {
+
+            }
+        });
+        $('#loader').hide();
+    }
+
+        function ChangeStatus(id) {
+            $('#loader').show();
+            var ai = {
+                id: id
+            }
+            $.ajax({
+                type: "Post",
+                url: '@Url.Action("UpdateStatus", "Session")',
+                data: JSON.stringify(ai),
+                datatype: "JSON",
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    if (data.result == true) {
+                        $('#' + id).removeClass('dlt fa fa-times').addClass('edt fa fa-check');
+                    }
+                    else if (data.result == false) {
+                        $('#' + id).removeClass('edt fa fa-check').addClass('dlt fa fa-times');
+                    }
+                    alert("Status changed successfullu!");
+                },
+                error: function (data) {
+
+                }
+            });
+            $('#loader').hide();
+        }
+
+        function DeleteStatus(id) {
+            if (confirm('Are you sure your want to delete?')) {
+                $('#loader').show();
+                var ai = {
+                    id: id
+                }
+                $.ajax({
+                    type: "Post",
+                    url: '@Url.Action("DeleteStatus", "Session")',
+                    data: JSON.stringify(ai),
+                    datatype: "JSON",
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        alert("Record deleted successfully!");
+                        // redirect us to the new page
+                        window.location.href = '@Url.Action("Index", "Session")';
+                    },
+                    error: function (data) {
+
+                    }
+                });
+                $('#loader').hide();
+            }
+        }
+
+</script>

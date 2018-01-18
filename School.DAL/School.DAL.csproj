@@ -1,0 +1,259 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{61F94EFC-B29A-40DE-B704-27B0FD8B27E8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>School.DAL</RootNamespace>
+    <AssemblyName>School.DAL</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GetEnquiryIdFromAdmissionId_Result.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\IAdmissionFeeMasterRepo.cs" />
+    <Compile Include="Interfaces\IBusChargesMasterRepo.cs" />
+    <Compile Include="Interfaces\ICommonMasterDataRepo.cs" />
+    <Compile Include="Interfaces\IAttendanceRepo.cs" />
+    <Compile Include="Interfaces\IClassMasterRepo.cs" />
+    <Compile Include="Interfaces\IDashboardMasterRepo.cs" />
+    <Compile Include="Interfaces\IEmployeeMasterRepo.cs" />
+    <Compile Include="Interfaces\IEnquiryDetailRepo.cs" />
+    <Compile Include="Interfaces\IEventMasterRepo.cs" />
+    <Compile Include="Interfaces\IFeeCollectionRepo.cs" />
+    <Compile Include="Interfaces\IFeeMasterRepo.cs" />
+    <Compile Include="Interfaces\IPromoteToClassRepo.cs" />
+    <Compile Include="Interfaces\IRollNoAllocationRepo.cs" />
+    <Compile Include="Interfaces\ISchoolMasterRepo.cs" />
+    <Compile Include="Interfaces\ISectionAllocationRepo.cs" />
+    <Compile Include="Interfaces\ISectionMasterRepo.cs" />
+    <Compile Include="Interfaces\ISessionMasterRepo.cs" />
+    <Compile Include="Interfaces\IUserLoginRepo.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\AdmissionFeeMasterRepo.cs" />
+    <Compile Include="Repositories\AttendanceRepo.cs" />
+    <Compile Include="Repositories\BusChargesMasterRepo.cs" />
+    <Compile Include="Repositories\ClassMasterRepo.cs" />
+    <Compile Include="Repositories\CommonMasterDataRepo.cs" />
+    <Compile Include="Repositories\DashboardMasterRepo.cs" />
+    <Compile Include="Repositories\EmployeeMasterRepo.cs" />
+    <Compile Include="Repositories\EnquiryDetailRepo.cs" />
+    <Compile Include="Repositories\EventMasterRepo.cs" />
+    <Compile Include="Repositories\FeeCollectionRepo.cs" />
+    <Compile Include="Repositories\FeeMasterRepo.cs" />
+    <Compile Include="Repositories\PromoteToClassRepo.cs" />
+    <Compile Include="Repositories\RollNoAllocationRepo.cs" />
+    <Compile Include="Repositories\SchoolMasterRepo.cs" />
+    <Compile Include="Repositories\SectionAllocationRepo.cs" />
+    <Compile Include="Repositories\SectionMasterRepo.cs" />
+    <Compile Include="Repositories\SessionMasterRepo.cs" />
+    <Compile Include="Repositories\UserLoginRepo.cs" />
+    <Compile Include="SchoolManagementModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SchoolManagementModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SchoolManagementModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SchoolManagementModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SchoolManagementModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="tblAdmission.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblAdmissionFee.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblAttendance.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblBusChargesMaster.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblClass.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblClassFeeDetail.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblEmployee.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblEnquiryDetail.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblEvent.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblFeeCollection.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblFeeMaster.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblPromoteToClass.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblSchool.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblSection.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblSectionAllocation.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblSession.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblSuggestion.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblThought.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblUserLogin.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblUserTypeMaster.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="USP_BindAdmissionReport_Result.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="USP_BindEnquiryReport_Result.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="USP_BindStudentWithClassAndSection_Result.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="USP_EnquiryAdmissionCountClassWise_Result.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="USP_FeeCollectionReceipt_Result.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="USP_GetAttendanceDetail_Result.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="USP_GetFeeCollectionDetail_Result.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="USP_GetSchoolEnquiryAdmissionCount_Result.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="USP_NewAttendanceDetails_Result.cs">
+      <DependentUpon>SchoolManagementModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\EntityFramework.dll" />
+    <Content Include="bin\Debug\EntityFramework.SqlServer.dll" />
+    <Content Include="bin\Debug\EntityFramework.SqlServer.xml" />
+    <Content Include="bin\Debug\EntityFramework.xml" />
+    <Content Include="bin\Debug\School.DAL.dll" />
+    <Content Include="bin\Debug\School.DAL.pdb" />
+    <Content Include="bin\Debug\School.Shared.dll" />
+    <Content Include="bin\Debug\School.Shared.pdb" />
+    <Content Include="obj\Debug\School.DAL.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\Debug\School.DAL.dll" />
+    <Content Include="obj\Debug\School.DAL.pdb" />
+    <Content Include="SchoolManagementModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SchoolManagementModel.edmx</DependentUpon>
+      <LastGenOutput>SchoolManagementModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="SchoolManagementModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SchoolManagementModel.edmx</DependentUpon>
+      <LastGenOutput>SchoolManagementModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="bin\Debug\School.DAL.dll.config" />
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <EntityDeploy Include="SchoolManagementModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SchoolManagementModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="packages.config" />
+    <None Include="SchoolManagementModel.edmx.diagram">
+      <DependentUpon>SchoolManagementModel.edmx</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Release\" />
+    <Folder Include="Interfaces\CommonMasterData\" />
+    <Folder Include="obj\Debug\TempPE\" />
+    <Folder Include="Repositories\CommonMasterData\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\School.Shared\School.Shared.csproj">
+      <Project>{60705d39-1e51-49cd-8ddf-2a483b955ba5}</Project>
+      <Name>School.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,69 @@
+﻿@model IEnumerable<School.Shared.CustomModels.EnquiryDetailCustomModel>
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-hover table-bordered" id="sampleTable">
+                <thead>
+                    <tr>
+                        <th width="8%" align="center">
+                            Sr. No
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.MobileNo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EmailId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Address)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EnquiryDate)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int rowNo = 0; }
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td width="8%" align="center">
+                                    @(rowNo += 1)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.MobileNo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EmailId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Address)
+                                </td>
+                                <td>
+                                    @{
+                                        var EnquiryDate = item.EnquiryDate != null ? item.EnquiryDate.Value.ToString("dd-MMM-yyyy") : "";
+                                    }
+                                    @EnquiryDate
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "Create", new { id = item.EnquiryId }) |
+                                    @Html.ActionLink("Details", "Details", new { id = item.EnquiryId }) |
+                                    <a href="javascript:void(0)" onclick="DeleteStatus(@item.EnquiryId);">Delete</a>
+                                </td>
+                            </tr>
+                                            }
+                                        }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

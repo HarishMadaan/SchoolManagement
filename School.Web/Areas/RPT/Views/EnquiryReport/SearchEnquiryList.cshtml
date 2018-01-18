@@ -1,0 +1,70 @@
+﻿@model IEnumerable<School.Shared.CustomModels.EnquiryDetailCustomModel>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-hover table-bordered" id="sampleTable">
+
+                    <thead>
+                        <tr>
+                            @*<th>
+                                @Html.DisplayNameFor(model => model.EnquiryId)
+                            </th>*@
+                            <th width="8%" align="center">
+                                Sr. No
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.MobileNo)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.EmailId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FatherName)
+                            </th>
+
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ int rowNo = 0; }
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    @*<td>
+                                        @Html.DisplayFor(modelItem => item.EnquiryId)
+                                    </td>*@
+                                    <td width="8%" align="center">
+                                        @(rowNo += 1)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MobileNo)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.EmailId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FatherName)
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- Data table plugin-->
+<script type="text/javascript" src="~/js/plugins/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="~/js/plugins/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript">$('#sampleTable').DataTable();</script>

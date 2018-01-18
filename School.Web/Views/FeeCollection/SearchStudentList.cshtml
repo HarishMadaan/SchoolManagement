@@ -1,0 +1,34 @@
+﻿@model IEnumerable<School.Shared.CustomModels.EnquiryDetailCustomModel>
+
+<table class="table">
+    <tr>
+        <th>
+            Student Name
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MobileNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmailId)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @(Html.DisplayFor(modelItem => item.FName) + " " + Html.DisplayFor(modelItem => item.LName))
+            <td>
+                @Html.DisplayFor(modelItem => item.MobileNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmailId)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Create", new { Aid = item.AdmissionModel.AdmissionId }) 
+            </td>
+        </tr>
+    }
+
+</table>

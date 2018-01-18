@@ -1,0 +1,169 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <style type="text/css">
+        .style1 {
+        }
+
+        .style2 {
+        }
+
+        .style3 {
+        }
+
+        .style4 {
+            width: 134px;
+        }
+    </style>
+    <script type="text/javascript">
+        function printdiv(printpage) {
+            var headstr = "<html><head></head><body>";
+            var footstr = "</body>";
+            var newstr = document.all.item(printpage).innerHTML;
+            var oldstr = document.body.innerHTML;
+            document.body.innerHTML = headstr + newstr + footstr;
+            window.print();
+            document.body.innerHTML = oldstr;
+            return false;
+        }
+
+        function closePage() {
+            window.location.href = '@Url.Action("Index", "FeeCollection")';
+        }
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+@if (ViewBag.FeeCollectionDetail != null)
+{
+        <div id="div_print">
+
+            <table border="1">
+                <tr>
+                    <td class="style1">
+                        <img src="~/Images/big2.jpg" style="margin-bottom: 0px" Height="52px" Width="147px"/>
+                        <br />
+                        &nbsp;&nbsp;
+                        @Html.Label("lblRecieptNo", "Reciept No.")
+                        
+                        @ViewBag.FeeCollectionDetail.FeeCollectionId
+                        <br />
+                        &nbsp;&nbsp;
+                        @Html.Label("lblDate", "Date")
+                        @{
+                            var FeeDate = ViewBag.FeeCollectionDetail.FeeDate != null ? ViewBag.FeeCollectionDetail.FeeDate.ToString("dd-MMM-yyyy") : "";
+                        }
+                        @FeeDate
+                    </td>
+                    <td colspan="2">
+                        @Html.Label("lblSchoolName", "My School")
+                        @*<asp:Label ID="Label1" runat="server" Font-Bold="False"
+                                   Font-Names="Arial Rounded MT Bold" Font-Size="X-Large"
+                                   Text="SEBIZ FINISHING SCHOOL"></asp:Label>*@
+                        <br />
+                        Ambala City House No #112 Haryana (India)
+                        <br />
+                        <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="style1">
+                        &nbsp;
+                    </td>
+                    <td class="style4">
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td class="style1">
+                        @Html.Label("lblName", "Name  Of  the Student :")                        
+                    </td>
+                    <td class="style4">
+                        @ViewBag.FeeCollectionDetail.StudentName
+                    </td>
+                    <td class="style3">
+                        @Html.Label("lblFather", "Father's Name:")
+                        &nbsp;
+                        @ViewBag.FeeCollectionDetail.FatherName
+                    </td>
+                </tr>
+                <tr>
+                    <td class="style1">
+                        @Html.Label("lblContactNo", "Contact No:")
+                    </td>
+                    <td class="style2">
+                        @ViewBag.FeeCollectionDetail.MobileNo
+                    </td>
+                    <td class="style2">
+                        @Html.Label("lblSession", "Session:")
+                        @ViewBag.FeeCollectionDetail.SessionName
+                    </td>
+                </tr>
+                <tr>
+                    <td class="style1">
+                        @Html.Label("lblAddress", "Address Of Student:")                        
+                    </td>
+                    <td class="style2" colspan="2">
+                        @ViewBag.FeeCollectionDetail.AddressName
+                    </td>
+                </tr>
+                <tr>
+                    <td class="style1">
+                        @Html.Label("lblClass", "Class:")
+                    </td>
+                    <td class="style4">
+                        @ViewBag.FeeCollectionDetail.ClassName
+                    </td>
+                    <td class="style2">
+                        @Html.Label("lblSection", "Section:")
+                        &nbsp;
+                        @*<asp:Label ID="lblduration" runat="server" Text="Label"></asp:Label>*@
+                    </td>
+                </tr>
+                <tr>
+                    <td class="style1">
+                        @Html.Label("lblAmountRecieved", "Amount Recieved:")
+                    </td>
+                    <td class="style4">
+                        @ViewBag.FeeCollectionDetail.AmountPaid
+                    </td>
+                    <td class="style2">
+                        @Html.Label("lblPaymentMode", "Payment Mode:")
+                        &nbsp;
+                        @ViewBag.FeeCollectionDetail.FeeMode
+                    </td>
+                </tr>
+                <tr>
+                    <td class="style1" colspan="2">
+                        <br />
+                        <br />
+                        @Html.Label("lblCollector", "Name of Person:")
+                        <br />
+                        @ViewBag.FeeCollectionDetail.EmployeeName
+                        
+                    </td>
+                    <td class="style2" valign="bottom">
+                        Sign &amp; Stamp Of School
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+        <input type="button" value="Print" onclick="printdiv('div_print')" />
+        <input type="button" value="Close" onclick="closePage();" />
+}
+    </form>
+    
+</body>
+</html>

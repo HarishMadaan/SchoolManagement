@@ -1,0 +1,35 @@
+﻿<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("StudentName")
+        </th>
+        <th>
+            @Html.DisplayName("MobileNo")
+        </th>
+        <th>
+            @Html.DisplayName("EmailId")
+        </th>
+        <th>
+            Roll No
+        </th>
+    </tr>
+
+    @foreach (var item in ViewBag.AllocationDetail)
+    {
+        <tr>
+            <td>
+                @item.Studentname
+            </td>
+            <td>
+                @item.MobileNo
+            </td>
+            <td>
+                @item.EmailId
+            </td>
+            <td>
+                @Html.TextBox("PromoteToClassId", null, new { @Id = item.PromoteToClassId, @Value = item.RollNo, @class = "form -control", style = "width: 100px;" })  
+            </td>
+        </tr>
+    }
+
+</table>

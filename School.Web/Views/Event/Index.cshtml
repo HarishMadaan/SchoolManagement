@@ -1,0 +1,164 @@
+﻿@model IEnumerable<School.Shared.CustomModels.EventMasterCustomModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+}
+
+                      <div class="page-title">
+                          <div>
+                              <h1><i class="fa fa-dashboard"></i> Event</h1>
+                              <p>A free and modular admin template</p>
+                          </div>
+                          <div>
+                              <ul class="breadcrumb">
+                                  <li><i class="fa fa-home fa-lg"></i></li>
+                                  <li><a href="#">Dashboard</a></li>
+                              </ul>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <p>
+                              @Html.ActionLink("Create New", "Create")
+                          </p>
+
+                          <div class="page-title">
+                              <div>
+                                  <h1><i class="fa fa-th-list"></i> Data Table</h1>
+                                  <p>Table to display analytical data effectively</p>
+                              </div>
+                              <div>
+                                  <ul class="breadcrumb side">
+                                      <li><i class="fa fa-home fa-lg"></i></li>
+                                      <li>Tables</li>
+                                      <li class="active"><a href="#">Data Table</a></li>
+                                  </ul>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-12">
+                                  <div class="card">
+                                      <div class="card-body">
+                                          <table class="table table-hover table-bordered" id="sampleTable">
+                                              <thead>
+                                                  <tr>
+                                                      <th>
+                                                          @Html.DisplayNameFor(model => model.EventId)
+                                                      </th>
+                                                      <th>
+                                                          @Html.DisplayNameFor(model => model.SchoolId)
+                                                      </th>
+                                                      <th>
+                                                          @Html.DisplayNameFor(model => model.Title)
+                                                      </th>
+                                                      <th>
+                                                          @Html.DisplayNameFor(model => model.ShortDescription)
+                                                      </th>
+                                                      <th>
+                                                          @Html.DisplayNameFor(model => model.Image)
+                                                      </th>
+                                                      <th>
+                                                          @Html.DisplayNameFor(model => model.StartDate)
+                                                      </th>
+                                                      <th>
+                                                          @Html.DisplayNameFor(model => model.EndDate)
+                                                      </th>
+                                                      <th>
+                                                          @Html.DisplayNameFor(model => model.DDate)
+                                                      </th>
+                                                      <th>
+                                                          @Html.DisplayNameFor(model => model.CreatedDate)
+                                                      </th>
+                                                      <th>
+                                                          @Html.DisplayNameFor(model => model.CreatedBy)
+                                                      </th>
+                                                      <th>
+                                                          @Html.DisplayNameFor(model => model.ModifiedDate)
+                                                      </th>
+                                                      <th>
+                                                          @Html.DisplayNameFor(model => model.ModifiedBy)
+                                                      </th>
+                                                      <th>
+                                                          @Html.DisplayNameFor(model => model.IsActive)
+                                                      </th>
+                                                      <th>
+                                                          @Html.DisplayNameFor(model => model.IsDeleted)
+                                                      </th>
+                                                      <th>
+                                                          @Html.DisplayNameFor(model => model.SearchText)
+                                                      </th>
+                                                      <th></th>
+                                                  </tr>
+                                              </thead>
+                                              <tbody>
+                                                  @foreach (var item in Model)
+                                                  {
+                                                      <tr>
+                                                          <td>
+                                                              @Html.DisplayFor(modelItem => item.EventId)
+                                                          </td>
+                                                          <td>
+                                                              @Html.DisplayFor(modelItem => item.SchoolId)
+                                                          </td>
+                                                          <td>
+                                                              @Html.DisplayFor(modelItem => item.Title)
+                                                          </td>
+                                                          <td>
+                                                              @Html.DisplayFor(modelItem => item.ShortDescription)
+                                                          </td>
+                                                          <td>
+                                                              @Html.DisplayFor(modelItem => item.Image)
+                                                          </td>
+                                                          <td>
+                                                              @Html.DisplayFor(modelItem => item.StartDate)
+                                                          </td>
+                                                          <td>
+                                                              @Html.DisplayFor(modelItem => item.EndDate)
+                                                          </td>
+                                                          <td>
+                                                              @Html.DisplayFor(modelItem => item.DDate)
+                                                          </td>
+                                                          <td>
+                                                              @Html.DisplayFor(modelItem => item.CreatedDate)
+                                                          </td>
+                                                          <td>
+                                                              @Html.DisplayFor(modelItem => item.CreatedBy)
+                                                          </td>
+                                                          <td>
+                                                              @Html.DisplayFor(modelItem => item.ModifiedDate)
+                                                          </td>
+                                                          <td>
+                                                              @Html.DisplayFor(modelItem => item.ModifiedBy)
+                                                          </td>
+                                                          <td>
+                                                              @Html.DisplayFor(modelItem => item.IsActive)
+                                                          </td>
+                                                          <td>
+                                                              @Html.DisplayFor(modelItem => item.IsDeleted)
+                                                          </td>
+                                                          <td>
+                                                              @Html.DisplayFor(modelItem => item.SearchText)
+                                                          </td>
+                                                          <td>
+                                                              @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                                                              @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                                                              @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                                                          </td>
+                                                      </tr>
+                                                  }
+
+                                              </tbody>
+                                          </table>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <table class="table">
+                              <tr>
+                                  
+                              </tr>
+
+                              
+                          </table>
+</div>
