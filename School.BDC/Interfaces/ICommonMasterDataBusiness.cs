@@ -9,9 +9,9 @@ namespace School.BDC.Interfaces
 {
     public interface ICommonMasterDataBusiness : IDisposable
     {
-        List<ClassMasterModel> GetClassMaster();
+        List<ClassMasterModel> GetClassMaster(int? SessionId);
 
-        List<SectionMasterModel> GetSectionMaster();
+        List<SectionMasterModel> GetSectionMaster(int? ClassId);
 
         List<SessionMasterModel> GetSessionMaster();
 

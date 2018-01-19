@@ -11,9 +11,9 @@ namespace School.DAL.Interfaces
 {
     public interface ICommonMasterDataRepo : IDisposable
     {
-        List<ClassMasterModel> GetClassMaster();
+        List<ClassMasterModel> GetClassMaster(int? SessionId);
 
-        List<SectionMasterModel> GetSectionMaster();
+        List<SectionMasterModel> GetSectionMaster(int? ClassId);
 
         List<SessionMasterModel> GetSessionMaster();
 

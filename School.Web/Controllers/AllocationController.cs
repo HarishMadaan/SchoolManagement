@@ -23,7 +23,7 @@ namespace School.Web.Controllers
             ClassMasterModel objModel = new ClassMasterModel();
             objBDCCommon = new CommonMasterDataBusiness();
 
-            var ClassType = objBDCCommon.GetClassMaster();
+            var ClassType = objBDCCommon.GetClassMaster(Convert.ToInt32(Session[CommonStrings.DefaultSession]));
             objModel.ClassList = new SelectList(ClassType, "ClassId", "Title");
             ViewBag.ClassInfo = objModel.ClassList;
 

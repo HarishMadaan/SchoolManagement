@@ -38,17 +38,33 @@
                     <div class="col-lg-4">
                         <div class="form-group">
                             <div class="col-sm-12">
-                                @Html.DropDownList("SessionId", ViewBag.SessionInfo as IEnumerable<SelectListItem>, "-- Select Session --", new { @class = "form-control", @id = "SessionId", @onchange = "FillClass()" })
+                                @*@Html.DropDownList("SessionId", ViewBag.SessionInfo as IEnumerable<SelectListItem>, "-- Select Session --", new { @class = "form-control", @id = "SessionId", @onchange = "FillClass()" })*@
+                                <select id="SessionId" name="SessionId" class="form-control" onchange="FillClass()">
+                                    <option value="0">-- Select Session --</option>
+                                    @foreach (SelectListItem option in ViewBag.SessionInfo)
+                                    {
+                                        <option value="@option.Value" @(option.Value == ViewBag.SessionValue ? "selected='selected'" : "")>@option.Text</option>
+
+                                    }
+                                </select>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="form-group">
                             <div class="col-sm-12">                            
-                                @Html.DropDownList("ClassId", new List<SelectListItem>{
+                                <select id="ClassId" name="ClassId" class="form-control">
+                                    <option value="0">-- Select Class --</option>
+                                    @foreach (SelectListItem option in ViewBag.ClassInfo)
+                                    {
+                                        <option value="@option.Value">@option.Text</option>
+                                    }
+                                </select>
+
+                                @*@Html.DropDownList("ClassId", new List<SelectListItem>{
                                     new SelectListItem{ Text="-- Select Class --", Value = "0" }}
                                     , new { @class = "form-control", @id = "ClassId" }
-                                    ) 
+                                    )*@ 
                             </div>
                         </div>
                     </div>

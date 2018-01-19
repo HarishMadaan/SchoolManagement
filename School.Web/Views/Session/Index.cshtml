@@ -129,7 +129,10 @@
             contentType: 'application/json; charset=utf-8',
             success: function (data) {
                 if (data.result == true) {
-                    $('#' + id).removeClass('dlt fa fa-times').addClass('edt fa fa-check');
+                    if ($('#' + id).hasClass("dlt fa fa-times"))
+                        $('#' + id).removeClass('dlt fa fa-times').addClass('edt fa fa-check');
+                    else if ($('#' + id).hasClass("edt fa fa-check"))
+                        $('#' + id).removeClass('edt fa fa-check').addClass('dlt fa fa-times');
                     alert("Status changed successfullu!");
                 }
                 else if (data.result == false) {
@@ -155,7 +158,7 @@
                 data: JSON.stringify(ai),
                 datatype: "JSON",
                 contentType: 'application/json; charset=utf-8',
-                success: function (data) {
+                success: function (data) {                    
                     if (data.result == true) {
                         $('#' + id).removeClass('dlt fa fa-times').addClass('edt fa fa-check');
                     }

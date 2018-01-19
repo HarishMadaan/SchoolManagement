@@ -64,7 +64,7 @@ namespace School.Web.Controllers
             objSessionModel.SessionList = new SelectList(SessionType, "SessionId", "Title");
             ViewBag.SessionInfo = objSessionModel.SessionList;
 
-            var ClassType = objBDCCommon.GetClassMaster();
+            var ClassType = objBDCCommon.GetClassMaster(Convert.ToInt32(Session[CommonStrings.DefaultSession]));
             objClassModel.ClassList = new SelectList(ClassType, "ClassId", "Title");
             ViewBag.ClassInfo = objClassModel.ClassList;
             
@@ -112,7 +112,7 @@ namespace School.Web.Controllers
                     objSessionModel.SessionList = new SelectList(SessionType, "SessionId", "Title");
                     ViewBag.SessionInfo = objSessionModel.SessionList;
 
-                    var ClassType = objBDCCommon.GetClassMaster();
+                    var ClassType = objBDCCommon.GetClassMaster(Convert.ToInt32(Session[CommonStrings.DefaultSession]));
                     objClassModel.ClassList = new SelectList(ClassType, "ClassId", "Title");
                     ViewBag.ClassInfo = objClassModel.ClassList;
 
@@ -134,7 +134,7 @@ namespace School.Web.Controllers
                 ClassMasterModel objModel = new ClassMasterModel();
                 objBDCCommon = new CommonMasterDataBusiness();
 
-                var ClassType = objBDCCommon.GetClassMaster();
+                var ClassType = objBDCCommon.GetClassMaster(Convert.ToInt32(Session[CommonStrings.DefaultSession]));
                 objModel.ClassList = new SelectList(ClassType, "ClassId", "Title");
                 ViewBag.ClassInfo = objModel.ClassList;
 

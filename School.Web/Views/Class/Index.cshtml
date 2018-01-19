@@ -40,8 +40,15 @@
                     <div class="col-lg-4">
                         <div class="form-group">
                             <div class="col-sm-12">
-                                @Html.DropDownList("SessionId", ViewBag.SessionInfo as IEnumerable<SelectListItem>, "-- Select Session --", new { @class = "form-control", @id = "SessionId" })
+                                @*@Html.DropDownList("SessionId", ViewBag.SessionInfo as IEnumerable<SelectListItem>, "-- Select Session --", new { @class = "form-control", @id = "SessionId" })*@
+                                <select id="SessionId" name="SessionId" class="form-control">
+                                    <option value="0">-- Select Session --</option>
+                                    @foreach (SelectListItem option in ViewBag.SessionInfo)
+                                    {
+                                        <option value="@option.Value" @(option.Value == ViewBag.SessionValue ? "selected='selected'" : "")>@option.Text</option>
 
+                                    }
+                                </select>
                             </div>
                         </div>
                     </div>

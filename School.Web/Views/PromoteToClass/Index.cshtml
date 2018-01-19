@@ -41,7 +41,15 @@
                                     @Html.Label("Session")
                                 </label>
                                 <div class="col-md-8">
-                                    @Html.DropDownListFor(model => model.SessionId, ViewBag.SessionInfo as IEnumerable<SelectListItem>, "-- Select Session --", new { @class = "form-control", @id = "SessionId", @onchange = "FillClass()" })
+                                    @*@Html.DropDownListFor(model => model.SessionId, ViewBag.SessionInfo as IEnumerable<SelectListItem>, "-- Select Session --", new { @class = "form-control", @id = "SessionId", @onchange = "FillClass()" })*@
+                                    <select id="SessionId" name="SessionId" class="form-control" onchange="FillClass()">
+                                        <option value="0">-- Select Session --</option>
+                                        @foreach (SelectListItem option in ViewBag.SessionInfo)
+                                        {
+                                            <option value="@option.Value" @(option.Value == ViewBag.SessionValue ? "selected='selected'" : "")>@option.Text</option>
+
+                                        }
+                                    </select>
                                     @Html.ValidationMessageFor(model => model.SessionId)
                                 </div>
                             </div>
@@ -51,10 +59,17 @@
                                     @Html.Label("Class")
                                 </label>
                                 <div class="col-md-8">
-                                    @Html.DropDownListFor(model => model.ClassId,
+                                    @*@Html.DropDownListFor(model => model.ClassId,
                 new SelectList(Enumerable.Empty<SelectListItem>(), "ClassId", "Title"),
                 "-- Select Class --",
-                new { @class = "form-control", @onchange = "FillSection()" })
+                new { @class = "form-control", @onchange = "FillSection()" })*@
+                                    <select id="ClassId" name="ClassId" class="form-control" onchange="FillSection()">
+                                        <option value="0">-- Select Class --</option>
+                                        @foreach (SelectListItem option in ViewBag.ClassInfo)
+                                        {
+                                            <option value="@option.Value" @(option.Value == ViewBag.ClassValue ? "selected='selected'" : "")>@option.Text</option>
+                                        }
+                                    </select>
                                     @Html.ValidationMessageFor(model => model.ClassId)
                                 </div>
                             </div>
@@ -264,12 +279,17 @@
             $('#SessionId').focus();
             return false;
         }
-        else if (classId == "") {
+        else if (classId == "" || classId == 0) {
             alert("Please select class");
             $('#ClassId').focus();
             return false;
         }
-        else if (sessionId != "" && classId != "") {
+        else if (sectionId == "" || sectionId == 0) {
+            alert("Please select section");
+            $('#SectionId').focus();
+            return false;
+        }
+        else if (sessionId != "" && classId != "" && sectionId != "") {
             //alert(sessionId + " -- " + classId);
             $("#dvAllocationListing").html("");
             $("#dvAllocationListing").html("<div style='text-align: center;background :rgba(0,0,0,0.5);  background-repeat: no-repeat; background-attachment: fixed; background-position: center;width:100%;        height:100%;        position:fixed;        top:0;        left:0;        z-index:999;'><img src='/includes/images/loaders/loader10.gif' style='position:relative;margin: 400px auto;'/></div>");

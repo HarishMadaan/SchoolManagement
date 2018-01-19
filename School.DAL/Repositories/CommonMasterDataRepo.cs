@@ -14,14 +14,16 @@ namespace School.DAL.Repositories
         SchoolManagementEntities dbcontext;
         Response response;
 
-        public List<ClassMasterModel> GetClassMaster()
+        public List<ClassMasterModel> GetClassMaster(int? SessionId)
         {
             List<ClassMasterModel> ClassListModel = new List<ClassMasterModel>();
             IQueryable<ClassMasterModel> ClassListDetail = null;
             using (dbcontext = new SchoolManagementEntities())
             {
                 ClassListDetail = dbcontext.tblClasses.Where(x => x.IsActive == true
-                    && x.IsDeleted == false).OrderBy(y => y.Title)
+                    && x.IsDeleted == false
+                    && (SessionId == 0 || SessionId == null || x.SessionId == SessionId)
+                    ).OrderBy(y => y.Title)
                     .Select(x => new ClassMasterModel
                     {
                         ClassId = x.ClassId,
@@ -34,14 +36,16 @@ namespace School.DAL.Repositories
             }
         }
 
-        public List<SectionMasterModel> GetSectionMaster()
+        public List<SectionMasterModel> GetSectionMaster(int? ClassId)
         {
             List<SectionMasterModel> SectionListModel = new List<SectionMasterModel>();
             IQueryable<SectionMasterModel> SectionListDetail = null;
             using (dbcontext = new SchoolManagementEntities())
             {
                 SectionListDetail = dbcontext.tblSections.Where(x => x.IsActive == true
-                    && x.IsDeleted == false).OrderBy(y => y.Title)
+                    && x.IsDeleted == false
+                    && (ClassId == 0 || ClassId == null || x.ClassId == ClassId)
+                    ).OrderBy(y => y.Title)
                     .Select(x => new SectionMasterModel
                     {
                         SectionId = x.SectionId,
@@ -79,7 +83,8 @@ namespace School.DAL.Repositories
             using (dbcontext = new SchoolManagementEntities())
             {
                 var rs = dbcontext.tblClasses.Where(x => x.IsActive == true
-                    && x.IsDeleted == false && x.SessionId == SessionId).OrderBy(y => y.Title)
+                    && x.IsDeleted == false 
+                    && (SessionId == 0 || x.SessionId == SessionId)).OrderBy(y => y.Title)
                     .Select(x => new ClassMasterModel
                     {
                         ClassId = x.ClassId,
@@ -95,7 +100,8 @@ namespace School.DAL.Repositories
             using (dbcontext = new SchoolManagementEntities())
             {
                 var rs = dbcontext.tblSections.Where(x => x.IsActive == true
-                    && x.IsDeleted == false && x.ClassId == ClassId).OrderBy(y => y.Title)
+                    && x.IsDeleted == false 
+                    && (ClassId == 0 || x.ClassId == ClassId)).OrderBy(y => y.Title)
                     .Select(x => new SectionMasterModel
                     {
                         SectionId = x.SectionId,

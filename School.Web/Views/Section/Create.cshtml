@@ -37,7 +37,15 @@
                                                 @Html.LabelFor(model => model.SessionId, new { @class = "control-label col-md-2" })
                                             </label>
                                             <div class="col-md-8">
-                                                @Html.DropDownListFor(model => model.SessionId, ViewBag.SessionInfo as IEnumerable<SelectListItem>, "-- Select Session --", new { @class = "form-control", @id = "SessionId", @onchange = "FillClass()" })
+                                                @*@Html.DropDownListFor(model => model.SessionId, ViewBag.SessionInfo as IEnumerable<SelectListItem>, "-- Select Session --", new { @class = "form-control", @id = "SessionId", @onchange = "FillClass()" })*@
+                                                <select id="SessionId" name="SessionId" class="form-control" onchange = "FillClass()">
+                                                    <option value="0">-- Select Session --</option>
+                                                    @foreach (SelectListItem option in ViewBag.SessionInfo)
+                                                    {
+                                                        <option value="@option.Value" @(option.Value == ViewBag.SessionValue ? "selected='selected'" : "")>@option.Text</option>
+
+                                                    }
+                                                </select>
                                                 @Html.ValidationMessageFor(model => model.SessionId, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -46,10 +54,15 @@
                                             <label class="col-lg-4 control-label" for="inputClassId">
                                                 @Html.LabelFor(model => model.ClassId, new { @class = "control-label col-md-4" })                                            
                                             </label>
-                                                <div class="col-md-8">
-                                                    @*@Html.DropDownListFor(model => model.ClassId, ViewBag.ClassInfo as IEnumerable<SelectListItem>, "-- Select Class --", new { @class = "form-control", @id = "ClassId" })*@
-
-                                                    @Html.DropDownList("ClassId", new SelectList(Enumerable.Empty<SelectListItem>(), "ClassId", "Title"),"-- Select Class --", new { @class = "form-control" })
+                                                <div class="col-md-8">                                                    
+                                                    @*@Html.DropDownList("ClassId", new SelectList(Enumerable.Empty<SelectListItem>(), "ClassId", "Title"),"-- Select Class --", new { @class = "form-control" })*@
+                                                    <select id="ClassId" name="ClassId" class="form-control">
+                                                        <option value="0">-- Select Class --</option>
+                                                        @foreach (SelectListItem option in ViewBag.ClassInfo)
+                                                        {
+                                                            <option value="@option.Value">@option.Text</option>
+                                                        }
+                                                    </select>
                                                     @Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })
                                                 </div>
 </div>

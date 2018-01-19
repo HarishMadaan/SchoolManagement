@@ -14,19 +14,19 @@ namespace School.BDC.Classes
     {
         ICommonMasterDataRepo objDAL;
 
-        public List<ClassMasterModel> GetClassMaster()
+        public List<ClassMasterModel> GetClassMaster(int? SessionId)
         {
             using (objDAL = new CommonMasterDataRepo())
             {
-                return objDAL.GetClassMaster();
+                return objDAL.GetClassMaster(SessionId);
             }
         }
 
-        public List<SectionMasterModel> GetSectionMaster()
+        public List<SectionMasterModel> GetSectionMaster(int? ClassId)
         {
             using (objDAL = new CommonMasterDataRepo())
             {
-                return objDAL.GetSectionMaster();
+                return objDAL.GetSectionMaster(ClassId);
             }
         }
 

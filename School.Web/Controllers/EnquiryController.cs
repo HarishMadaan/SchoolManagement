@@ -24,15 +24,22 @@ namespace School.Web.Controllers
         public ActionResult Index()
         {
             SessionMasterModel objSessionModel = new SessionMasterModel();
+            ClassMasterModel objClassModel = new ClassMasterModel();
             objBDCCommon = new CommonMasterDataBusiness();
 
             var SessionType = objBDCCommon.GetSessionMaster();
             objSessionModel.SessionList = new SelectList(SessionType, "SessionId", "Title");
             ViewBag.SessionInfo = objSessionModel.SessionList;
 
+            var ClassType = objBDCCommon.GetClassMaster(Convert.ToInt32(Session[CommonStrings.DefaultSession]));
+            objClassModel.ClassList = new SelectList(ClassType, "ClassId", "Title");
+            ViewBag.ClassInfo = objClassModel.ClassList;
+
             EnquiryDetailCustomModel objModel = new EnquiryDetailCustomModel();
             objBDC = new EnquiryDetailBusiness();
             var rs = objBDC.GetEnquiryDetailListing(objModel);
+
+            ViewBag.SessionValue = Session[CommonStrings.DefaultSession].ToString();
 
             return View(rs);
         }
@@ -63,14 +70,14 @@ namespace School.Web.Controllers
             SessionMasterModel objSessionModel = new SessionMasterModel();
             EmployeeMasterModel objEmployeeModel = new EmployeeMasterModel();
             objBDCCommon = new CommonMasterDataBusiness();
-
-            var ClassType = objBDCCommon.GetClassMaster();
-            objClassModel.ClassList = new SelectList(ClassType, "ClassId", "Title");
-            ViewBag.ClassInfo = objClassModel.ClassList;
-
+            
             var SessionType = objBDCCommon.GetSessionMaster();
             objSessionModel.SessionList = new SelectList(SessionType, "SessionId", "Title");
             ViewBag.SessionInfo = objSessionModel.SessionList;
+
+            var ClassType = objBDCCommon.GetClassMaster(Convert.ToInt32(Session[CommonStrings.DefaultSession]));
+            objClassModel.ClassList = new SelectList(ClassType, "ClassId", "Title");
+            ViewBag.ClassInfo = objClassModel.ClassList;
 
             var EmployeeType = objBDCCommon.GetEmployeeMaster();
             objEmployeeModel.EmployeeList = new SelectList(EmployeeType, "EmployeeId", "EmployeeName");
@@ -79,8 +86,12 @@ namespace School.Web.Controllers
             if (id != 0)
             {                
                 objBDC = new EnquiryDetailBusiness();
-                objModel = objBDC.GetById(id);                
+                objModel = objBDC.GetById(id);
+
+                ViewBag.ClassValue = Convert.ToString(objModel.ClassId);
             }
+
+            ViewBag.SessionValue = Session[CommonStrings.DefaultSession].ToString();            
 
             return View(objModel);
         }
@@ -122,7 +133,7 @@ namespace School.Web.Controllers
                     EmployeeMasterModel objEmployeeModel = new EmployeeMasterModel();
                     objBDCCommon = new CommonMasterDataBusiness();
 
-                    var ClassType = objBDCCommon.GetClassMaster();
+                    var ClassType = objBDCCommon.GetClassMaster(Convert.ToInt32(Session[CommonStrings.DefaultSession]));
                     objModelClass.ClassList = new SelectList(ClassType, "ClassId", "Title");
                     ViewBag.ClassInfo = objModelClass.ClassList;
 
@@ -134,6 +145,8 @@ namespace School.Web.Controllers
                     var EmployeeType = objBDCCommon.GetEmployeeMaster();
                     objEmployeeModel.EmployeeList = new SelectList(EmployeeType, "EmployeeId", "EmployeeName");
                     ViewBag.EmployeeInfo = objEmployeeModel.EmployeeList;
+
+                    ViewBag.SessionValue = Session[CommonStrings.DefaultSession].ToString();
 
                     return View();
                 }
@@ -154,7 +167,7 @@ namespace School.Web.Controllers
                 EmployeeMasterModel objEmployeeModel = new EmployeeMasterModel();
                 objBDCCommon = new CommonMasterDataBusiness();
 
-                var ClassType = objBDCCommon.GetClassMaster();
+                var ClassType = objBDCCommon.GetClassMaster(Convert.ToInt32(Session[CommonStrings.DefaultSession]));
                 objModel.ClassList = new SelectList(ClassType, "ClassId", "Title");
                 ViewBag.ClassInfo = objModel.ClassList;
 
@@ -207,7 +220,7 @@ namespace School.Web.Controllers
                     EmployeeMasterModel objEmployeeModel = new EmployeeMasterModel();
                     objBDCCommon = new CommonMasterDataBusiness();
 
-                    var ClassType = objBDCCommon.GetClassMaster();
+                    var ClassType = objBDCCommon.GetClassMaster(Convert.ToInt32(Session[CommonStrings.DefaultSession]));
                     objClassModel.ClassList = new SelectList(ClassType, "ClassId", "Title");
                     ViewBag.ClassInfo = objClassModel.ClassList;
 

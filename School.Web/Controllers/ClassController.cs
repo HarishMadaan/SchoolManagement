@@ -21,6 +21,8 @@ namespace School.Web.Controllers
         // GET: /Class/
         public ActionResult Index()
         {
+            ViewBag.SessionValue = Session[CommonStrings.DefaultSession].ToString();
+
             SessionMasterModel objSessionModel = new SessionMasterModel();
             objBDCCommon = new CommonMasterDataBusiness();
 
@@ -30,9 +32,9 @@ namespace School.Web.Controllers
 
             ClassMasterCustomModel objModel = new ClassMasterCustomModel();
             objBDC = new ClassMasterBusiness();
+            objModel.SessionId = Convert.ToInt32(Session[CommonStrings.DefaultSession]);
             var rs = objBDC.GetClassMasterListing(objModel);
-
-
+            
             return View(rs);
         }
 
@@ -72,6 +74,8 @@ namespace School.Web.Controllers
                 objModel = objBDC.GetById(id);
             }
 
+            ViewBag.SessionValue = Session[CommonStrings.DefaultSession].ToString();
+
             return View(objModel);
         }
 
@@ -109,6 +113,8 @@ namespace School.Web.Controllers
                     objSessionModel.SessionList = new SelectList(SessionType, "SessionId", "Title");
                     ViewBag.SessionInfo = objSessionModel.SessionList;
 
+                    ViewBag.SessionValue = Session[CommonStrings.DefaultSession].ToString();
+
                     return View();
                 }
             }
@@ -131,6 +137,8 @@ namespace School.Web.Controllers
             
             objBDC = new ClassMasterBusiness();
             var rs = objBDC.GetById(id);
+
+            ViewBag.SessionValue = Session[CommonStrings.DefaultSession].ToString();
 
             return View(rs);
         }

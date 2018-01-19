@@ -28,11 +28,11 @@ namespace School.Web.Controllers
             SectionMasterModel objSectionModel = new SectionMasterModel();
             objBDCCommon = new CommonMasterDataBusiness();
 
-            var ClassType = objBDCCommon.GetClassMaster();
+            var ClassType = objBDCCommon.GetClassMaster(Convert.ToInt32(Session[CommonStrings.DefaultSession]));
             objModel.ClassList = new SelectList(ClassType, "ClassId", "Title");
             ViewBag.ClassInfo = objModel.ClassList;
 
-            var SectionType = objBDCCommon.GetSectionMaster();
+            var SectionType = objBDCCommon.GetSectionMaster(0);
             objSectionModel.SectionList = new SelectList(SectionType, "SectionId", "Title");
             ViewBag.SectionInfo = objSectionModel.SectionList;
 
@@ -69,11 +69,11 @@ namespace School.Web.Controllers
             SectionMasterModel objSectionModel = new SectionMasterModel();
             objBDCCommon = new CommonMasterDataBusiness();
 
-            var ClassType = objBDCCommon.GetClassMaster();
+            var ClassType = objBDCCommon.GetClassMaster(Convert.ToInt32(Session[CommonStrings.DefaultSession]));
             objModel.ClassList = new SelectList(ClassType, "ClassId", "Title");
             ViewBag.ClassInfo = objModel.ClassList;
 
-            var SectionType = objBDCCommon.GetSectionMaster();
+            var SectionType = objBDCCommon.GetSectionMaster(0);
             objSectionModel.SectionList = new SelectList(SectionType, "SectionId", "Title");
             ViewBag.SectionInfo = objSectionModel.SectionList;
 

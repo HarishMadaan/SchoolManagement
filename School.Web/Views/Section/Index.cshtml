@@ -40,12 +40,32 @@
                     <div class="col-lg-4">
                         <div class="form-group">
                             <div class="col-sm-12">
-                                @Html.DropDownList("SessionId", ViewBag.SessionInfo as IEnumerable<SelectListItem>, "-- Select Session --", new { @class = "form-control", @id = "SessionId" })
+                                @*@Html.DropDownList("SessionId", ViewBag.SessionInfo as IEnumerable<SelectListItem>, "-- Select Session --", new { @class = "form-control", @id = "SessionId" })*@
+                                <select id="SessionId" name="SessionId" class="form-control">
+                                    <option value="0">-- Select Session --</option>
+                                    @foreach (SelectListItem option in ViewBag.SessionInfo)
+                                    {
+                                        <option value="@option.Value" @(option.Value == ViewBag.SessionValue ? "selected='selected'" : "")>@option.Text</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <select id="ClassId" name="ClassId" class="form-control">
+                                    <option value="0">-- Select Class --</option>
+                                    @foreach (SelectListItem option in ViewBag.ClassInfo)
+                                    {
+                                        <option value="@option.Value" @(option.Value == ViewBag.ClassValue ? "selected='selected'" : "")>@option.Text</option>
+                                    }
+                                </select>
 
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-8 text-right">
+                    <div class="col-lg-4 text-right">
                         <div class="form-group">
                             <input type="button" value="Search" class="btn btn-default" onclick="return SearchSessionWiseResult();" />
                         </div>
@@ -167,11 +187,13 @@
     function SearchSessionWiseResult() {
         $('#loader').show();
         var sessionId = $('#SessionId').val();
+        var classId = $('#ClassId').val();
 
         $("#dvShowSearchResult").html("");
         $("#dvShowSearchResult").html("<div style='text-align: center;background :rgba(0,0,0,0.5);  background-repeat: no-repeat; background-attachment: fixed; background-position: center;width:100%;        height:100%;        position:fixed;        top:0;        left:0;        z-index:999;'><img src='/includes/images/loaders/loader10.gif' style='position:relative;margin: 400px auto;'/></div>");
         var ai = {
             SessionId: sessionId,
+            ClassId: classId
         }
         $.ajax({
             type: "post",
