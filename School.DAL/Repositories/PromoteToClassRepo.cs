@@ -103,6 +103,7 @@ namespace School.DAL.Repositories
                                     SessionId = objModel.SessionId,                                    
                                     ClassId = objModel.ClassId,
                                     SectionId = objModel.SectionId,
+                                    LastClassId = objModel.LastClassId,
                                     AdmissionId = objModel.AdmissionId,
                                     Status = "Attending",
                                     RecordStatus = "Promote To New Class",

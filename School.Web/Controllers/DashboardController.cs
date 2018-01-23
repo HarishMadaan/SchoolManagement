@@ -26,17 +26,24 @@ namespace School.Web.Controllers
             }
 
             SessionMasterModel objSessionModel = new SessionMasterModel();
+            ClassMasterModel objClassModel = new ClassMasterModel();
             objBDCCommon = new CommonMasterDataBusiness();
 
             var SessionType = objBDCCommon.GetSessionMaster();
             objSessionModel.SessionList = new SelectList(SessionType, "SessionId", "Title");
             ViewBag.SessionInfo = objSessionModel.SessionList;
 
+            var ClassType = objBDCCommon.GetClassMaster(Convert.ToInt32(Session[CommonStrings.DefaultSession]));
+            objClassModel.ClassList = new SelectList(ClassType, "ClassId", "Title");
+            ViewBag.ClassInfo = objClassModel.ClassList;
+
             int? SessionId = null;
             int? ClassId = null;
 
             objBDC = new DashboardMasterBusiness();
             ViewBag.EnquiryCount = objBDC.GetDashboardEnquiryCount(SessionId, ClassId);
+
+            ViewBag.SessionValue = Session[CommonStrings.DefaultSession].ToString();
 
             return View();
         }

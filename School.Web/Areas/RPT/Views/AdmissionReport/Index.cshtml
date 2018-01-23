@@ -4,88 +4,119 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutMaster.cshtml";
 }
-<h2>Admission Report</h2>
+
+<div class="page-title">
+    <div>
+        <h1><i class="fa fa-dashboard"></i> Admission Report</h1>
+    </div>
+    <div>
+        <ul class="breadcrumb">
+            <li><a href="@Url.Action("Index", "Dashboard")"><i class="fa fa-home fa-lg"></i></a></li>
+            <li>@Html.ActionLink("AdmissionReport", "Index")</li>
+        </ul>
+    </div>
+</div>
+
 
 <div class="row">
-    <div class="col-md-12">
-        <div class="form-group col-lg-4">
-            <label class="col-lg-4 control-label" for="inputSessionId">
-                Start date
-            </label>
-            <div class="col-md-8">
-                @Html.Editor("StartDate", new { htmlAttributes = new { @class = "form-control", id = "StartDate", placeholder = "Start Date", @readonly = "true", @Value = @DateTime.Now.ToString("dd-MM-yyyy") } })
+    <div class="col-lg-12 text-left">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Search Panel
             </div>
-        </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <div class="form-group col-lg-4">
+                        <label class="col-lg-4 control-label" for="inputSessionId">
+                            Start date
+                        </label>
+                        <div class="col-md-8">
+                            @Html.Editor("StartDate", new { htmlAttributes = new { @class = "form-control", id = "StartDate", placeholder = "Start Date", @readonly = "true", @Value = @DateTime.Now.ToString("dd-MM-yyyy") } })
+                        </div>
+                    </div>
 
-        <div class="form-group col-lg-4">
-            <label class="col-lg-4 control-label" for="inputSessionId">
-                EndDate
-            </label>
-            <div class="col-md-8">
-                @Html.Editor("EndDate", new { htmlAttributes = new { @class = "form-control", id = "EndDate", placeholder = "End Date", @readonly = "true", @Value = @DateTime.Now.ToString("dd-MM-yyyy") } })
-            </div>
-        </div>
+                    <div class="form-group col-lg-4">
+                        <label class="col-lg-4 control-label" for="inputSessionId">
+                            EndDate
+                        </label>
+                        <div class="col-md-8">
+                            @Html.Editor("EndDate", new { htmlAttributes = new { @class = "form-control", id = "EndDate", placeholder = "End Date", @readonly = "true", @Value = @DateTime.Now.ToString("dd-MM-yyyy") } })
+                        </div>
+                    </div>
 
-        <div class="form-group col-lg-4">
-            <label class="col-lg-4 control-label" for="inputSessionId">
-                @Html.LabelFor(model => model.SessionId, new { @class = "control-label col-md-2" })
-            </label>
-            <div class="col-md-8">
-                @Html.DropDownListFor(model => model.SessionId, ViewBag.SessionInfo as IEnumerable<SelectListItem>, "-- Select Session --", new { @class = "form-control", @id = "SessionId", @onchange = "FillCity()" })
-                @Html.ValidationMessageFor(model => model.SessionId)
-            </div>
-        </div>
+                    <div class="form-group col-lg-4">
+                        <label class="col-lg-4 control-label" for="inputSessionId">
+                            @Html.LabelFor(model => model.SessionId, new { @class = "control-label col-md-2" })
+                        </label>
+                        <div class="col-md-8">
+                            <select id="SessionId" name="SessionId" class="form-control" onchange="FillClass()">
+                                <option value="0">-- Select Session --</option>
+                                @foreach (SelectListItem option in ViewBag.SessionInfo)
+                                {
+                                    <option value="@option.Value" @(option.Value == ViewBag.SessionValue ? "selected='selected'" : "")>@option.Text</option>
 
-        <div class="form-group col-lg-4">
-            <label class="col-lg-4 control-label" for="inputClassId">
-                @Html.LabelFor(model => model.ClassId, new { @class = "control-label col-md-2" })
-            </label>
-            <div class="col-md-8">
-                @Html.DropDownListFor(model => model.ClassId,
-                new SelectList(Enumerable.Empty<SelectListItem>(), "ClassId", "Title"),
-                "Select class",
-                                  new { @class = "form-control", @id = "ClassId", @onchange = "FillSection()" })
-                @Html.ValidationMessageFor(model => model.ClassId)
-            </div>
-        </div>
+                                }
+                            </select>
+                            @Html.ValidationMessageFor(model => model.SessionId)
+                        </div>
+                    </div>
 
-        <div class="form-group col-lg-4">
-            <label class="col-lg-4 control-label" for="inputClassId">
-                @Html.LabelFor(model => model.SectionId, new { @class = "control-label col-md-2" })
-            </label>
-            <div class="col-md-8">
-                @Html.DropDownListFor(model => model.SectionId,
+                    <div class="form-group col-lg-4">
+                        <label class="col-lg-4 control-label" for="inputClassId">
+                            @Html.LabelFor(model => model.ClassId, new { @class = "control-label col-md-2" })
+                        </label>
+                        <div class="col-md-8">
+                            <select id="ClassId" name="ClassId" class="form-control" onchange="FillSection()">
+                                <option value="0">-- Select Class --</option>
+                                @foreach (SelectListItem option in ViewBag.ClassInfo)
+                                {
+                                    <option value="@option.Value" @(option.Value == ViewBag.ClassValue ? "selected='selected'" : "")>@option.Text</option>
+                                }
+                            </select>
+                            @Html.ValidationMessageFor(model => model.ClassId)
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-4">
+                        <label class="col-lg-4 control-label" for="inputClassId">
+                            @Html.LabelFor(model => model.SectionId, new { @class = "control-label col-md-2" })
+                        </label>
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(model => model.SectionId,
                          new SelectList(Enumerable.Empty<SelectListItem>(), "SectionId", "Title"),
                          "Select Section",
                          new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.SectionId)
-            </div>
-        </div>
+                            @Html.ValidationMessageFor(model => model.SectionId)
+                        </div>
+                    </div>
 
-        <div class="form-group col-lg-4">
-            <label class="col-lg-4 control-label" for="inputSessionId">
-                Student Name
-            </label>
-            <div class="col-md-8">
-                @Html.Editor("StudentName", new { htmlAttributes = new { @class = "form-control", id = "StudentName", placeholder = "Student Name" } })
-            </div>
-        </div>
-        <div class="form-group col-lg-4">
-            <label class="col-lg-4 control-label" for="inputStatus">
-                Enquiry Status
-            </label>
-            <div class="col-md-8">
-                @Html.DropDownList("EnquiryStatus", new List<SelectListItem>
+                    <div class="form-group col-lg-4">
+                        <label class="col-lg-4 control-label" for="inputSessionId">
+                            Student Name
+                        </label>
+                        <div class="col-md-8">
+                            @Html.Editor("StudentName", new { htmlAttributes = new { @class = "form-control", id = "StudentName", placeholder = "Student Name" } })
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label class="col-lg-4 control-label" for="inputStatus">
+                            Enquiry Status
+                        </label>
+                        <div class="col-md-8">
+                            @Html.DropDownList("EnquiryStatus", new List<SelectListItem>
                          { new SelectListItem { Text = "Follow Up", Value = "Follow Up"},
                            new SelectListItem { Text = "Registered", Value = "Registered"},
                            new SelectListItem { Text = "Closed", Value = "Closed"}
                            }, "-- Select Status --", new { @class = "form-control", @id = "EnquiryStatus" })
-            </div>
-        </div>
+                        </div>
+                    </div>
 
-        <div class="form-group col-lg-8">
-            <div class="col-md-offset-10 col-md-12">
-                <input type="button" value="Search" class="btn btn-default" onclick="return SearchEnquiry();" />
+                    <div class="form-group col-lg-8">
+                        <div class="col-md-offset-10 col-md-12">
+                            <input type="button" value="Search" class="btn btn-default" onclick="return SearchEnquiry();" />
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -107,116 +138,124 @@
 <script type="text/javascript" src="~/js/plugins/select2.min.js"></script>
 <script type="text/javascript" src="~/js/plugins/bootstrap-datepicker.min.js"></script>
 <script type="text/javascript">
-            $(document).ready(function () {
-                $(window).load(function () {
-                    $('#loader').hide();
-                });
-            });
+    $(document).ready(function () {
+        $(window).load(function () {
+            $('#loader').hide();
+        });
+    });
 
-            $('#StartDate').datepicker({
-                format: "dd-mm-yyyy",
-                autoclose: true,
-                todayHighlight: true
-            });
+    $('#StartDate').datepicker({
+        format: "dd-mm-yyyy",
+        autoclose: true,
+        todayHighlight: true
+    });
 
-            $('#EndDate').datepicker({
-                format: "dd-mm-yyyy",
-                autoclose: true,
-                todayHighlight: true
-            });
+    $('#EndDate').datepicker({
+        format: "dd-mm-yyyy",
+        autoclose: true,
+        todayHighlight: true
+    });
 
-            function FillCity() {
-                $('#loader').show();
-                debugger;
-                var sessionId = $('#SessionId').val();
-                if (sessionId != "") {
-                    $.ajax({
-                        url: '/AdmissionReport/FillCity',
-                        type: "GET",
-                        dataType: "JSON",
-                        data: { SessionId: sessionId },
-                        success: function (classes) {
-                            $("#ClassId").html(""); // clear before appending new list
-                            $.each(classes, function (i, classinfo) {
-                                $("#ClassId").append(
-                                    $('<option></option>').val(classinfo.ClassId).html(classinfo.Title));
-                            });
-                        }
-                    });
+    function FillClass() {
+        $('#loader').show();
+        var sessionId = $('#SessionId').val();
+        if (sessionId != "") {
+            $.ajax({
+                url: '/CommonMaster/FillClass',
+                type: "GET",
+                dataType: "JSON",
+                data: { SessionId: sessionId },
+                success: function (classes) {
+                    $("#ClassId").html(""); // clear before appending new list
+                    $("#ClassId").append
+                    ($('<option></option>').val(null).html("-- Select Class --"));
+                    $.each(classes, function (i, classinfo)
+                    { $("#ClassId").append($('<option></option>').val(classinfo.ClassId).html(classinfo.Title)) })
+                }
+            });
+        }
+        else {
+            $("#ClassId").html(""); // clear before appending new list
+            $("#ClassId").append
+                    ($('<option></option>').val(null).html("-- Select Class --"));
+
+            $("#SectionId").html(""); // clear before appending new list
+            $("#SectionId").append
+                    ($('<option></option>').val(null).html("-- Select Section --"));
+        }
+        $('#loader').hide();
+    }
+
+    function FillSection() {
+        $('#loader').show();
+        //debugger;
+        var classId = $('#ClassId').val();
+        if (classId != "") {
+            $.ajax({
+                url: '/CommonMaster/FillSection',
+                type: "GET",
+                dataType: "JSON",
+                data: { ClassId: classId },
+                success: function (sections) {
+                    $("#SectionId").html(""); // clear before appending new list
+                    $("#SectionId").append
+                    ($('<option></option>').val(null).html("-- Select Section --"));
+                    $.each(sections, function (i, sectioninfo)
+                    { $("#SectionId").append($('<option></option>').val(sectioninfo.SectionId).html(sectioninfo.Title)) })
+                }
+            });
+        }
+        else {
+            $("#SectionId").html(""); // clear before appending new list
+            $("#SectionId").append
+                    ($('<option></option>').val(null).html("-- Select Section --"));
+        }
+        $('#loader').hide();
+    }
+
+    function SearchEnquiry() {
+        $('#loader').show();
+        var startDate = $('#StartDate').val();
+        var endDate = $('#EndDate').val();
+        var sessionId = $('#SessionId').val();
+        var classId = $('#ClassId').val();
+        var sectionId = $('#SectionId').val();
+        var enquiryStatus = $('#EnquiryStatus').val();
+        var studentName = $('#StudentName').val();
+
+        $("#dvShowSearchResult").html("");
+        $("#dvShowSearchResult").html("<div style='text-align: center;background :rgba(0,0,0,0.5);  background-repeat: no-repeat; background-attachment: fixed; background-position: center;width:100%;        height:100%;        position:fixed;        top:0;        left:0;        z-index:999;'><img src='/includes/images/loaders/loader10.gif' style='position:relative;margin: 400px auto;'/></div>");
+        var ai = {
+            FromDate: startDate,
+            ToDate: endDate,
+            SessionId: sessionId,
+            ClassId: classId,
+            SectionId: sectionId,
+            EnquiryStatus: enquiryStatus,
+            StudentName: studentName
+        }
+        $.ajax({
+            type: "post",
+            url: '@Url.Action("SearchAdmissionList", "AdmissionReport")',
+            data: JSON.stringify(ai),
+            datatype: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                if (data.trim() != "") {
+                    $("#dvShowSearchResult").fadeIn("fast");
+                    $("#dvShowSearchResult").html("");
+                    $("#dvShowSearchResult").html(data);
                 }
                 else {
-                    $("#ClassId").html(""); // clear before appending new list
+                    $("#dvShowSearchResult").html("");
+                    $("#dvShowSearchResult").html('<p style="color:#FF0000;font-weight:bold;text-align: center;">No Records Found!</p>');
                 }
-                $('#loader').hide();
-            }
-
-            function FillSection() {
-                $('#loader').show();
-                var classId = $('#ClassId').val();
-                if (classId != "") {
-                    $.ajax({
-                        url: '/AdmissionReport/FillSection',
-                        type: "GET",
-                        dataType: "JSON",
-                        data: { ClassId: classId },
-                        success: function (sections) {
-                            $("#SectionId").html(""); // clear before appending new list
-                            $.each(sections, function (i, sectioninfo) {
-                                $("#SectionId").append(
-                                    $('<option></option>').val(sectioninfo.SectionId).html(sectioninfo.Title));
-                            });
-                        }
-                    });
-                }
-                else {
-                    $("#ClassId").html(""); // clear before appending new list
-                }
-                $('#loader').hide();
-            }
-
-            function SearchEnquiry() {
-                $('#loader').show();
-                var startDate = $('#StartDate').val();
-                var endDate = $('#EndDate').val();
-                var sessionId = $('#SessionId').val();
-                var classId = $('#ClassId').val();
-                var sectionId = $('#SectionId').val();
-                var enquiryStatus = $('#EnquiryStatus').val();
-                var studentName = $('#StudentName').val();
-
+            },
+            error: function (data) {
                 $("#dvShowSearchResult").html("");
-                $("#dvShowSearchResult").html("<div style='text-align: center;background :rgba(0,0,0,0.5);  background-repeat: no-repeat; background-attachment: fixed; background-position: center;width:100%;        height:100%;        position:fixed;        top:0;        left:0;        z-index:999;'><img src='/includes/images/loaders/loader10.gif' style='position:relative;margin: 400px auto;'/></div>");
-                var ai = {
-                    FromDate: startDate,
-                    ToDate: endDate,
-                    SessionId: sessionId,
-                    ClassId: classId,
-                    SectionId: sectionId,
-                    EnquiryStatus: enquiryStatus,
-                    StudentName: studentName
-                }
-                $.ajax({
-                    type: "post",
-                    url: '@Url.Action("SearchAdmissionList", "AdmissionReport")',
-                    data: JSON.stringify(ai),
-                    datatype: "json",
-                    contentType: 'application/json; charset=utf-8',
-                    success: function (data) {
-                        if (data.trim() != "") {
-                            $("#dvShowSearchResult").fadeIn("fast");
-                            $("#dvShowSearchResult").html("");
-                            $("#dvShowSearchResult").html(data);
-                        }
-                        else {
-                            $("#dvShowSearchResult").html("");
-                            $("#dvShowSearchResult").html('<p style="color:#FF0000;font-weight:bold;text-align: center;">No Records Found!</p>');
-                        }
-                    },
-                    error: function (data) {
-                        $("#dvShowSearchResult").html("");
-                        $("#dvShowSearchResult").html(data);
-                    }
-                });
-                $('#loader').hide();
+                $("#dvShowSearchResult").html(data);
             }
+        });
+        $('#loader').hide();
+    }
 </script>

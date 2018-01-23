@@ -328,6 +328,7 @@
         var sessionId = $('#NewSessionId').val();
         var classId = $('#NewClassId').val();
         var sectionId = $('#NewSectionId').val();
+        var lastClassId = $('#ClassId').val();
         if (sessionId == "") {
             alert("Please select new session");
             $('#NewSessionId').focus();
@@ -355,7 +356,8 @@
                 'Parameters': list,
                 'SessionId': sessionId,
                 'ClassId': classId,
-                'SectionId': sectionId
+                'SectionId': sectionId,
+                'LastClassId': lastClassId
             };
             $.ajax({
                 url: '@Url.Action("UpdateAllocationList", "PromoteToClass")',

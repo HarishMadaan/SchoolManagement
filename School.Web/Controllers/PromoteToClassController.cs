@@ -125,7 +125,7 @@ namespace School.Web.Controllers
             return PartialView("SearchPromoteList");
         }
 
-        public ActionResult UpdateAllocationList(string[] Parameters, int SessionId, int ClassId, int SectionId)
+        public ActionResult UpdateAllocationList(string[] Parameters, int SessionId, int ClassId, int SectionId, int LastClassId)
         {
             string ResultMessage = "";
             try
@@ -154,6 +154,7 @@ namespace School.Web.Controllers
                             objModel.SessionId = SessionId;
                             objModel.ClassId = ClassId;
                             objModel.SectionId = SectionId;
+                            objModel.LastClassId = LastClassId;
                             objModel.AdmissionId = Convert.ToInt32(Id);
                             objModel.IsActive = true;
                             objModel.Status = "Attending";

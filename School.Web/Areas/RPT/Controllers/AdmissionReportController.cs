@@ -26,20 +26,22 @@ namespace School.Web.Areas.RPT.Controllers
             ClassMasterModel objModel = new ClassMasterModel();
             SectionMasterModel objSectionModel = new SectionMasterModel();
             objBDCCommon = new CommonMasterDataBusiness();
+                        
+            var SectionType = objBDCCommon.GetSectionMaster(0);
+            objSectionModel.SectionList = new SelectList(SectionType, "SectionId", "Title");
+            ViewBag.SectionInfo = objSectionModel.SectionList;
 
             var ClassType = objBDCCommon.GetClassMaster(Convert.ToInt32(Session[CommonStrings.DefaultSession]));
             objModel.ClassList = new SelectList(ClassType, "ClassId", "Title");
             ViewBag.ClassInfo = objModel.ClassList;
 
-            var SectionType = objBDCCommon.GetSectionMaster(0);
-            objSectionModel.SectionList = new SelectList(SectionType, "SectionId", "Title");
-            ViewBag.SectionInfo = objSectionModel.SectionList;
-
             SessionMasterModel objSessionModel = new SessionMasterModel();
             var SessionType = objBDCCommon.GetSessionMaster();
             objSessionModel.SessionList = new SelectList(SessionType, "SessionId", "Title");
             ViewBag.SessionInfo = objSessionModel.SessionList;
-            
+
+            ViewBag.SessionValue = Session[CommonStrings.DefaultSession].ToString();
+
             return View();
         }
 
