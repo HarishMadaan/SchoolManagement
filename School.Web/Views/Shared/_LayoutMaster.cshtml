@@ -3,7 +3,6 @@
 }
 
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta charset="utf-8">
@@ -38,9 +37,9 @@
                         <li class="dropdown">
                             <a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user fa-lg"></i></a>
                             <ul class="dropdown-menu settings-menu">
-                                <li><a href="page-user.html"><i class="fa fa-cog fa-lg"></i> Settings</a></li>
-                                <li><a href="page-user.html"><i class="fa fa-user fa-lg"></i> Profile</a></li>
-                                <li><a href="@Url.Action("Logout", "Login")"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
+                                <li><a href="@Url.Action("Index", new { Area = "", Controller = "Profile" })"><i class="fa fa-user fa-lg"></i> Profile</a></li>
+                                <li><a href="@Url.Action("Index", new { Area = "", Controller = "ChangePassword" })"><i class="fa fa-user fa-lg"></i> Change Password</a></li>
+                                <li><a href="@Url.Action("Logout", new { Area = "", Controller = "Login" })"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -59,98 +58,100 @@
                 </div>
                 <!-- Sidebar Menu-->
                 <ul class="sidebar-menu">
-                    <li class="active"><a href="@Url.Action("Index", "Dashboard")"><i class="fa fa-dashboard"></i><span>Dashboard</span></a></li>
+                    <li class="active"><a href="@Url.Action("Index", new { Area = "", Controller = "Dashboard" })"><i class="fa fa-dashboard"></i><span>Dashboard</span></a>
+                    @*@Html.ActionLink("Dashboard", "Index", "Dashboard", new { area = "" }, new { @class = "fa fa-file-text" })*@
+                    </li>
                     <li class="treeview">
                         <a href="#"><i class="fa fa-share"></i><span>Masters</span><i class="fa fa-angle-right"></i></a>
                         <ul class="treeview-menu">
                             <li class="treeview">
                                 <a href="#"><i class="fa fa-file-text"></i><span>Session Master</span><i class="fa fa-angle-right"></i></a>
                                 <ul class="treeview-menu">
-                                    <li><a href="@Url.Action("Index", "Session")"><i class="fa fa-circle-o"></i> All Session</a></li>
-                                    <li><a href="@Url.Action("Create", "Session")"><i class="fa fa-circle-o"></i> Add New</a></li>
+                                    <li><a href="@Url.Action("Index", new { Area = "", Controller = "Session" })"><i class="fa fa-circle-o"></i> All Session</a></li>
+                                    <li><a href="@Url.Action("Create", new { Area = "", Controller = "Session" })"><i class="fa fa-circle-o"></i> Add New</a></li>
                                 </ul>
                             </li>
                             <li class="treeview">
                                 <a href="#"><i class="fa fa-file-text"></i><span>Class</span><i class="fa fa-angle-right"></i></a>
                                 <ul class="treeview-menu">
-                                    <li><a href="@Url.Action("Index", "Class")"><i class="fa fa-circle-o"></i> All Class</a></li>
-                                    <li><a href="@Url.Action("Create", "Class")"><i class="fa fa-circle-o"></i> Add New</a></li>
+                                    <li><a href="@Url.Action("Index", new { Area = "", Controller = "Class" })"><i class="fa fa-circle-o"></i> All Class</a></li>
+                                    <li><a href="@Url.Action("Create", new { Area = "", Controller = "Class" })"><i class="fa fa-circle-o"></i> Add New</a></li>
                                 </ul>
                             </li>
                             <li class="treeview">
                                 <a href="#"><i class="fa fa-file-text"></i><span>Section</span><i class="fa fa-angle-right"></i></a>
                                 <ul class="treeview-menu">
-                                    <li><a href="@Url.Action("Index", "Section")"><i class="fa fa-circle-o"></i> All Section</a></li>
-                                    <li><a href="@Url.Action("Create", "Section")"><i class="fa fa-circle-o"></i> Add New</a></li>
+                                    <li><a href="@Url.Action("Index", new { Area = "", Controller = "Section" })"><i class="fa fa-circle-o"></i> All Section</a></li>
+                                    <li><a href="@Url.Action("Create", new { Area = "", Controller = "Section" })"><i class="fa fa-circle-o"></i> Add New</a></li>
                                 </ul>
                             </li>
-                            <li class="treeview">
+                            @*<li class="treeview">
                                 <a href="#"><i class="fa fa-file-text"></i><span>Fee Master</span><i class="fa fa-angle-right"></i></a>
                                 <ul class="treeview-menu">
-                                    <li><a href="@Url.Action("Index", "FeeMaster")"><i class="fa fa-circle-o"></i> All Fee Master</a></li>
-                                    <li><a href="@Url.Action("Create", "FeeMaster")"><i class="fa fa-circle-o"></i> Add New</a></li>
+                                    <li><a href="@Url.Action("Index", new { Area = "", Controller = "FeeMaster" })"><i class="fa fa-circle-o"></i> All Fee Master</a></li>
+                                    <li><a href="@Url.Action("Create", new { Area = "", Controller = "FeeMaster" })"><i class="fa fa-circle-o"></i> Add New</a></li>
                                 </ul>
                             </li>                            
                             <li class="treeview">
                                 <a href="#"><i class="fa fa-file-text"></i><span>Admission Fee Master</span><i class="fa fa-angle-right"></i></a>
                                 <ul class="treeview-menu">
-                                    <li><a href="@Url.Action("Index", "AdmissionFeeMaster")"><i class="fa fa-circle-o"></i> All Admission Fee</a></li>
-                                    <li><a href="@Url.Action("Create", "AdmissionFeeMaster")"><i class="fa fa-circle-o"></i> Add Admission Fee</a></li>
+                                    <li><a href="@Url.Action("Index", new { Area = "", Controller = "AdmissionFeeMaster" })"><i class="fa fa-circle-o"></i> All Admission Fee</a></li>
+                                    <li><a href="@Url.Action("Create", new { Area = "", Controller = "AdmissionFeeMaster" })"><i class="fa fa-circle-o"></i> Add Admission Fee</a></li>
                                 </ul>
                             </li>
                             <li class="treeview">
                                 <a href="#"><i class="fa fa-file-text"></i><span>Bus Charges</span><i class="fa fa-angle-right"></i></a>
                                 <ul class="treeview-menu">
-                                    <li><a href="@Url.Action("Index", "BusChargesMaster")"><i class="fa fa-circle-o"></i> All Bus Charges</a></li>
-                                    <li><a href="@Url.Action("Create", "BusChargesMaster")"><i class="fa fa-circle-o"></i> Add Bus Charges</a></li>
+                                    <li><a href="@Url.Action("Index", new { Area = "", Controller = "BusChargesMaster" })"><i class="fa fa-circle-o"></i> All Bus Charges</a></li>
+                                    <li><a href="@Url.Action("Create", new { Area = "", Controller = "BusChargesMaster" })"><i class="fa fa-circle-o"></i> Add Bus Charges</a></li>
                                 </ul>
-                            </li>
+                            </li>*@
                         </ul>
                     </li>
                     <li class="treeview">
                         <a href="#"><i class="fa fa-file-text"></i><span>Employee</span><i class="fa fa-angle-right"></i></a>
                         <ul class="treeview-menu">
-                            <li><a href="@Url.Action("Index", "Employee")"><i class="fa fa-circle-o"></i> All Employee</a></li>
-                            <li><a href="@Url.Action("Create", "Employee")"><i class="fa fa-circle-o"></i> Add New</a></li>
+                            <li><a href="@Url.Action("Index", new { Area = "", Controller = "Employee" })"><i class="fa fa-circle-o"></i> All Employee</a></li>
+                            <li><a href="@Url.Action("Create", new { Area = "", Controller = "Employee" })"><i class="fa fa-circle-o"></i> Add New</a></li>
                         </ul>
                     </li>
                     <li class="treeview">
                         <a href="#"><i class="fa fa-file-text"></i><span>Enquiry</span><i class="fa fa-angle-right"></i></a>
                         <ul class="treeview-menu">
-                            <li><a href="@Url.Action("Index", "Enquiry")"><i class="fa fa-circle-o"></i> All Enquiry</a></li>
-                            <li><a href="@Url.Action("Create", "Enquiry")"><i class="fa fa-circle-o"></i> Add New</a></li>
+                            <li><a href="@Url.Action("Index", new { Area = "", Controller = "Enquiry" })"><i class="fa fa-circle-o"></i> All Enquiry</a></li>
+                            <li><a href="@Url.Action("Create", new { Area = "", Controller = "Enquiry" })"><i class="fa fa-circle-o"></i> Add New</a></li>
                         </ul>
                     </li>
-                    <li class="treeview">
+                    @*<li class="treeview">
                         <a href="#"><i class="fa fa-file-text"></i><span>Fee Collection</span><i class="fa fa-angle-right"></i></a>
                         <ul class="treeview-menu">
-                            <li><a href="@Url.Action("Index", "FeeCollection")"><i class="fa fa-circle-o"></i> All Fee Collection</a></li>
+                            <li><a href="@Url.Action("Index", new { Area = "", Controller = "FeeCollection" })"><i class="fa fa-circle-o"></i> All Fee Collection</a></li>
                         </ul>
-                    </li>
+                    </li>*@
                     <li class="treeview">
                         <a href="#"><i class="fa fa-file-text"></i><span>Section Allocation</span><i class="fa fa-angle-right"></i></a>
                         <ul class="treeview-menu">
-                            <li><a href="@Url.Action("Index", "SectionAllocation")"><i class="fa fa-circle-o"></i> Section Allocation</a></li>
+                            <li><a href="@Url.Action("Index", new { Area = "", Controller = "SectionAllocation" })"><i class="fa fa-circle-o"></i> Section Allocation</a></li>
                         </ul>
                     </li>
                     <li class="treeview">
                         <a href="#"><i class="fa fa-file-text"></i><span>Roll No Allocation</span><i class="fa fa-angle-right"></i></a>
                         <ul class="treeview-menu">
-                            <li><a href="@Url.Action("Index", "RollNoAllocation")"><i class="fa fa-circle-o"></i> Roll No Allocation</a></li>
+                            <li><a href="@Url.Action("Index", new { Area = "", Controller = "RollNoAllocation" })"><i class="fa fa-circle-o"></i> Roll No Allocation</a></li>
                         </ul>
                     </li>
                     <li class="treeview">
                         <a href="#"><i class="fa fa-file-text"></i><span>Promote To Class</span><i class="fa fa-angle-right"></i></a>
                         <ul class="treeview-menu">
-                            <li><a href="@Url.Action("Index", "PromoteToClass")"><i class="fa fa-circle-o"></i> Promote To Class</a></li>
+                            <li><a href="@Url.Action("Index", new { Area = "", Controller = "PromoteToClass" })"><i class="fa fa-circle-o"></i> Promote To Class</a></li>
                         </ul>
                     </li>
 
                     <li class="treeview">
                         <a href="#"><i class="fa fa-file-text"></i><span>Reports</span><i class="fa fa-angle-right"></i></a>
                         <ul class="treeview-menu">
-                            <li><a href="@Url.Action("Index", "RPT/EnquiryReport")"><i class="fa fa-circle-o"></i> Enquiry Report</a></li>
-                            <li><a href="@Url.Action("Index", "RPT/AdmissionReport")"><i class="fa fa-circle-o"></i> Admission Report</a></li>
+                            <li><a href="@Url.Action("Index", new { Area = "RPT", Controller = "EnquiryReport" })"><i class="fa fa-circle-o"></i> Enquiry Report</a></li>
+                            <li><a href="@Url.Action("Index", new { Area = "RPT", Controller = "AdmissionReport" })"><i class="fa fa-circle-o"></i> Admission Report</a></li>
                         </ul>
                     </li>
 

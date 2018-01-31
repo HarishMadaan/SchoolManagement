@@ -56,6 +56,7 @@
     </Compile>
     <Compile Include="Interfaces\IAdmissionFeeMasterRepo.cs" />
     <Compile Include="Interfaces\IBusChargesMasterRepo.cs" />
+    <Compile Include="Interfaces\IChangePasswordRepo.cs" />
     <Compile Include="Interfaces\ICommonMasterDataRepo.cs" />
     <Compile Include="Interfaces\IAttendanceRepo.cs" />
     <Compile Include="Interfaces\IClassMasterRepo.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="Interfaces\IEventMasterRepo.cs" />
     <Compile Include="Interfaces\IFeeCollectionRepo.cs" />
     <Compile Include="Interfaces\IFeeMasterRepo.cs" />
+    <Compile Include="Interfaces\IProfileRepo.cs" />
     <Compile Include="Interfaces\IPromoteToClassRepo.cs" />
     <Compile Include="Interfaces\IRollNoAllocationRepo.cs" />
     <Compile Include="Interfaces\ISchoolMasterRepo.cs" />
@@ -79,6 +81,7 @@
     <Compile Include="Repositories\AdmissionFeeMasterRepo.cs" />
     <Compile Include="Repositories\AttendanceRepo.cs" />
     <Compile Include="Repositories\BusChargesMasterRepo.cs" />
+    <Compile Include="Repositories\ChangePasswordRepo.cs" />
     <Compile Include="Repositories\ClassMasterRepo.cs" />
     <Compile Include="Repositories\CommonMasterDataRepo.cs" />
     <Compile Include="Repositories\DashboardMasterRepo.cs" />
@@ -87,6 +90,7 @@
     <Compile Include="Repositories\EventMasterRepo.cs" />
     <Compile Include="Repositories\FeeCollectionRepo.cs" />
     <Compile Include="Repositories\FeeMasterRepo.cs" />
+    <Compile Include="Repositories\ProfileRepo.cs" />
     <Compile Include="Repositories\PromoteToClassRepo.cs" />
     <Compile Include="Repositories\RollNoAllocationRepo.cs" />
     <Compile Include="Repositories\SchoolMasterRepo.cs" />

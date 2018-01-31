@@ -74,24 +74,31 @@ namespace School.Web.Controllers
             var SessionType = objBDCCommon.GetSessionMaster();
             objSessionModel.SessionList = new SelectList(SessionType, "SessionId", "Title");
             ViewBag.SessionInfo = objSessionModel.SessionList;
-
-            var ClassType = objBDCCommon.GetClassMaster(Convert.ToInt32(Session[CommonStrings.DefaultSession]));
-            objClassModel.ClassList = new SelectList(ClassType, "ClassId", "Title");
-            ViewBag.ClassInfo = objClassModel.ClassList;
-
+            
             var EmployeeType = objBDCCommon.GetEmployeeMaster();
             objEmployeeModel.EmployeeList = new SelectList(EmployeeType, "EmployeeId", "EmployeeName");
             ViewBag.EmployeeInfo = objEmployeeModel.EmployeeList;
 
             if (id != 0)
-            {                
+            {
                 objBDC = new EnquiryDetailBusiness();
                 objModel = objBDC.GetById(id);
 
                 ViewBag.ClassValue = Convert.ToString(objModel.ClassId);
-            }
+                ViewBag.SessionValue = Convert.ToString(objModel.SessionId);
 
-            ViewBag.SessionValue = Session[CommonStrings.DefaultSession].ToString();            
+                var ClassType = objBDCCommon.GetClassMaster(Convert.ToInt32(objModel.SessionId));
+                objClassModel.ClassList = new SelectList(ClassType, "ClassId", "Title");
+                ViewBag.ClassInfo = objClassModel.ClassList;
+            }
+            else
+            {
+                var ClassType = objBDCCommon.GetClassMaster(Convert.ToInt32(Session[CommonStrings.DefaultSession]));
+                objClassModel.ClassList = new SelectList(ClassType, "ClassId", "Title");
+                ViewBag.ClassInfo = objClassModel.ClassList;
+
+                ViewBag.SessionValue = Session[CommonStrings.DefaultSession].ToString();
+            }
 
             return View(objModel);
         }

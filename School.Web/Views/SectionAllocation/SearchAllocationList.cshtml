@@ -1,4 +1,6 @@
-﻿<table class="table">
+﻿@if (ViewBag.AllocationDetail.Count != 0)
+{
+<table class="table">
     <tr>
         <th>
             Action
@@ -44,3 +46,4 @@
     }
 
 </table>
+}

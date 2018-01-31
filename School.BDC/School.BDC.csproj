@@ -43,6 +43,7 @@
     <Compile Include="Classes\AdmissionFeeMasterBusiness.cs" />
     <Compile Include="Classes\AttendanceBusiness.cs" />
     <Compile Include="Classes\BusChargesMasterBusiness.cs" />
+    <Compile Include="Classes\ChangePasswordBusiness.cs" />
     <Compile Include="Classes\ClassMasterBusiness.cs" />
     <Compile Include="Classes\CommonMasterDataBusiness.cs" />
     <Compile Include="Classes\DashboardMasterBusiness.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Classes\EventMasterBusiness.cs" />
     <Compile Include="Classes\FeeCollectionBusiness.cs" />
     <Compile Include="Classes\FeeMasterBusiness.cs" />
+    <Compile Include="Classes\ProfileBusiness.cs" />
     <Compile Include="Classes\PromoteToClassBusiness.cs" />
     <Compile Include="Classes\RollNoAllocationBusiness.cs" />
     <Compile Include="Classes\SchoolMasterBusiness.cs" />
@@ -61,6 +63,7 @@
     <Compile Include="Interfaces\IAdmissionFeeMasterBusiness.cs" />
     <Compile Include="Interfaces\IAttendanceBusiness.cs" />
     <Compile Include="Interfaces\IBusChargesMasterBusiness.cs" />
+    <Compile Include="Interfaces\IChangePasswordBusiness.cs" />
     <Compile Include="Interfaces\ICommonMasterDataBusiness.cs" />
     <Compile Include="Interfaces\IClassMasterBusiness.cs" />
     <Compile Include="Interfaces\IDashboardMasterBusiness.cs" />
@@ -69,6 +72,7 @@
     <Compile Include="Interfaces\IEventMasterBusiness.cs" />
     <Compile Include="Interfaces\IFeeCollectionBusiness.cs" />
     <Compile Include="Interfaces\IFeeMasterBusiness.cs" />
+    <Compile Include="Interfaces\IProfileBusiness.cs" />
     <Compile Include="Interfaces\IPromoteToClassBusiness.cs" />
     <Compile Include="Interfaces\IRollNoAllocationBusiness.cs" />
     <Compile Include="Interfaces\ISchoolMasterBusiness.cs" />

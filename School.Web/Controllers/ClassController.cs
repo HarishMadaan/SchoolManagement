@@ -72,9 +72,13 @@ namespace School.Web.Controllers
             {
                 objBDC = new ClassMasterBusiness();
                 objModel = objBDC.GetById(id);
-            }
 
-            ViewBag.SessionValue = Session[CommonStrings.DefaultSession].ToString();
+                ViewBag.SessionValue = Convert.ToString(objModel.SessionId);
+            }
+            else
+            {
+                ViewBag.SessionValue = Session[CommonStrings.DefaultSession].ToString();
+            }
 
             return View(objModel);
         }

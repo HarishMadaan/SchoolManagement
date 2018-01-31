@@ -178,6 +178,7 @@
     <Compile Include="Controllers\AllocationController.cs" />
     <Compile Include="Controllers\AttendanceController.cs" />
     <Compile Include="Controllers\BusChargesMasterController.cs" />
+    <Compile Include="Controllers\ChangePasswordController.cs" />
     <Compile Include="Controllers\ClassController.cs" />
     <Compile Include="Controllers\CommonMasterController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="Controllers\FeeMasterController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\PromoteToClassController.cs" />
     <Compile Include="Controllers\RollNoAllocationController.cs" />
     <Compile Include="Controllers\SchoolController.cs" />
@@ -588,6 +590,8 @@
     <Content Include="Views\RollNoAllocation\SearchRollNoAllocationList.cshtml" />
     <Content Include="Views\Attendance\SearchAttendanceAllocationList.cshtml" />
     <Content Include="Views\Attendance\Index.cshtml" />
+    <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\ChangePassword\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

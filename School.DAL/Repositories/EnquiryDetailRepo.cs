@@ -307,54 +307,51 @@ namespace School.DAL.Repositories
                                     dbcontext.tblAdmissions.Add(objAddAdmission);
                                     dbcontext.SaveChanges();
 
-                                    tblClassFeeDetail objAddClassFeeDetail = new tblClassFeeDetail
-                                    {
-                                        AdmissionId = objAddAdmission.AdmissionId,
-                                        ClassId = objModel.ClassId,
-                                        TotalFees = objModel.ClassFeeDetailModel.TotalFees,
-                                        RegistrationFees = objModel.ClassFeeDetailModel.RegistrationFees,
-                                        FeeToBePaid = (Convert.ToDecimal(objModel.ClassFeeDetailModel.TotalFees) - Convert.ToDecimal(objModel.ClassFeeDetailModel.DiscountAmount)),
-                                        DiscountType = objModel.ClassFeeDetailModel.DiscountType,
-                                        DiscountAmount = objModel.ClassFeeDetailModel.DiscountAmount,
-                                        BalanceAmountDue = (Convert.ToInt32(objModel.ClassFeeDetailModel.TotalFees) - (Convert.ToDecimal(objModel.ClassFeeDetailModel.DiscountAmount) + Convert.ToDecimal(objModel.ClassFeeDetailModel.RegistrationFees))),
-                                        FeeIncharge = objModel.ClassFeeDetailModel.FeeIncharge,
-                                        PaymentMode = objModel.ClassFeeDetailModel.PaymentMode,
-                                        FeeDate = DateTime.Now,
-                                        Status = objModel.Status,
+                                    //tblClassFeeDetail objAddClassFeeDetail = new tblClassFeeDetail
+                                    //{
+                                    //    AdmissionId = objAddAdmission.AdmissionId,
+                                    //    ClassId = objModel.ClassId,
+                                    //    TotalFees = objModel.ClassFeeDetailModel.TotalFees,
+                                    //    RegistrationFees = objModel.ClassFeeDetailModel.RegistrationFees,
+                                    //    FeeToBePaid = (Convert.ToDecimal(objModel.ClassFeeDetailModel.TotalFees) - Convert.ToDecimal(objModel.ClassFeeDetailModel.DiscountAmount)),
+                                    //    DiscountType = objModel.ClassFeeDetailModel.DiscountType,
+                                    //    DiscountAmount = objModel.ClassFeeDetailModel.DiscountAmount,
+                                    //    BalanceAmountDue = (Convert.ToInt32(objModel.ClassFeeDetailModel.TotalFees) - (Convert.ToDecimal(objModel.ClassFeeDetailModel.DiscountAmount) + Convert.ToDecimal(objModel.ClassFeeDetailModel.RegistrationFees))),
+                                    //    FeeIncharge = objModel.ClassFeeDetailModel.FeeIncharge,
+                                    //    PaymentMode = objModel.ClassFeeDetailModel.PaymentMode,
+                                    //    FeeDate = DateTime.Now,
+                                    //    Status = objModel.Status,
 
-                                        IsActive = true,
-                                        IsDeleted = false,
-                                        CreatedBy = objModel.CreatedBy,
-                                        CreatedDate = DateTime.Now,
-                                        ModifiedBy = objModel.ModifiedBy,
-                                        ModifiedDate = DateTime.Now,
+                                    //    IsActive = true,
+                                    //    IsDeleted = false,
+                                    //    CreatedBy = objModel.CreatedBy,
+                                    //    CreatedDate = DateTime.Now,
+                                    //    ModifiedBy = objModel.ModifiedBy,
+                                    //    ModifiedDate = DateTime.Now,
+                                    //};
+                                    //dbcontext.tblClassFeeDetails.Add(objAddClassFeeDetail);
+                                    //dbcontext.SaveChanges();
 
-                                    };
+                                    //tblFeeCollection objAddAdmissionFee = new tblFeeCollection
+                                    //{
+                                    //    SchoolId = Convert.ToInt32(CommonHelper.TaskSchoolId.SchoolId),
+                                    //    AdmissionId = objAddAdmission.AdmissionId,
+                                    //    ClassId = objModel.ClassId,
+                                    //    AmountPaid = objModel.ClassFeeDetailModel.RegistrationFees,
+                                    //    FeeDate = DateTime.Now,
+                                    //    FeeInCharge = objModel.ClassFeeDetailModel.FeeIncharge,
+                                    //    FeeMode = objModel.ClassFeeDetailModel.PaymentMode,
+                                    //    FeeType = "Registration Fees",
 
-                                    dbcontext.tblClassFeeDetails.Add(objAddClassFeeDetail);
-                                    dbcontext.SaveChanges();
-
-                                    tblFeeCollection objAddAdmissionFee = new tblFeeCollection
-                                    {
-                                        SchoolId = Convert.ToInt32(CommonHelper.TaskSchoolId.SchoolId),
-                                        AdmissionId = objAddAdmission.AdmissionId,
-                                        ClassId = objModel.ClassId,
-                                        AmountPaid = objModel.ClassFeeDetailModel.RegistrationFees,
-                                        FeeDate = DateTime.Now,
-                                        FeeInCharge = objModel.ClassFeeDetailModel.FeeIncharge,
-                                        FeeMode = objModel.ClassFeeDetailModel.PaymentMode,
-                                        FeeType = "Registration Fees",
-
-                                        CreatedDate = DateTime.Now,
-                                        CreatedBy = objModel.CreatedBy,
-                                        ModifiedDate = DateTime.Now,
-                                        ModifiedBy = objModel.ModifiedBy,
-                                        IsActive = true,
-                                        IsDeleted = false,
-                                    };
-
-                                    dbcontext.tblFeeCollections.Add(objAddAdmissionFee);
-                                    dbcontext.SaveChanges();
+                                    //    CreatedDate = DateTime.Now,
+                                    //    CreatedBy = objModel.CreatedBy,
+                                    //    ModifiedDate = DateTime.Now,
+                                    //    ModifiedBy = objModel.ModifiedBy,
+                                    //    IsActive = true,
+                                    //    IsDeleted = false,
+                                    //};
+                                    //dbcontext.tblFeeCollections.Add(objAddAdmissionFee);
+                                    //dbcontext.SaveChanges();
 
                                     tblPromoteToClass objAddToClass = new tblPromoteToClass
                                     {
@@ -465,90 +462,90 @@ namespace School.DAL.Repositories
                                         NewAdmissionId = objAddAdmission.AdmissionId;
                                     }
 
-                                    var objUpdateAdmFee = dbcontext.tblFeeCollections.FirstOrDefault(m => m.AdmissionId == NewAdmissionId);
-                                    if (objUpdateAdmFee != null)
-                                    {
-                                        objUpdateAdmFee.AdmissionId = NewAdmissionId;
-                                        objUpdateAdmFee.AmountPaid = objModel.ClassFeeDetailModel.RegistrationFees;
-                                        objUpdateAdmFee.FeeDate = DateTime.Now;
-                                        objUpdateAdmFee.FeeInCharge = objModel.ClassFeeDetailModel.FeeIncharge;
-                                        objUpdateAdmFee.FeeMode = objModel.ClassFeeDetailModel.PaymentMode;
-                                        objUpdateAdmFee.FeeType = "Registration Fees";
+                                    //var objUpdateAdmFee = dbcontext.tblFeeCollections.FirstOrDefault(m => m.AdmissionId == NewAdmissionId);
+                                    //if (objUpdateAdmFee != null)
+                                    //{
+                                    //    objUpdateAdmFee.AdmissionId = NewAdmissionId;
+                                    //    objUpdateAdmFee.AmountPaid = objModel.ClassFeeDetailModel.RegistrationFees;
+                                    //    objUpdateAdmFee.FeeDate = DateTime.Now;
+                                    //    objUpdateAdmFee.FeeInCharge = objModel.ClassFeeDetailModel.FeeIncharge;
+                                    //    objUpdateAdmFee.FeeMode = objModel.ClassFeeDetailModel.PaymentMode;
+                                    //    objUpdateAdmFee.FeeType = "Registration Fees";
 
-                                        objUpdateAdmFee.CreatedDate = DateTime.Now;
-                                        objUpdateAdmFee.CreatedBy = objModel.CreatedBy;
-                                        objUpdateAdmFee.ModifiedDate = DateTime.Now;
-                                        objUpdateAdmFee.ModifiedBy = objModel.ModifiedBy;
-                                        objUpdateAdmFee.IsActive = true;
-                                        objUpdateAdmFee.IsDeleted = false;
+                                    //    objUpdateAdmFee.CreatedDate = DateTime.Now;
+                                    //    objUpdateAdmFee.CreatedBy = objModel.CreatedBy;
+                                    //    objUpdateAdmFee.ModifiedDate = DateTime.Now;
+                                    //    objUpdateAdmFee.ModifiedBy = objModel.ModifiedBy;
+                                    //    objUpdateAdmFee.IsActive = true;
+                                    //    objUpdateAdmFee.IsDeleted = false;
 
-                                        dbcontext.SaveChanges();
-                                    }
-                                    else
-                                    {
-                                        tblFeeCollection objAddAdmissionFee = new tblFeeCollection
-                                        {
-                                            SchoolId = Convert.ToInt32(CommonHelper.TaskSchoolId.SchoolId),
-                                            AdmissionId = NewAdmissionId,
-                                            AmountPaid = objModel.ClassFeeDetailModel.RegistrationFees,
-                                            FeeDate = DateTime.Now,
-                                            FeeInCharge = objModel.ClassFeeDetailModel.FeeIncharge,
-                                            FeeMode = objModel.ClassFeeDetailModel.PaymentMode,
-                                            FeeType = "Registration Fees",
+                                    //    dbcontext.SaveChanges();
+                                    //}
+                                    //else
+                                    //{
+                                    //    tblFeeCollection objAddAdmissionFee = new tblFeeCollection
+                                    //    {
+                                    //        SchoolId = Convert.ToInt32(CommonHelper.TaskSchoolId.SchoolId),
+                                    //        AdmissionId = NewAdmissionId,
+                                    //        AmountPaid = objModel.ClassFeeDetailModel.RegistrationFees,
+                                    //        FeeDate = DateTime.Now,
+                                    //        FeeInCharge = objModel.ClassFeeDetailModel.FeeIncharge,
+                                    //        FeeMode = objModel.ClassFeeDetailModel.PaymentMode,
+                                    //        FeeType = "Registration Fees",
 
-                                            CreatedDate = DateTime.Now,
-                                            CreatedBy = objModel.CreatedBy,
-                                            ModifiedDate = DateTime.Now,
-                                            ModifiedBy = objModel.ModifiedBy,
-                                            IsActive = true,
-                                            IsDeleted = false,
-                                        };
+                                    //        CreatedDate = DateTime.Now,
+                                    //        CreatedBy = objModel.CreatedBy,
+                                    //        ModifiedDate = DateTime.Now,
+                                    //        ModifiedBy = objModel.ModifiedBy,
+                                    //        IsActive = true,
+                                    //        IsDeleted = false,
+                                    //    };
 
-                                        dbcontext.tblFeeCollections.Add(objAddAdmissionFee);
-                                        dbcontext.SaveChanges();
-                                    }
+                                    //    dbcontext.tblFeeCollections.Add(objAddAdmissionFee);
+                                    //    dbcontext.SaveChanges();
+                                    //}
 
-                                    var objUpdateClassFeeDetail = dbcontext.tblClassFeeDetails.FirstOrDefault(m => m.AdmissionId == NewAdmissionId);
-                                    if (objUpdateClassFeeDetail != null)
-                                    {
-                                        objUpdateClassFeeDetail.TotalFees = objModel.ClassFeeDetailModel.TotalFees;
-                                        objUpdateClassFeeDetail.RegistrationFees = objModel.ClassFeeDetailModel.RegistrationFees;
-                                        objUpdateClassFeeDetail.FeeToBePaid = (Convert.ToDecimal(objModel.ClassFeeDetailModel.TotalFees) - Convert.ToDecimal(objModel.ClassFeeDetailModel.DiscountAmount));
-                                        objUpdateClassFeeDetail.DiscountType = objModel.ClassFeeDetailModel.DiscountType;
-                                        objUpdateClassFeeDetail.DiscountAmount = objModel.ClassFeeDetailModel.DiscountAmount;
-                                        objUpdateClassFeeDetail.BalanceAmountDue = (Convert.ToInt32(objModel.ClassFeeDetailModel.TotalFees) - (Convert.ToDecimal(objModel.ClassFeeDetailModel.DiscountAmount) + Convert.ToDecimal(dbcontext.tblFeeCollections.Where(x => x.AdmissionId == objUpdateClassFeeDetail.AdmissionId).Sum(x => x.AmountPaid))));
+                                    //var objUpdateClassFeeDetail = dbcontext.tblClassFeeDetails.FirstOrDefault(m => m.AdmissionId == NewAdmissionId);
+                                    //if (objUpdateClassFeeDetail != null)
+                                    //{
+                                    //    objUpdateClassFeeDetail.TotalFees = objModel.ClassFeeDetailModel.TotalFees;
+                                    //    objUpdateClassFeeDetail.RegistrationFees = objModel.ClassFeeDetailModel.RegistrationFees;
+                                    //    objUpdateClassFeeDetail.FeeToBePaid = (Convert.ToDecimal(objModel.ClassFeeDetailModel.TotalFees) - Convert.ToDecimal(objModel.ClassFeeDetailModel.DiscountAmount));
+                                    //    objUpdateClassFeeDetail.DiscountType = objModel.ClassFeeDetailModel.DiscountType;
+                                    //    objUpdateClassFeeDetail.DiscountAmount = objModel.ClassFeeDetailModel.DiscountAmount;
+                                    //    objUpdateClassFeeDetail.BalanceAmountDue = (Convert.ToInt32(objModel.ClassFeeDetailModel.TotalFees) - (Convert.ToDecimal(objModel.ClassFeeDetailModel.DiscountAmount) + Convert.ToDecimal(dbcontext.tblFeeCollections.Where(x => x.AdmissionId == objUpdateClassFeeDetail.AdmissionId).Sum(x => x.AmountPaid))));
 
-                                        objUpdateClassFeeDetail.FeeIncharge = objModel.ClassFeeDetailModel.FeeIncharge;
-                                        objUpdateClassFeeDetail.PaymentMode = objModel.ClassFeeDetailModel.PaymentMode;
+                                    //    objUpdateClassFeeDetail.FeeIncharge = objModel.ClassFeeDetailModel.FeeIncharge;
+                                    //    objUpdateClassFeeDetail.PaymentMode = objModel.ClassFeeDetailModel.PaymentMode;
 
-                                        dbcontext.SaveChanges();
-                                    }
-                                    else
-                                    {
-                                        tblClassFeeDetail objAddClassFee = new tblClassFeeDetail
-                                        {
-                                            AdmissionId = NewAdmissionId,
-                                            TotalFees = objModel.ClassFeeDetailModel.TotalFees,
-                                            RegistrationFees = objModel.ClassFeeDetailModel.RegistrationFees,
-                                            FeeToBePaid = (Convert.ToDecimal(objModel.ClassFeeDetailModel.TotalFees) - Convert.ToDecimal(objModel.ClassFeeDetailModel.DiscountAmount)),
-                                            DiscountType = objModel.ClassFeeDetailModel.DiscountType,
-                                            DiscountAmount = objModel.ClassFeeDetailModel.DiscountAmount,
-                                            BalanceAmountDue = (Convert.ToInt32(objModel.ClassFeeDetailModel.TotalFees) - (Convert.ToDecimal(objModel.ClassFeeDetailModel.DiscountAmount) + Convert.ToDecimal(objModel.ClassFeeDetailModel.RegistrationFees))),
+                                    //    dbcontext.SaveChanges();
+                                    //}
+                                    //else
+                                    //{
+                                    //    tblClassFeeDetail objAddClassFee = new tblClassFeeDetail
+                                    //    {
+                                    //        AdmissionId = NewAdmissionId,
+                                    //        TotalFees = objModel.ClassFeeDetailModel.TotalFees,
+                                    //        RegistrationFees = objModel.ClassFeeDetailModel.RegistrationFees,
+                                    //        FeeToBePaid = (Convert.ToDecimal(objModel.ClassFeeDetailModel.TotalFees) - Convert.ToDecimal(objModel.ClassFeeDetailModel.DiscountAmount)),
+                                    //        DiscountType = objModel.ClassFeeDetailModel.DiscountType,
+                                    //        DiscountAmount = objModel.ClassFeeDetailModel.DiscountAmount,
+                                    //        BalanceAmountDue = (Convert.ToInt32(objModel.ClassFeeDetailModel.TotalFees) - (Convert.ToDecimal(objModel.ClassFeeDetailModel.DiscountAmount) + Convert.ToDecimal(objModel.ClassFeeDetailModel.RegistrationFees))),
 
-                                            FeeIncharge = objModel.ClassFeeDetailModel.FeeIncharge,
-                                            PaymentMode = objModel.ClassFeeDetailModel.PaymentMode,
+                                    //        FeeIncharge = objModel.ClassFeeDetailModel.FeeIncharge,
+                                    //        PaymentMode = objModel.ClassFeeDetailModel.PaymentMode,
 
-                                            IsActive = true,
-                                            IsDeleted = false,
-                                            CreatedBy = objModel.ClassFeeDetailModel.CreatedBy,
-                                            CreatedDate = DateTime.Now,
-                                            ModifiedBy = objModel.ClassFeeDetailModel.ModifiedBy,
-                                            ModifiedDate = DateTime.Now,
+                                    //        IsActive = true,
+                                    //        IsDeleted = false,
+                                    //        CreatedBy = objModel.ClassFeeDetailModel.CreatedBy,
+                                    //        CreatedDate = DateTime.Now,
+                                    //        ModifiedBy = objModel.ClassFeeDetailModel.ModifiedBy,
+                                    //        ModifiedDate = DateTime.Now,
 
-                                        };
-                                        dbcontext.tblClassFeeDetails.Add(objAddClassFee);
-                                        dbcontext.SaveChanges();
-                                    }
+                                    //    };
+                                    //    dbcontext.tblClassFeeDetails.Add(objAddClassFee);
+                                    //    dbcontext.SaveChanges();
+                                    //}
 
                                     var objUpdatePrototeToClass = dbcontext.tblPromoteToClasses.FirstOrDefault(m => m.AdmissionId == NewAdmissionId);
                                     if (objUpdatePrototeToClass != null)

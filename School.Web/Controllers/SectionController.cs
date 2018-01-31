@@ -73,18 +73,27 @@ namespace School.Web.Controllers
             var SessionType = objBDCCommon.GetSessionMaster();
             objSessionModel.SessionList = new SelectList(SessionType, "SessionId", "Title");
             ViewBag.SessionInfo = objSessionModel.SessionList;
-
-            var ClassType = objBDCCommon.GetClassMaster(Convert.ToInt32(Session[CommonStrings.DefaultSession]));
-            objClassModel.ClassList = new SelectList(ClassType, "ClassId", "Title");
-            ViewBag.ClassInfo = objClassModel.ClassList;
-
+            
             if (id > 0)
             {
                 objBDC = new SectionMasterBusiness();
                 objModel = objBDC.GetById(id);
-            }
 
-            ViewBag.SessionValue = Session[CommonStrings.DefaultSession].ToString();
+                var ClassType = objBDCCommon.GetClassMaster(Convert.ToInt32(objModel.SessionId));
+                objClassModel.ClassList = new SelectList(ClassType, "ClassId", "Title");
+                ViewBag.ClassInfo = objClassModel.ClassList;
+
+                ViewBag.ClassValue = Convert.ToString(objModel.ClassId);
+                ViewBag.SessionValue = Convert.ToString(objModel.SessionId);
+            }
+            else
+            {
+                var ClassType = objBDCCommon.GetClassMaster(Convert.ToInt32(Session[CommonStrings.DefaultSession]));
+                objClassModel.ClassList = new SelectList(ClassType, "ClassId", "Title");
+                ViewBag.ClassInfo = objClassModel.ClassList;
+
+                ViewBag.SessionValue = Session[CommonStrings.DefaultSession].ToString();
+            }
 
             return View(objModel);
         }

@@ -31,9 +31,10 @@ namespace School.DAL.Repositories
                                 {
                                     SectionId = x.SectionId,
                                     SchoolId = x.SchoolId,
-                                    SchoolName = x.tblSchool != null ? x.tblSchool.Name : "",
+                                    SchoolName = x.SchoolId != null ? x.tblSchool.Name : "",
+                                    SessionId = x.ClassId != null ? x.tblClass.SessionId : 0,
                                     ClassId = x.ClassId,
-                                    ClassName = x.tblClass != null ? x.tblClass.Title : "",
+                                    ClassName = x.ClassId != null ? x.tblClass.Title : "",
                                     Title = x.Title,
                                     Image = x.Image,
                                     DDate = x.DDate,

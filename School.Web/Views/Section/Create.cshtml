@@ -60,7 +60,7 @@
                                                         <option value="0">-- Select Class --</option>
                                                         @foreach (SelectListItem option in ViewBag.ClassInfo)
                                                         {
-                                                            <option value="@option.Value">@option.Text</option>
+                                                            <option value="@option.Value" @(option.Value == ViewBag.ClassValue ? "selected='selected'" : "")>@option.Text</option>
                                                         }
                                                     </select>
                                                     @Html.ValidationMessageFor(model => model.ClassId, "", new { @class = "text-danger" })

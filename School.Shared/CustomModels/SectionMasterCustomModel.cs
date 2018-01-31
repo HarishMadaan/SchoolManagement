@@ -10,7 +10,7 @@ namespace School.Shared.CustomModels
     public class SectionMasterCustomModel
     {
         public int SectionId { get; set; }
-
+        
         [Required(ErrorMessage = "Please enter class")]
         public Nullable<int> ClassId { get; set; }
         public string ClassName { get; set; }

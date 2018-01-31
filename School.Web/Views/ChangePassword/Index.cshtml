@@ -1,0 +1,124 @@
+﻿@model School.Shared.CustomModels.ChangePasswordCustomModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaster.cshtml";
+    School.Shared.CustomModels.MessageModel objMessageModel = new School.Shared.CustomModels.MessageModel();
+}
+
+@if (TempData["Message"] != null)
+{
+    string Message = TempData["Message"].ToString();
+    TempData.Remove("Message");
+    objMessageModel.MessageType = Message.Split('^')[0];
+    objMessageModel.Message = Message.Split('^')[1];
+}
+<div class="page-title">
+    <div>
+        <h1><i class="fa fa-edit"></i> Change Password</h1>
+    </div>
+    <div> 
+        <ul class="breadcrumb">
+            <li><a href="@Url.Action("Index", "Dashboard")"><i class="fa fa-home fa-lg"></i></a></li>
+            <li>@Html.ActionLink("ChangePassword", "Index")</li>
+        </ul>
+    </div>
+</div>
+<div style="width: 100%;" id="MessageBox">
+    @Html.Partial("~/Views/Shared/PartialViews/_Message.cshtml", objMessageModel)
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="well bs-component">
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-horizontal">
+                                <hr />
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                @*@Html.HiddenFor(model => model.Id)*@
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label" for="inputUserName">
+                                        @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    </label>
+                                    <div class="col-lg-7">
+                                        @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <span style="color: red">*</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label" for="inputPassword">
+                                        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    </label>
+                                    <div class="col-lg-7">
+                                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <span style="color: red">*</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label" for="inputNewPassword">
+                                        @Html.LabelFor(model => model.NewPassword, new { @class = "control-label col-lg-4" })
+                                    </label>
+                                    <div class="col-lg-7">
+                                        @Html.EditorFor(model => model.NewPassword, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.NewPassword, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <span style="color: red">*</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label" for="inputConfirmPassword">
+                                        @Html.LabelFor(model => model.ConfirmPassword, new { @class = "control-label col-lg-4" })
+                                    </label>
+                                    <div class="col-lg-7">
+                                        @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <span style="color: red">*</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-4 col-md-10">
+                                        <input type="submit" value="Save" class="btn btn-primary" />
+                                        | @Html.ActionLink("Back to List", "Index")
+                                    </div>
+                                </div>                                
+                            </div>
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Javascripts-->
+<script src="~/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(window).load(function () {
+            $('#loader').hide();
+        });
+    });
+
+    $('#MessageBox').delay(2000).fadeOut();
+
+</script>

@@ -41,7 +41,7 @@
                         <div class="form-group">
                             <div class="col-sm-12">
                                 @*@Html.DropDownList("SessionId", ViewBag.SessionInfo as IEnumerable<SelectListItem>, "-- Select Session --", new { @class = "form-control", @id = "SessionId" })*@
-                                <select id="SessionId" name="SessionId" class="form-control">
+                                <select id="SessionId" name="SessionId" class="form-control" onchange="FillClass()">
                                     <option value="0">-- Select Session --</option>
                                     @foreach (SelectListItem option in ViewBag.SessionInfo)
                                     {
@@ -183,6 +183,34 @@
     });
 
     $('#MessageBox').delay(2000).fadeOut();
+
+
+    function FillClass() {
+        $('#loader').show();
+        var sessionId = $('#SessionId').val();
+        if (sessionId != "") {
+            $.ajax({
+                url: '/CommonMaster/FillClass',
+                type: "GET",
+                dataType: "JSON",
+                data: { SessionId: sessionId },
+                success: function (classes) {
+                    $("#ClassId").html(""); // clear before appending new list
+                    $("#ClassId").append
+                    ($('<option></option>').val(null).html("-- Select Class --"));
+                    $.each(classes, function (i, classinfo)
+                    { $("#ClassId").append($('<option></option>').val(classinfo.ClassId).html(classinfo.Title)) })
+                }
+            });
+        }
+        else {
+            $("#ClassId").html(""); // clear before appending new list
+            $("#ClassId").append
+                    ($('<option></option>').val(null).html("-- Select Class --"));
+
+        }
+        $('#loader').hide();
+    }
 
     function SearchSessionWiseResult() {
         $('#loader').show();

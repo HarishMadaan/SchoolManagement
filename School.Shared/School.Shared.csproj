@@ -59,6 +59,7 @@
     <Compile Include="CustomModels\AdmissionFeeMasterCustomModel.cs" />
     <Compile Include="CustomModels\AttendanceCustomModel.cs" />
     <Compile Include="CustomModels\BusChargesMasterCustomModel.cs" />
+    <Compile Include="CustomModels\ChangePasswordCustomModel.cs" />
     <Compile Include="CustomModels\ClassFeeDetailCustomModel.cs" />
     <Compile Include="CustomModels\ClassMasterCustomModel.cs" />
     <Compile Include="CustomModels\CommonMasterDataModel.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="CustomModels\FeeCollectionCustomModel.cs" />
     <Compile Include="CustomModels\FeeMasterCustomModel.cs" />
     <Compile Include="CustomModels\PagingViewModel.cs" />
+    <Compile Include="CustomModels\ProfileCustomModel.cs" />
     <Compile Include="CustomModels\PromoteToClassCustomModel.cs" />
     <Compile Include="CustomModels\Response.cs" />
     <Compile Include="CustomModels\SchoolMasterCustomModel.cs" />

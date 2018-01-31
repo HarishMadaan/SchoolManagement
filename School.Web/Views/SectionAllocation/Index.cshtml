@@ -270,35 +270,37 @@
     });
 
     function CancelAllocatedStudentSection(id) {
-        alert(id);
-        documentId = id;
-        
-        if (documentId != 0) {
-            $.ajax({
-                url: '@Url.Action("CancelAllocatedStudent", "SectionAllocation")',
-                type: "POST",
-                async: false,
-                cache: false,
-                data: { Id: documentId },
-                success: function (data) {
-                    debugger;
-                    if (data != null && data != '') {
-                        if (data.IsSuccess == true) {
-                            SearchAllocation();
-                            alert("students successfully cancel from the section.");
+        if (confirm("Are you sure to continue?")) {
+            //alert(id);
+            documentId = id;
+
+            if (documentId != 0) {
+                $.ajax({
+                    url: '@Url.Action("CancelAllocatedStudent", "SectionAllocation")',
+                    type: "POST",
+                    async: false,
+                    cache: false,
+                    data: { Id: documentId },
+                    success: function (data) {
+                        debugger;
+                        if (data != null && data != '') {
+                            if (data.IsSuccess == true) {
+                                SearchAllocation();
+                                alert("Students successfully canceled from the section.");
+                            }
+                            else {
+                                SearchAllocation();
+                            }
+                        } else {
+                            alert('An error Occured while processing you request.');
                         }
-                        else {
-                            SearchAllocation();
-                        }
-                    } else {
-                        alert('An error Occured while processing you request.');
+                    },
+                    error: function (xhr, status, error) {
                     }
-                },
-                error: function (xhr, status, error) {
-                }
-            });
-            $("#modelShowFollowupDetails").modal('show');
-            $("#modelShowFollowupDetails").show();
+                });
+                $("#modelShowFollowupDetails").modal('show');
+                $("#modelShowFollowupDetails").show();
+            }
         }
     }
 
