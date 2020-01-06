@@ -1,0 +1,259 @@
+function checkValidationAndMoveTop(vgrp, divToShow) {
+            if (!Page_ClientValidate(vgrp)) {
+                var errorDiv = $('#' + divToShow);
+                $('#' + divToShow).css("display", "block");
+                $('#' + divToShow).delay(3000).hide('slow');
+
+                var scrollPos = errorDiv.offset().top;
+                $(window).scrollTop(scrollPos);
+            }
+            else {
+                $('#' + divToShow).css("display", "none");
+            }
+        }
+		
+------------------------------------------------------------------------
+
+		
+/******************************************************
+ Author:		Saveen
+ Create date: 09/Sep/2019
+ Description:	Used to Get client info for Alt EVV
+ EXEC PrGetSandataPostRequestClients
+**********************************************************/
+
+CREATE PROCEDURE PrGetSandataPostRequestClients 
+(
+	@ClientID VARCHAR(MAX)=NULL
+)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	DECLARE @TempClient TABLE
+	(
+	PatientOtherID NVARCHAR(64), 
+	SequenceID  NVARCHAR(50),
+	PatientMedicaidID NVARCHAR(15),
+	IsPatientNewborn  NVARCHAR(5),
+	PatientMedicaidIDEffectiveDate DATE,
+	PatientAlternateMedicaidID NVARCHAR(15),
+	PatientAlternateID NVARCHAR(64), 
+	PatientLastName NVARCHAR(30),
+	PatientFirstName NVARCHAR(30), 
+	PatientTimeZone NVARCHAR(64)
+	)
+
+	/*
+	Individual/Client General Information
+	*/
+
+	INSERT INTO @TempClient
+	(PatientOtherID
+	, SequenceID
+	, PatientMedicaidID
+	, IsPatientNewborn
+	, PatientMedicaidIDEffectiveDate
+	, PatientAlternateMedicaidID
+	, PatientAlternateID
+	, PatientLastName
+	, PatientFirstName
+	, PatientTimeZone)
+	SELECT
+	DISTINCT 
+	Cli.ClientDisplayId AS PatientOtherID
+	,'' AS SequenceID
+	, CP.MemberId AS PatientMedicaidID
+	,  CASE WHEN ISNULL(Cli.DateofBirth,'')='' THEN 'False' ELSE CASE WHEN DATEDIFF(YEAR,Cli.DateofBirth,GETDATE())>0 THEN 'False' ELSE 'True' END END  AS IsPatientNewborn
+	, NULL AS PatientMedicaidIDEffectiveDate 
+	, NULL AS PatientAlternateMedicaidID
+	, Cli.AlternateId AS PatientAlternateID
+	, Cli.LastName  AS PatientLastName
+	, Cli.FirstName AS PatientFirstName
+	, (SELECT TOP 1 TimeZone FROM OfficeSandataDetail WHERE ISNULL(IsActive,0)=1 AND ISNULL(IsArchived,0)=0) AS PatientTimezone
+	FROM SandataClientQueueRequest SData
+	INNER JOIN dbo.Client Cli ON Sdata.ClientID = Cli.ClientID
+	INNER JOIN ClientPayer CP ON CP.ClientId = Cli.ClientId AND CP.PayerId=SData.PayerId
+	INNER JOIN Payer P ON SData.PayerId = P.PayerId AND EVVOption = '877A84AD-6058-4B4B-8519-27FA4158FE18'
+	INNER JOIN SandataSubmitPayerProgram SSPP ON SSPP.PayerId=P.PayerId AND SSPP.ClientId=Cli.ClientId AND ISNULL(SSPP.IsActive,0)=1 AND  ISNULL(SSPP.IsArchived,0)=0
+	WHERE 
+	(SData.ClientID IN (SELECT Item FROM SplitString(@ClientID,',')) OR @ClientID IS NULL)
+	AND ISNULL(Sdata.IsMapped, 0) = 0 
+	AND Sdata.ResponseID IS NULL
+	AND ISNULL(SData.IsMapped,0)=0 
+	AND ISNULL(SData.IsActive,0)=1 
+	AND ISNULL(SData.IsArchived,0)=0 
+
+
+	DECLARE @ClientIDCommaSeperated NVARCHAR(MAX)
+	
+	-- Getting AL Client IDs
+	SELECT @ClientIDCommaSeperated = STUFF((SELECT ', ' + CAST (PatientOtherID AS NVARCHAR(MAX))
+			FROM @TempClient
+			FOR XML PATH(''), TYPE)
+		.value('.','NVARCHAR(MAX)'),1,2,' ');
+
+	DECLARE @BusinessEntityID VARCHAR(10)
+	DECLARE @BusinessEntityMedicaidIdentifier VARCHAR(64)
+
+	SELECT @BusinessEntityID = BusinessEntityID
+	, @BusinessEntityMedicaidIdentifier = BusinessEntityMedicaidIdentifier 
+	FROM AltEvvAccountInfo
+	WHERE ISNULL(IsActive,0)=1 AND ISNULL(IsArchived,0)=0;
+
+	DECLARE @PatientJSON TABLE
+	(
+	PatientOtherID NVARCHAR(64), 
+	JSON NVARCHAR(MAX)
+	)
+
+	INSERT INTO @PatientJSON(PatientOtherID,JSON)
+	SELECT  PatientOtherID
+	,(SELECT CONCAT('',
+	('"BusinessEntityID":"'+@BusinessEntityID+'"')+
+	(',"BusinessEntityMedicaidIdentifier":"'+@BusinessEntityMedicaidIdentifier+'"')+
+	(',"PatientOtherID":"'+CAST (PatientOtherID AS varchar(10))+'"')+
+	(',"SequenceID":"'+CAST(CAST(FORMAT(GetDATE(),'yyyyMMddHHmmss')AS BIGINT)+CAST(FORMAT(GetDATE(),'HHmmssfff')AS BIGINT)+ROW_NUMBER() OVER (ORDER BY PatientOtherID) AS VARCHAR(30))+'"')+
+	(',"IsPatientNewborn":"'+IsPatientNewborn+'"')+
+	--(',"PatientMedicaidIDEffectiveDate":"'+CAST(PatientMedicaidIDEffectiveDate AS VARCHAR(MAX))+'"')+
+	(',"PatientMedicaidID":"'+ISNULL(PatientMedicaidID,'')+'"')+
+	(',"PatientAlternateMedicaidID":"'+ISNULL(PatientAlternateMedicaidID,'')+'"')+
+	(',"PatientLastName":"'+ISNULL(PatientLastName,'')+'"')+
+	(',"PatientFirstName":"'+ISNULL(PatientFirstName,'')+'"')+
+	(',"PatientTimeZone":"'+ISNULL(PatientTimeZone,'')+'"')
+	,''))
+	 FROM @TempClient
+
+		
+	/*
+	Individual/Client Payer Information 877A84AD-6058-4B4B-8519-27FA4158FE18
+	*/
+
+	DECLARE @PayerInfoJSON TABLE
+	(
+	PatientOtherID NVARCHAR(64), 
+	JSON NVARCHAR(MAX)
+	)
+
+	Insert INTO @PayerInfoJSON(PatientOtherID,JSON)
+	SELECT TC.PatientOtherID
+	,(SELECT CONCAT('{',
+		('"Payer":"'+ISNULL(SPP.Payer,'')+'"')+
+		(',"PayerProgram":"'+ISNULL(SPP.Program,'')+'"')+
+		(',"ProcedureCode":"'+ISNULL(SPP.ProcedureCode,'')+'"')
+		,'},')
+	--,NULLIF(P.EVVPIMSID,NULL) AS PayerClientIdentifier
+	FROM SandataClientQueueRequest SData 
+	INNER JOIN Payer P ON SData.PayerId=P.PayerId AND EVVOption='877A84AD-6058-4B4B-8519-27FA4158FE18'
+	INNER JOIN Client C ON C.ClientId=SData.ClientId
+	INNER JOIN SandataSubmitPayerProgram SSPP ON SSPP.PayerId=P.PayerId AND SSPP.ClientId=C.ClientId AND ISNULL(SSPP.IsActive,0)=1 AND  ISNULL(SSPP.IsArchived,0)=0
+	INNER JOIN SandataPayerProgram  SPP ON SPP.PayerProgramId =SSPP.PayerProgramId
+	WHERE --ISNULL(SandataPayerFlag,0)=1 
+	C.ClientDisplayId IN (SELECT LTRIM(RTRIM(Item)) FROM SplitString(@ClientIDCommaSeperated,','))
+	AND ISNULL(SData.IsMapped,0)=0 AND ISNULL(SData.IsActive,0)=1 AND ISNULL(SData.IsArchived,0)=0 AND TC.PatientOtherID=C.ClientDisplayId  FOR XML PATH('') ) FROM @TempClient TC  
+
+
+
+	DECLARE @PatientAddressInfoJSON TABLE
+	(
+	PatientOtherID NVARCHAR(64), 
+	JSON NVARCHAR(MAX)
+	)
+	Insert INTO @PatientAddressInfoJSON(PatientOtherID,JSON)
+	SELECT TC.PatientOtherID
+	,(SELECT CONCAT('{',
+		('"PatientAddressType":"'+'Home'+'"')+
+		(',"PatientAddressIsPrimary":"'+CASE WHEN ISNULL(A.IsPrimary,0)=0 THEN 'False' ElSE 'True' END+'"')+
+		(',"PatientAddressLine1":"'+ISNULL(A.Address1,'')+'"')+
+		(',"PatientAddressLine2":"'+ISNULL(A.Address2,'')+'"')+
+		(',"PatientCity":"'+ISNULL(C.CityName,'')+'"')+
+		(',"PatientState":"'+ISNULL(S.StateAbbreviation,'')+'"')+
+		(',"PatientZip":"'+ISNULL(A.ZipCode,'')+'"')+
+		(',"PatientLongitude":"'+CAST(A.Longitude AS VARCHAR(20))+'"')+
+		(',"PatientLatitude":"'+CAST(A.Latitude AS VARCHAR(20))+'"')+
+		(',"PatientTimezone":"'+ISNULL((SELECT TOP 1 TimeZone FROM OfficeSandataDetail WHERE ISNULL(IsActive,0)=1 AND ISNULL(IsArchived,0)=0),'')+'"')
+		,'},')
+	FROM Client Cli
+	INNER JOIN ClientAddress CA ON Cli.ClientId = CA.ClientId
+	INNER JOIN [Address] A ON CA.AddressId = A.AddressId
+	INNER JOIN Cities C ON A.CityId = C.CityId
+	INNER JOIN States S ON C.StateId = S.StateId
+	WHERE Cli.ClientDisplayId IN (SELECT LTRIM(RTRIM(Item)) FROM SplitString(@ClientIDCommaSeperated,','))
+	AND ISNULL(A.IsActive,0)=1 AND ISNULL(A.IsArchived,0)=0 AND TC.PatientOtherID=Cli.ClientDisplayId  FOR XML PATH('') ) FROM @TempClient TC  
+
+
+	DECLARE @PatientPhoneJSON TABLE
+	(
+	PatientOtherID NVARCHAR(64), 
+	JSON NVARCHAR(MAX)
+	)
+	Insert INTO @PatientPhoneJSON(PatientOtherID,JSON)
+	SELECT TC.PatientOtherID
+	,(SELECT CONCAT('{',
+		('"PatientPhoneType":"'+MTV.Value+'"')+
+		(',"PatientPhoneNumber":"'+ISNULL(dbo.fnRemoveNonNumericCharacters(CP.Phone1),'')+'"')
+		,'},')
+	FROM Client Cli
+	LEFT JOIN Phone CP ON CP.EntityId = Cli.ClientId
+	LEFT JOIN MasterTableValue MTV ON MTV.MasterTableValueId=CP.PhoneTypeId
+	WHERE Cli.ClientDisplayId IN (SELECT LTRIM(RTRIM(Item)) FROM SplitString(@ClientIDCommaSeperated,','))
+	AND  ISNULL(CP.IsActive,0)=1 AND ISNULL(CP.IsArchived,0)=0 AND TC.PatientOtherID=Cli.ClientDisplayId  FOR XML PATH('')) FROM @TempClient TC  
+
+	--select * from @PatientPhoneJSON
+
+--DELETE FROM @PatientPhoneJSON WHERE PatientOtherID in (5225
+--,5226
+--,5227
+--,5228
+--,5231
+--,5234
+--,5235
+--,5291
+--,6659
+--,6674
+--,6737
+--,6751
+--,6773
+--,6794
+--,6795
+--,6807
+--,6818)
+--)
+
+	-- Creating Final JSON
+	
+	SELECT * INTO #Temp FROM(
+	SELECT 
+	('['+
+		(SELECT CONCAT
+		('{',
+			PTJ.JSON 
+			,(SELECT CONCAT(',"IndividualPayerInformation": [',
+			(SELECT SUBSTRING(PYJ.JSON,0, LEN(PYJ.JSON))
+			FROM @PayerInfoJSON PYJ WHERE PYJ.PatientOtherID=PTJ.PatientOtherID FOR XML PATH('')) ,']'))
+ 
+			,(SELECT CONCAT( ',"Address": [',
+			(SELECT  SUBSTRING (PAJ.JSON,0,LEN(PAJ.JSON))
+			FROM @PatientAddressInfoJSON PAJ WHERE PAJ.PatientOtherID=PTJ.PatientOtherID FOR XML PATH('')),']'))
+ 
+			,ISNULL((SELECT ',"IndividualPhones": ['+
+			(SELECT SUBSTRING(PPJ.JSON,0,LEN(PPJ.JSON))
+			FROM @PatientPhoneJSON PPJ WHERE PPJ.PatientOtherID=PTJ.PatientOtherID AND PPJ.JSON IS NOT NULL FOR XML PATH(''))+']},'),'},')
+		)
+		FROM @PatientJSON PTJ FOR XML PATH(''))+']') AS COL
+	) AS O
+
+	SELECT SUBSTRING(COL,0,LEN(COL)-1)+']' FROM #Temp
+
+	
+	DROP TABLE #Temp
+END
+
+
+-------------------------------------------------------------------------
+
+https://necolumbus.caresmartz360.com/
+https://caregivingforyou.caresmartz360.com/
+CareSmartz_Support
+KaH#y3mU
+
