@@ -1,0 +1,1001 @@
+month = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getMonth();
+day = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getDay();
+dd = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").toDate();
+year = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getYear();
+//BillingCycleDate = today.addDay(1).getDay();
+BillingCycleDate = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getDay();
+//info BillingCycleDate;
+//startDate = today.getDay() + "/" + today.getMonth() + "/" + today.getYear();
+//info month + " -- " + dd + " -- " + year + " -- " + day;
+//crmResponseList = zoho.crm.getRecords("Accounts",1,200);
+curMonth = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getMonth();
+info curMonth;
+list = {1,2,3,4,5};
+for each  ele in list
+{
+	//crmResponseList = zoho.crm.searchRecords("Accounts","(Type:equals:Customer)",ele);
+	crmResponseList = zoho.crm.getRecords("Accounts",ele,200,{"cvid":2585676000027537125});
+	for each  crmResp in crmResponseList
+	{
+		if(crmResp.get("Billing_Cycles") != null)
+		{
+			if(curMonth == 2 && BillingCycleDate >= 28)
+			{
+				if(crmResp.get("Billing_Cycles").toLong() >= BillingCycleDate.toLong())
+				{
+					if(crmResp.get("Billing_Cycles") == 29)
+					{
+						BillingCycleDate = 29;
+					}
+					else if(crmResp.get("Billing_Cycles") == 30)
+					{
+						BillingCycleDate = 30;
+						//info "feb month -> " +  BillingCycleDate;
+					}
+					else if(crmResp.get("Billing_Cycles") == 31)
+					{
+						BillingCycleDate = 31;
+					}
+					else
+					{
+						BillingCycleDate = BillingCycleDate;
+					}
+					if(crmResp.get("Type") == "Customer")
+					{
+						straccid = crmResp.get("id").toLong();
+						mp = Map();
+						lastmonth = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").eomonth(-1).getMonth();
+						lastDay = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").subDay(1).getDay();
+						billDate = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getDay();
+						if(billDate == 1)
+						{
+							Billing_Period_Month = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").eomonth(-1).getMonth();
+						}
+						else
+						{
+							Billing_Period_Month = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getMonth();
+						}
+						if(today.getYear() == now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").eomonth(-1).getYear())
+						{
+							Billing_Period_Year = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getYear();
+						}
+						else
+						{
+							Billing_Period_Year = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").eomonth(-1).getYear();
+						}
+						billStartDate = lastmonth + "/" + BillingCycleDate + "/" + Billing_Period_Year;
+						currentmonth = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getMonth();
+						currentDate = Billing_Period_Month + "/" + lastDay + "/" + now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getYear();
+						//info month;
+						result = getUrl("http://services.caresmartz360.com/ClientData.svc/getAgencyClientsAndSMSSegments?AgencyId=" + straccid + "&StartDate=" + billStartDate + "&EndDate=" + currentDate);
+						Billing_Period_Val = lastmonth + "/" + BillingCycleDate + "/" + Billing_Period_Year + " " + "To " + Billing_Period_Month + "/" + lastDay + "/" + now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getYear();
+						Statement_Date_Val = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getMonth() + "/28/" + now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getYear();
+						mp.put("Billing_Period",Billing_Period_Val.toString());
+						mp.put("Statement_Date",Statement_Date_Val.toString());
+						mp.put("SMS_Count",result.get("SMSSegments").toString());
+						mp.put("Total_Lives",result.get("ActiveClientsWithoutSchedule").toString());
+						mp.put("Total_Active_Lives_Scheduling",result.get("ClientsWithSchedule").toString());
+						resp = zoho.crm.updateRecord("Accounts",straccid,mp);
+						//info resp;
+						leadDetails = zoho.crm.getRecordById("Accounts",straccid);
+						SMS_Count = ifnull(leadDetails.get("SMS_Count"),0);
+						Charges_From = ifnull(leadDetails.get("Charges_From_No_of_Lives"),0);
+						Charges_Rate = ifnull(leadDetails.get("Charge_Per_Life"),0);
+						Total_Contacts = ifnull(leadDetails.get("Total_Lives"),0);
+						Charges_Rate_Scheduling = ifnull(leadDetails.get("Changes_Per_Life_Scheduling"),Charges_Rate);
+						Total_Scheduling_Contacts = ifnull(leadDetails.get("Total_Active_Lives_Scheduling"),0);
+						Minimum_Amount = ifnull(leadDetails.get("Minimum_Amount"),0);
+						Charges_Per_SMS = ifnull(leadDetails.get("Charger_Per_SMS"),1);
+						To_50_Lives = ifnull(leadDetails.get("To_50_Lives"),0);
+						To_100_Lives = ifnull(leadDetails.get("To_100_Lives"),0);
+						Above_100_Lives = ifnull(leadDetails.get("Above_100_Lives"),0);
+						Select_New_Plan = ifnull(leadDetails.get("Select_New_Plan"),0);
+						info Select_New_Plan;
+						Total_Contacts_Count = ifnull(Total_Contacts.toLong() + Total_Scheduling_Contacts.toLong(),0);
+						if(Select_New_Plan == "0")
+						{
+							if(Total_Contacts_Count.toLong() > Charges_From.toLong())
+							{
+								//TotalBillingContacts = Total_Contacts.toLong() - Charges_From.toLong();
+								TotalBillingContacts = Total_Contacts_Count.toLong();
+								sum = 0;
+								sum1 = 0;
+								sum2 = 0;
+								sum3 = 0;
+								if(leadDetails.get("Invoice_Frequency") == "Yearly")
+								{
+									AmountTotal = 0;
+								}
+								else
+								{
+									if(To_50_Lives.toLong() > 0)
+									{
+										if(TotalBillingContacts > 100)
+										{
+											sum1 = 50 * To_50_Lives.toLong();
+											sum2 = 50 * To_100_Lives.toLong();
+											sum3 = (TotalBillingContacts - 100) * Above_100_Lives.toLong();
+										}
+										else if(TotalBillingContacts > 50 && TotalBillingContacts <= 100)
+										{
+											sum1 = 50 * To_50_Lives.toLong();
+											sum2 = (TotalBillingContacts - 50) * To_100_Lives.toLong();
+										}
+										else if(TotalBillingContacts < 50)
+										{
+											sum1 = TotalBillingContacts * To_50_Lives.toLong();
+										}
+										AmountTotal = sum1 + sum2 + sum3;
+									}
+									else
+									{
+										//AmountTotal = Total_Contacts.toLong() * Charges_Rate.toLong();
+										AmountTotal = Total_Contacts.toLong() * Charges_Rate.toLong() + Total_Scheduling_Contacts.toLong() * Charges_Rate_Scheduling.toLong();
+									}
+								}
+								if(AmountTotal > Minimum_Amount.toLong())
+								{
+									Amount = AmountTotal;
+								}
+								else
+								{
+									Amount = Minimum_Amount.toLong();
+								}
+								if(SMS_Count.toLong() > 0)
+								{
+									SMSAmount = SMS_Count.toDecimal() * Charges_Per_SMS.toDecimal();
+									if(straccid == 2585676000002542814)
+									{
+										NetAmount = Amount.toDecimal() + SMSAmount.toDecimal() + 299;
+									}
+									else
+									{
+										NetAmount = Amount.toDecimal() + SMSAmount.toDecimal();
+									}
+									//NetAmount = Amount.toDecimal() + SMSAmount.toDecimal();
+								}
+								else
+								{
+									SMSAmount = "0";
+									//NetAmount = Amount.toLong();
+									if(straccid == 2585676000002542814)
+									{
+										NetAmount = Amount.toLong() + 299;
+									}
+									else
+									{
+										NetAmount = Amount.toLong();
+									}
+								}
+								/*if(leadDetails.get("Currency") == "CAD")
+								{
+									resultCurrency = getURL("https://v3.exchangerate-api.com/bulk/6b528df185616fbe6b35fa78/CAD");
+									CurrencyUSDValue = resultCurrency.get("rates").get("USD");
+									Amount = Amount.toDecimal() * CurrencyUSDValue;
+									SMSAmount = SMSAmount.toDecimal() * CurrencyUSDValue;
+									NetAmount = NetAmount.toDecimal() * CurrencyUSDValue;
+								}*/
+								mp.put("Total_Lives_Count",Total_Contacts_Count.toString());
+								mp.put("Total_Life_Charges",Amount.round(2).toString());
+								mp.put("Total_SMS_Charges",SMSAmount.round(2).toString());
+								mp.put("Total_Amount",NetAmount.round(2).toString());
+								resp2 = zoho.crm.updateRecord("Accounts",straccid,mp);
+							}
+							else if(SMS_Count.toLong() > 0)
+							{
+								SMSAmount = SMS_Count.toDecimal() * Charges_Per_SMS.toDecimal();
+								/*if(leadDetails.get("Currency") == "CAD")
+								{
+									resultCurrency = getURL("https://v3.exchangerate-api.com/bulk/6b528df185616fbe6b35fa78/CAD");
+									CurrencyUSDValue = resultCurrency.get("rates").get("USD");
+									SMSAmount = SMSAmount.toDecimal() * CurrencyUSDValue;
+								}*/
+								mp.put("Total_SMS_Charges",SMSAmount.round(2).toString());
+								mp.put("Total_Life_Charges",Minimum_Amount.toLong().toString());
+								netAmount = Minimum_Amount.toDecimal() + SMSAmount.toDecimal();
+								mp.put("Total_Amount",netAmount.round(2).toString());
+								resp2 = zoho.crm.updateRecord("Accounts",straccid,mp);
+							}
+							else
+							{
+								//mp.put("Total_Life_Charges","0");
+								mp.put("Total_Lives_Count",Total_Contacts_Count.toString());
+								mp.put("Total_Life_Charges",Minimum_Amount.toLong().toString());
+								mp.put("Total_SMS_Charges","0");
+								//mp.put("Total_Amount","0");
+								mp.put("Total_Amount",Minimum_Amount.toLong().toString());
+								resp2 = zoho.crm.updateRecord("Accounts",straccid,mp);
+							}
+						}
+						else if(Select_New_Plan == "Care for Seniors Agency")
+						{
+							//info Total_Contacts.toLong();
+							if(Total_Contacts_Count.toLong() > 75)
+							{
+								AmountTotal = Total_Contacts_Count.toLong() * 7;
+							}
+							else
+							{
+								AmountTotal = 500;
+							}
+							if(AmountTotal > Minimum_Amount.toLong())
+							{
+								Amount = AmountTotal;
+							}
+							else
+							{
+								Amount = Minimum_Amount.toLong();
+							}
+							if(SMS_Count.toLong() > 0)
+							{
+								SMSAmount = SMS_Count.toDecimal() * Charges_Per_SMS.toDecimal();
+								NetAmount = Amount.toDecimal() + SMSAmount.toDecimal();
+							}
+							else
+							{
+								SMSAmount = "0";
+								NetAmount = Amount.toLong();
+							}
+							/*if(leadDetails.get("Currency") == "CAD")
+							{
+								resultCurrency = getURL("https://v3.exchangerate-api.com/bulk/6b528df185616fbe6b35fa78/CAD");
+								CurrencyUSDValue = resultCurrency.get("rates").get("USD");
+								Amount = Amount.toDecimal() * CurrencyUSDValue;
+								SMSAmount = SMSAmount.toDecimal() * CurrencyUSDValue;
+								NetAmount = NetAmount.toDecimal() * CurrencyUSDValue;
+							}*/
+							mp.put("Total_Lives_Count",Total_Contacts_Count.toString());
+							mp.put("Total_Life_Charges",Amount.round(2).toString());
+							mp.put("Total_SMS_Charges",SMSAmount.round(2).toString());
+							mp.put("Total_Amount",NetAmount.round(2).toString());
+							resp2 = zoho.crm.updateRecord("Accounts",straccid,mp);
+							info "Care_for_Seniors_Agency";
+						}
+						else if(Select_New_Plan == "Tender Hearted")
+						{
+							info Total_Contacts_Count.toLong();
+							if(Total_Contacts_Count.toLong() <= 10)
+							{
+								AmountTotal = 100;
+							}
+							else if(Total_Contacts_Count.toLong() > 10 && Total_Contacts_Count.toLong() <= 50)
+							{
+								AmountTotal = Total_Contacts_Count.toLong() * 8;
+							}
+							else if(Total_Contacts_Count.toLong() > 50)
+							{
+								AmountTotal = Total_Contacts_Count.toLong() * 7;
+							}
+							if(AmountTotal > Minimum_Amount.toLong())
+							{
+								Amount = AmountTotal;
+							}
+							else
+							{
+								Amount = Minimum_Amount.toLong();
+							}
+							if(SMS_Count.toLong() > 0)
+							{
+								SMSAmount = SMS_Count.toDecimal() * Charges_Per_SMS.toDecimal();
+								NetAmount = Amount.toDecimal() + SMSAmount.toDecimal();
+							}
+							else
+							{
+								SMSAmount = "0";
+								NetAmount = Amount.toLong();
+							}
+							/*if(leadDetails.get("Currency") == "CAD")
+							{
+								resultCurrency = getURL("https://v3.exchangerate-api.com/bulk/6b528df185616fbe6b35fa78/CAD");
+								CurrencyUSDValue = resultCurrency.get("rates").get("USD");
+								Amount = Amount.toDecimal() * CurrencyUSDValue;
+								SMSAmount = SMSAmount.toDecimal() * CurrencyUSDValue;
+								NetAmount = NetAmount.toDecimal() * CurrencyUSDValue;
+							}*/
+							mp.put("Total_Lives_Count",Total_Contacts_Count.toString());
+							mp.put("Total_Life_Charges",Amount.round(2).toString());
+							mp.put("Total_SMS_Charges",SMSAmount.round(2).toString());
+							mp.put("Total_Amount",NetAmount.round(2).toString());
+							resp2 = zoho.crm.updateRecord("Accounts",straccid,mp);
+							info "Tender Hearted";
+						}
+						else if(Select_New_Plan == "Medford Leas")
+						{
+							info Total_Contacts_Count.toLong();
+							if(Total_Contacts_Count.toLong() <= 50)
+							{
+								AmountTotal = Total_Contacts_Count.toLong() * 6;
+							}
+							else if(Total_Contacts_Count.toLong() > 50)
+							{
+								AmountTotal = Total_Contacts_Count.toLong() * 5;
+							}
+							if(AmountTotal > Minimum_Amount.toLong())
+							{
+								Amount = AmountTotal;
+							}
+							else
+							{
+								Amount = Minimum_Amount.toLong();
+							}
+							if(SMS_Count.toLong() > 0)
+							{
+								SMSAmount = SMS_Count.toDecimal() * Charges_Per_SMS.toDecimal();
+								NetAmount = Amount.toDecimal() + SMSAmount.toDecimal();
+							}
+							else
+							{
+								SMSAmount = "0";
+								NetAmount = Amount.toLong();
+							}
+							/*if(leadDetails.get("Currency") == "CAD")
+							{
+								resultCurrency = getURL("https://v3.exchangerate-api.com/bulk/6b528df185616fbe6b35fa78/CAD");
+								CurrencyUSDValue = resultCurrency.get("rates").get("USD");
+								Amount = Amount.toDecimal() * CurrencyUSDValue;
+								SMSAmount = SMSAmount.toDecimal() * CurrencyUSDValue;
+								NetAmount = NetAmount.toDecimal() * CurrencyUSDValue;
+							}*/
+							mp.put("Total_Lives_Count",Total_Contacts_Count.toString());
+							mp.put("Total_Life_Charges",Amount.round(2).toString());
+							mp.put("Total_SMS_Charges",SMSAmount.round(2).toString());
+							mp.put("Total_Amount",NetAmount.round(2).toString());
+							resp2 = zoho.crm.updateRecord("Accounts",straccid,mp);
+							info "Medford Leas";
+						}
+						//resultUpdateBooks = postUrl("https://books.zoho.com/api/v3/crm/account/" + straccid + "/import?authtoken=e6668944f27a2f2f3aa2d59249e60017&organization_id=649389939",mp,true);
+						mp = Map();
+						mp.put("authtoken","cd9a33a3674a1756cd11f03abc7cfe9b");
+						resultUpdateBooks = postUrl("https://books.zoho.com/api/v3/crm/account/" + straccid + "/import?organization_id=649389939",mp,true);
+						info resultUpdateBooks;
+					}
+					BillingCycleDate = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getDay();
+				}
+			}
+			else if((curMonth == 4 || curMonth == 6 || curMonth == 9 || curMonth == 11) && BillingCycleDate == 30)
+			{
+				info "test";
+				// crmResp.get("Billing_Cycles").toLong();
+				if(crmResp.get("Billing_Cycles").toLong() >= BillingCycleDate.toLong())
+				{
+					if(crmResp.get("Billing_Cycles") == 30)
+					{
+						BillingCycleDate = 30;
+					}
+					else if(crmResp.get("Billing_Cycles") == 31)
+					{
+						BillingCycleDate = 31;
+					}
+					else
+					{
+						BillingCycleDate = BillingCycleDate;
+					}
+					if(crmResp.get("Type") == "Customer")
+					{
+						straccid = crmResp.get("id").toLong();
+						mp = Map();
+						lastmonth = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").eomonth(-1).getMonth();
+						lastDay = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").subDay(1).getDay();
+						billDate = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getDay();
+						if(billDate == 1)
+						{
+							Billing_Period_Month = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").eomonth(-1).getMonth();
+						}
+						else
+						{
+							Billing_Period_Month = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getMonth();
+						}
+						if(today.getYear() == now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").eomonth(-1).getYear())
+						{
+							Billing_Period_Year = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getYear();
+						}
+						else
+						{
+							Billing_Period_Year = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").eomonth(-1).getYear();
+						}
+						billStartDate = lastmonth + "/" + BillingCycleDate + "/" + Billing_Period_Year;
+						currentmonth = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getMonth();
+						currentDate = Billing_Period_Month + "/" + lastDay + "/" + now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getYear();
+						//info month;
+						result = getUrl("http://services.caresmartz360.com/ClientData.svc/getAgencyClientsAndSMSSegments?AgencyId=" + straccid + "&StartDate=" + billStartDate + "&EndDate=" + currentDate);
+						Billing_Period_Val = lastmonth + "/" + BillingCycleDate + "/" + Billing_Period_Year + " " + "To " + Billing_Period_Month + "/" + lastDay + "/" + now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getYear();
+						Statement_Date_Val = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getMonth() + "/30/" + now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getYear();
+						mp.put("Billing_Period",Billing_Period_Val.toString());
+						mp.put("Statement_Date",Statement_Date_Val.toString());
+						mp.put("SMS_Count",result.get("SMSSegments").toString());
+						mp.put("Total_Lives",result.get("ActiveClientsWithoutSchedule").toString());
+						mp.put("Total_Active_Lives_Scheduling",result.get("ClientsWithSchedule").toString());
+						resp = zoho.crm.updateRecord("Accounts",straccid,mp);
+						//info resp;
+						leadDetails = zoho.crm.getRecordById("Accounts",straccid);
+						SMS_Count = ifnull(leadDetails.get("SMS_Count"),0);
+						Charges_From = ifnull(leadDetails.get("Charges_From_No_of_Lives"),0);
+						Charges_Rate = ifnull(leadDetails.get("Charge_Per_Life"),0);
+						Total_Contacts = ifnull(leadDetails.get("Total_Lives"),0);
+						Charges_Rate_Scheduling = ifnull(leadDetails.get("Changes_Per_Life_Scheduling"),Charges_Rate);
+						Total_Scheduling_Contacts = ifnull(leadDetails.get("Total_Active_Lives_Scheduling"),0);
+						Minimum_Amount = ifnull(leadDetails.get("Minimum_Amount"),0);
+						Charges_Per_SMS = ifnull(leadDetails.get("Charger_Per_SMS"),1);
+						To_50_Lives = ifnull(leadDetails.get("To_50_Lives"),0);
+						To_100_Lives = ifnull(leadDetails.get("To_100_Lives"),0);
+						Above_100_Lives = ifnull(leadDetails.get("Above_100_Lives"),0);
+						Select_New_Plan = ifnull(leadDetails.get("Select_New_Plan"),0);
+						info Select_New_Plan;
+						Total_Contacts_Count = ifnull(Total_Contacts.toLong() + Total_Scheduling_Contacts.toLong(),0);
+						if(Select_New_Plan == "0")
+						{
+							if(Total_Contacts_Count.toLong() > Charges_From.toLong())
+							{
+								//TotalBillingContacts = Total_Contacts_Count.toLong() - Charges_From.toLong();
+								TotalBillingContacts = Total_Contacts_Count.toLong();
+								sum = 0;
+								sum1 = 0;
+								sum2 = 0;
+								sum3 = 0;
+								if(leadDetails.get("Invoice_Frequency") == "Yearly")
+								{
+									AmountTotal = 0;
+								}
+								else
+								{
+									if(To_50_Lives.toLong() > 0)
+									{
+										if(TotalBillingContacts > 100)
+										{
+											sum1 = 50 * To_50_Lives.toLong();
+											sum2 = 50 * To_100_Lives.toLong();
+											sum3 = (TotalBillingContacts - 100) * Above_100_Lives.toLong();
+										}
+										else if(TotalBillingContacts > 50 && TotalBillingContacts <= 100)
+										{
+											sum1 = 50 * To_50_Lives.toLong();
+											sum2 = (TotalBillingContacts - 50) * To_100_Lives.toLong();
+										}
+										else if(TotalBillingContacts < 50)
+										{
+											sum1 = TotalBillingContacts * To_50_Lives.toLong();
+										}
+										AmountTotal = sum1 + sum2 + sum3;
+									}
+									else
+									{
+										//AmountTotal = Total_Contacts.toLong() * Charges_Rate.toLong();
+										AmountTotal = Total_Contacts.toLong() * Charges_Rate.toLong() + Total_Scheduling_Contacts.toLong() * Charges_Rate_Scheduling.toLong();
+									}
+								}
+								if(AmountTotal > Minimum_Amount.toLong())
+								{
+									Amount = AmountTotal;
+								}
+								else
+								{
+									Amount = Minimum_Amount.toLong();
+								}
+								if(SMS_Count.toLong() > 0)
+								{
+									SMSAmount = SMS_Count.toDecimal() * Charges_Per_SMS.toDecimal();
+									if(straccid == 2585676000002542814)
+									{
+										NetAmount = Amount.toDecimal() + SMSAmount.toDecimal() + 299;
+									}
+									else
+									{
+										NetAmount = Amount.toDecimal() + SMSAmount.toDecimal();
+									}
+									//NetAmount = Amount.toDecimal() + SMSAmount.toDecimal();
+								}
+								else
+								{
+									SMSAmount = "0";
+									//NetAmount = Amount.toLong();
+									if(straccid == 2585676000002542814)
+									{
+										NetAmount = Amount.toLong() + 299;
+									}
+									else
+									{
+										NetAmount = Amount.toLong();
+									}
+								}
+								/*if(leadDetails.get("Currency") == "CAD")
+								{
+									resultCurrency = getURL("https://v3.exchangerate-api.com/bulk/6b528df185616fbe6b35fa78/CAD");
+									CurrencyUSDValue = resultCurrency.get("rates").get("USD");
+									Amount = Amount.toDecimal() * CurrencyUSDValue;
+									SMSAmount = SMSAmount.toDecimal() * CurrencyUSDValue;
+									NetAmount = NetAmount.toDecimal() * CurrencyUSDValue;
+								}*/
+								mp.put("Total_Lives_Count",Total_Contacts_Count.toString());
+								mp.put("Total_Life_Charges",Amount.round(2).toString());
+								mp.put("Total_SMS_Charges",SMSAmount.round(2).toString());
+								mp.put("Total_Amount",NetAmount.round(2).toString());
+								resp2 = zoho.crm.updateRecord("Accounts",straccid,mp);
+							}
+							else if(SMS_Count.toLong() > 0)
+							{
+								SMSAmount = SMS_Count.toDecimal() * Charges_Per_SMS.toDecimal();
+								/*if(leadDetails.get("Currency") == "CAD")
+								{
+									resultCurrency = getURL("https://v3.exchangerate-api.com/bulk/6b528df185616fbe6b35fa78/CAD");
+									CurrencyUSDValue = resultCurrency.get("rates").get("USD");
+									SMSAmount = SMSAmount.toDecimal() * CurrencyUSDValue;
+								}*/
+								mp.put("Total_Lives_Count",Total_Contacts_Count.toString());
+								mp.put("Total_SMS_Charges",SMSAmount.round(2).toString());
+								mp.put("Total_Life_Charges",Minimum_Amount.toLong().toString());
+								netAmount = Minimum_Amount.toDecimal() + SMSAmount.toDecimal();
+								mp.put("Total_Amount",netAmount.round(2).toString());
+								resp2 = zoho.crm.updateRecord("Accounts",straccid,mp);
+							}
+							else
+							{
+								//mp.put("Total_Life_Charges","0");
+								mp.put("Total_Lives_Count",Total_Contacts_Count.toString());
+								mp.put("Total_Life_Charges",Minimum_Amount.toLong().toString());
+								mp.put("Total_SMS_Charges","0");
+								//mp.put("Total_Amount","0");
+								mp.put("Total_Amount",Minimum_Amount.toLong().toString());
+								resp2 = zoho.crm.updateRecord("Accounts",straccid,mp);
+							}
+						}
+						else if(Select_New_Plan == "Care for Seniors Agency")
+						{
+							//info Total_Contacts_Count.toLong();
+							if(Total_Contacts_Count.toLong() > 75)
+							{
+								AmountTotal = Total_Contacts_Count.toLong() * 7;
+							}
+							else
+							{
+								AmountTotal = 500;
+							}
+							if(AmountTotal > Minimum_Amount.toLong())
+							{
+								Amount = AmountTotal;
+							}
+							else
+							{
+								Amount = Minimum_Amount.toLong();
+							}
+							if(SMS_Count.toLong() > 0)
+							{
+								SMSAmount = SMS_Count.toDecimal() * Charges_Per_SMS.toDecimal();
+								NetAmount = Amount.toDecimal() + SMSAmount.toDecimal();
+							}
+							else
+							{
+								SMSAmount = "0";
+								NetAmount = Amount.toLong();
+							}
+							/*if(leadDetails.get("Currency") == "CAD")
+							{
+								resultCurrency = getURL("https://v3.exchangerate-api.com/bulk/6b528df185616fbe6b35fa78/CAD");
+								CurrencyUSDValue = resultCurrency.get("rates").get("USD");
+								Amount = Amount.toDecimal() * CurrencyUSDValue;
+								SMSAmount = SMSAmount.toDecimal() * CurrencyUSDValue;
+								NetAmount = NetAmount.toDecimal() * CurrencyUSDValue;
+							}*/
+							mp.put("Total_Lives_Count",Total_Contacts_Count.toString());
+							mp.put("Total_Life_Charges",Amount.round(2).toString());
+							mp.put("Total_SMS_Charges",SMSAmount.round(2).toString());
+							mp.put("Total_Amount",NetAmount.round(2).toString());
+							resp2 = zoho.crm.updateRecord("Accounts",straccid,mp);
+							info "Care_for_Seniors_Agency";
+						}
+						else if(Select_New_Plan == "Tender Hearted")
+						{
+							info Total_Contacts_Count.toLong();
+							if(Total_Contacts_Count.toLong() <= 10)
+							{
+								AmountTotal = 100;
+							}
+							else if(Total_Contacts_Count.toLong() > 10 && Total_Contacts_Count.toLong() <= 50)
+							{
+								AmountTotal = Total_Contacts_Count.toLong() * 8;
+							}
+							else if(Total_Contacts_Count.toLong() > 50)
+							{
+								AmountTotal = Total_Contacts_Count.toLong() * 7;
+							}
+							if(AmountTotal > Minimum_Amount.toLong())
+							{
+								Amount = AmountTotal;
+							}
+							else
+							{
+								Amount = Minimum_Amount.toLong();
+							}
+							if(SMS_Count.toLong() > 0)
+							{
+								SMSAmount = SMS_Count.toDecimal() * Charges_Per_SMS.toDecimal();
+								NetAmount = Amount.toDecimal() + SMSAmount.toDecimal();
+							}
+							else
+							{
+								SMSAmount = "0";
+								NetAmount = Amount.toLong();
+							}
+							/*if(leadDetails.get("Currency") == "CAD")
+							{
+								resultCurrency = getURL("https://v3.exchangerate-api.com/bulk/6b528df185616fbe6b35fa78/CAD");
+								CurrencyUSDValue = resultCurrency.get("rates").get("USD");
+								Amount = Amount.toDecimal() * CurrencyUSDValue;
+								SMSAmount = SMSAmount.toDecimal() * CurrencyUSDValue;
+								NetAmount = NetAmount.toDecimal() * CurrencyUSDValue;
+							}*/
+							mp.put("Total_Lives_Count",Total_Contacts_Count.toString());
+							mp.put("Total_Life_Charges",Amount.round(2).toString());
+							mp.put("Total_SMS_Charges",SMSAmount.round(2).toString());
+							mp.put("Total_Amount",NetAmount.round(2).toString());
+							resp2 = zoho.crm.updateRecord("Accounts",straccid,mp);
+							info "Tender Hearted";
+						}
+						else if(Select_New_Plan == "Medford Leas")
+						{
+							info Total_Contacts_Count.toLong();
+							if(Total_Contacts_Count.toLong() <= 50)
+							{
+								AmountTotal = Total_Contacts_Count.toLong() * 6;
+							}
+							else if(Total_Contacts_Count.toLong() > 50)
+							{
+								AmountTotal = Total_Contacts_Count.toLong() * 5;
+							}
+							if(AmountTotal > Minimum_Amount.toLong())
+							{
+								Amount = AmountTotal;
+							}
+							else
+							{
+								Amount = Minimum_Amount.toLong();
+							}
+							if(SMS_Count.toLong() > 0)
+							{
+								SMSAmount = SMS_Count.toDecimal() * Charges_Per_SMS.toDecimal();
+								NetAmount = Amount.toDecimal() + SMSAmount.toDecimal();
+							}
+							else
+							{
+								SMSAmount = "0";
+								NetAmount = Amount.toLong();
+							}
+							/*if(leadDetails.get("Currency") == "CAD")
+							{
+								resultCurrency = getURL("https://v3.exchangerate-api.com/bulk/6b528df185616fbe6b35fa78/CAD");
+								CurrencyUSDValue = resultCurrency.get("rates").get("USD");
+								Amount = Amount.toDecimal() * CurrencyUSDValue;
+								SMSAmount = SMSAmount.toDecimal() * CurrencyUSDValue;
+								NetAmount = NetAmount.toDecimal() * CurrencyUSDValue;
+							}*/
+							mp.put("Total_Lives_Count",Total_Contacts_Count.toString());
+							mp.put("Total_Life_Charges",Amount.round(2).toString());
+							mp.put("Total_SMS_Charges",SMSAmount.round(2).toString());
+							mp.put("Total_Amount",NetAmount.round(2).toString());
+							resp2 = zoho.crm.updateRecord("Accounts",straccid,mp);
+							info "Medford Leas";
+						}
+						//resultUpdateBooks = postUrl("https://books.zoho.com/api/v3/crm/account/" + straccid + "/import?authtoken=e6668944f27a2f2f3aa2d59249e60017&organization_id=649389939",mp,true);
+						mp = Map();
+						mp.put("authtoken","cd9a33a3674a1756cd11f03abc7cfe9b");
+						resultUpdateBooks = postUrl("https://books.zoho.com/api/v3/crm/account/" + straccid + "/import?organization_id=649389939",mp,true);
+						info resultUpdateBooks;
+					}
+					BillingCycleDate = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getDay();
+				}
+			}
+			else if(crmResp.get("Billing_Cycles") == BillingCycleDate)
+			{
+				if(crmResp.get("Type") == "Customer")
+				{
+					straccid = crmResp.get("id").toLong();
+					mp = Map();
+					lastmonth = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").eomonth(-1).getMonth();
+					lastDay = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").subDay(1).getDay();
+					billDate = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getDay();
+					if(billDate == 1)
+					{
+						Billing_Period_Month = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").eomonth(-1).getMonth();
+					}
+					else
+					{
+						Billing_Period_Month = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getMonth();
+					}
+					if(today.getYear() == now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").eomonth(-1).getYear())
+					{
+						Billing_Period_Year = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getYear();
+					}
+					else
+					{
+						Billing_Period_Year = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").eomonth(-1).getYear();
+					}
+					billStartDate = lastmonth + "/" + BillingCycleDate + "/" + Billing_Period_Year;
+					currentmonth = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getMonth();
+					currentDate = Billing_Period_Month + "/" + lastDay + "/" + now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getYear();
+					//info month;
+					result = getUrl("http://services.caresmartz360.com/ClientData.svc/getAgencyClientsAndSMSSegments?AgencyId=" + straccid + "&StartDate=" + billStartDate + "&EndDate=" + currentDate);
+					Billing_Period_Val = lastmonth + "/" + BillingCycleDate + "/" + Billing_Period_Year + " " + "To " + Billing_Period_Month + "/" + lastDay + "/" + now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getYear();
+					Statement_Date_Val = now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getMonth() + "/" + BillingCycleDate + "/" + now.toString("yyyy-MM-dd'T'HH:mm:ss'+05:30'","IST").getYear();
+					mp.put("Billing_Period",Billing_Period_Val.toString());
+					mp.put("Statement_Date",Statement_Date_Val.toString());
+					mp.put("SMS_Count",result.get("SMSSegments").toString());
+					mp.put("Total_Lives",result.get("ActiveClientsWithoutSchedule").toString());
+					mp.put("Total_Active_Lives_Scheduling",result.get("ClientsWithSchedule").toString());
+					resp = zoho.crm.updateRecord("Accounts",straccid,mp);
+					//info resp;
+					leadDetails = zoho.crm.getRecordById("Accounts",straccid);
+					SMS_Count = ifnull(leadDetails.get("SMS_Count"),0);
+					Charges_From = ifnull(leadDetails.get("Charges_From_No_of_Lives"),0);
+					Charges_Rate = ifnull(leadDetails.get("Charge_Per_Life"),0);
+					Total_Contacts = ifnull(leadDetails.get("Total_Lives"),0);
+					Charges_Rate_Scheduling = ifnull(leadDetails.get("Changes_Per_Life_Scheduling"),Charges_Rate);
+					Total_Scheduling_Contacts = ifnull(leadDetails.get("Total_Active_Lives_Scheduling"),0);
+					Minimum_Amount = ifnull(leadDetails.get("Minimum_Amount"),0);
+					Charges_Per_SMS = ifnull(leadDetails.get("Charger_Per_SMS"),1);
+					To_50_Lives = ifnull(leadDetails.get("To_50_Lives"),0);
+					To_100_Lives = ifnull(leadDetails.get("To_100_Lives"),0);
+					Above_100_Lives = ifnull(leadDetails.get("Above_100_Lives"),0);
+					Select_New_Plan = ifnull(leadDetails.get("Select_New_Plan"),0);
+					info Select_New_Plan;
+					Total_Contacts_Count = ifnull(Total_Contacts.toLong() + Total_Scheduling_Contacts.toLong(),0);
+					if(Select_New_Plan == "0")
+					{
+						if(Total_Contacts_Count.toLong() > Charges_From.toLong())
+						{
+							//TotalBillingContacts = Total_Contacts_Count.toLong() - Charges_From.toLong();
+							TotalBillingContacts = Total_Contacts_Count.toLong();
+							sum = 0;
+							sum1 = 0;
+							sum2 = 0;
+							sum3 = 0;
+							if(leadDetails.get("Invoice_Frequency") == "Yearly")
+							{
+								AmountTotal = 0;
+							}
+							else
+							{
+								if(To_50_Lives.toLong() > 0)
+								{
+									if(TotalBillingContacts > 100)
+									{
+										sum1 = 50 * To_50_Lives.toLong();
+										sum2 = 50 * To_100_Lives.toLong();
+										sum3 = (TotalBillingContacts - 100) * Above_100_Lives.toLong();
+									}
+									else if(TotalBillingContacts > 50 && TotalBillingContacts <= 100)
+									{
+										sum1 = 50 * To_50_Lives.toLong();
+										sum2 = (TotalBillingContacts - 50) * To_100_Lives.toLong();
+									}
+									else if(TotalBillingContacts < 50)
+									{
+										sum1 = TotalBillingContacts * To_50_Lives.toLong();
+									}
+									AmountTotal = sum1 + sum2 + sum3;
+								}
+								else
+								{
+									//AmountTotal = Total_Contacts.toLong() * Charges_Rate.toLong();
+									AmountTotal = Total_Contacts.toLong() * Charges_Rate.toLong() + Total_Scheduling_Contacts.toLong() * Charges_Rate_Scheduling.toLong();
+								}
+							}
+							if(AmountTotal > Minimum_Amount.toLong())
+							{
+								Amount = AmountTotal;
+							}
+							else
+							{
+								Amount = Minimum_Amount.toLong();
+							}
+							if(SMS_Count.toLong() > 0)
+							{
+								SMSAmount = SMS_Count.toDecimal() * Charges_Per_SMS.toDecimal();
+								if(straccid == 2585676000002542814)
+								{
+									NetAmount = Amount.toDecimal() + SMSAmount.toDecimal() + 299;
+								}
+								else
+								{
+									NetAmount = Amount.toDecimal() + SMSAmount.toDecimal();
+								}
+								//NetAmount = Amount.toDecimal() + SMSAmount.toDecimal();
+							}
+							else
+							{
+								SMSAmount = "0";
+								//NetAmount = Amount.toLong();
+								if(straccid == 2585676000002542814)
+								{
+									NetAmount = Amount.toLong() + 299;
+								}
+								else
+								{
+									NetAmount = Amount.toLong();
+								}
+							}
+							/*if(leadDetails.get("Currency") == "CAD")
+							{
+								resultCurrency = getURL("https://v3.exchangerate-api.com/bulk/6b528df185616fbe6b35fa78/CAD");
+								CurrencyUSDValue = resultCurrency.get("rates").get("USD");
+								Amount = Amount.toDecimal() * CurrencyUSDValue;
+								SMSAmount = SMSAmount.toDecimal() * CurrencyUSDValue;
+								NetAmount = NetAmount.toDecimal() * CurrencyUSDValue;
+							}*/
+							mp.put("Total_Lives_Count",Total_Contacts_Count.toString());
+							mp.put("Total_Life_Charges",Amount.round(2).toString());
+							mp.put("Total_SMS_Charges",SMSAmount.round(2).toString());
+							mp.put("Total_Amount",NetAmount.round(2).toString());
+							resp2 = zoho.crm.updateRecord("Accounts",straccid,mp);
+						}
+						else if(SMS_Count.toLong() > 0)
+						{
+							SMSAmount = SMS_Count.toDecimal() * Charges_Per_SMS.toDecimal();
+							/*if(leadDetails.get("Currency") == "CAD")
+							{
+								resultCurrency = getURL("https://v3.exchangerate-api.com/bulk/6b528df185616fbe6b35fa78/CAD");
+								CurrencyUSDValue = resultCurrency.get("rates").get("USD");
+								SMSAmount = SMSAmount.toDecimal() * CurrencyUSDValue;
+							}*/
+							mp.put("Total_Lives_Count",Total_Contacts_Count.toString());
+							mp.put("Total_SMS_Charges",SMSAmount.round(2).toString());
+							mp.put("Total_Life_Charges",Minimum_Amount.toLong().toString());
+							netAmount = Minimum_Amount.toDecimal() + SMSAmount.toDecimal();
+							mp.put("Total_Amount",netAmount.round(2).toString());
+							resp2 = zoho.crm.updateRecord("Accounts",straccid,mp);
+						}
+						else
+						{
+							//mp.put("Total_Life_Charges","0");
+							mp.put("Total_Lives_Count",Total_Contacts_Count.toString());
+							mp.put("Total_Life_Charges",Minimum_Amount.toLong().toString());
+							mp.put("Total_SMS_Charges","0");
+							//mp.put("Total_Amount","0");
+							mp.put("Total_Amount",Minimum_Amount.toLong().toString());
+							resp2 = zoho.crm.updateRecord("Accounts",straccid,mp);
+						}
+					}
+					else if(Select_New_Plan == "Care for Seniors Agency")
+					{
+						//info Total_Contacts_Count.toLong();
+						if(Total_Contacts_Count.toLong() > 75)
+						{
+							AmountTotal = Total_Contacts_Count.toLong() * 7;
+						}
+						else
+						{
+							AmountTotal = 500;
+						}
+						if(AmountTotal > Minimum_Amount.toLong())
+						{
+							Amount = AmountTotal;
+						}
+						else
+						{
+							Amount = Minimum_Amount.toLong();
+						}
+						if(SMS_Count.toLong() > 0)
+						{
+							SMSAmount = SMS_Count.toDecimal() * Charges_Per_SMS.toDecimal();
+							NetAmount = Amount.toDecimal() + SMSAmount.toDecimal();
+						}
+						else
+						{
+							SMSAmount = "0";
+							NetAmount = Amount.toLong();
+						}
+						/*if(leadDetails.get("Currency") == "CAD")
+						{
+							resultCurrency = getURL("https://v3.exchangerate-api.com/bulk/6b528df185616fbe6b35fa78/CAD");
+							CurrencyUSDValue = resultCurrency.get("rates").get("USD");
+							Amount = Amount.toDecimal() * CurrencyUSDValue;
+							SMSAmount = SMSAmount.toDecimal() * CurrencyUSDValue;
+							NetAmount = NetAmount.toDecimal() * CurrencyUSDValue;
+						}*/
+						mp.put("Total_Lives_Count",Total_Contacts_Count.toString());
+						mp.put("Total_Life_Charges",Amount.round(2).toString());
+						mp.put("Total_SMS_Charges",SMSAmount.round(2).toString());
+						mp.put("Total_Amount",NetAmount.round(2).toString());
+						resp2 = zoho.crm.updateRecord("Accounts",straccid,mp);
+						info "Care_for_Seniors_Agency";
+					}
+					else if(Select_New_Plan == "Tender Hearted")
+					{
+						info Total_Contacts_Count.toLong();
+						if(Total_Contacts_Count.toLong() <= 10)
+						{
+							AmountTotal = 100;
+						}
+						else if(Total_Contacts_Count.toLong() > 10 && Total_Contacts_Count.toLong() <= 50)
+						{
+							AmountTotal = Total_Contacts_Count.toLong() * 8;
+						}
+						else if(Total_Contacts_Count.toLong() > 50)
+						{
+							AmountTotal = Total_Contacts_Count.toLong() * 7;
+						}
+						if(AmountTotal > Minimum_Amount.toLong())
+						{
+							Amount = AmountTotal;
+						}
+						else
+						{
+							Amount = Minimum_Amount.toLong();
+						}
+						if(SMS_Count.toLong() > 0)
+						{
+							SMSAmount = SMS_Count.toDecimal() * Charges_Per_SMS.toDecimal();
+							NetAmount = Amount.toDecimal() + SMSAmount.toDecimal();
+						}
+						else
+						{
+							SMSAmount = "0";
+							NetAmount = Amount.toLong();
+						}
+						/*if(leadDetails.get("Currency") == "CAD")
+						{
+							resultCurrency = getURL("https://v3.exchangerate-api.com/bulk/6b528df185616fbe6b35fa78/CAD");
+							CurrencyUSDValue = resultCurrency.get("rates").get("USD");
+							Amount = Amount.toDecimal() * CurrencyUSDValue;
+							SMSAmount = SMSAmount.toDecimal() * CurrencyUSDValue;
+							NetAmount = NetAmount.toDecimal() * CurrencyUSDValue;
+						}*/
+						mp.put("Total_Lives_Count",Total_Contacts_Count.toString());
+						mp.put("Total_Life_Charges",Amount.round(2).toString());
+						mp.put("Total_SMS_Charges",SMSAmount.round(2).toString());
+						mp.put("Total_Amount",NetAmount.round(2).toString());
+						resp2 = zoho.crm.updateRecord("Accounts",straccid,mp);
+						info "Tender Hearted";
+					}
+					else if(Select_New_Plan == "Medford Leas")
+					{
+						info Total_Contacts_Count.toLong();
+						if(Total_Contacts_Count.toLong() <= 50)
+						{
+							AmountTotal = Total_Contacts_Count.toLong() * 6;
+						}
+						else if(Total_Contacts_Count.toLong() > 50)
+						{
+							AmountTotal = Total_Contacts_Count.toLong() * 5;
+						}
+						if(AmountTotal > Minimum_Amount.toLong())
+						{
+							Amount = AmountTotal;
+						}
+						else
+						{
+							Amount = Minimum_Amount.toLong();
+						}
+						if(SMS_Count.toLong() > 0)
+						{
+							SMSAmount = SMS_Count.toDecimal() * Charges_Per_SMS.toDecimal();
+							NetAmount = Amount.toDecimal() + SMSAmount.toDecimal();
+						}
+						else
+						{
+							SMSAmount = "0";
+							NetAmount = Amount.toLong();
+						}
+						/*if(leadDetails.get("Currency") == "CAD")
+						{
+							resultCurrency = getURL("https://v3.exchangerate-api.com/bulk/6b528df185616fbe6b35fa78/CAD");
+							CurrencyUSDValue = resultCurrency.get("rates").get("USD");
+							Amount = Amount.toDecimal() * CurrencyUSDValue;
+							SMSAmount = SMSAmount.toDecimal() * CurrencyUSDValue;
+							NetAmount = NetAmount.toDecimal() * CurrencyUSDValue;
+						}*/
+						mp.put("Total_Lives_Count",Total_Contacts_Count.toString());
+						mp.put("Total_Life_Charges",Amount.round(2).toString());
+						mp.put("Total_SMS_Charges",SMSAmount.round(2).toString());
+						mp.put("Total_Amount",NetAmount.round(2).toString());
+						resp2 = zoho.crm.updateRecord("Accounts",straccid,mp);
+						info "Medford Leas";
+					}
+					//resultUpdateBooks = postUrl("https://books.zoho.com/api/v3/crm/account/" + straccid + "/import?authtoken=e6668944f27a2f2f3aa2d59249e60017&organization_id=649389939",mp,true);
+					mp = Map();
+					mp.put("authtoken","cd9a33a3674a1756cd11f03abc7cfe9b");
+					resultUpdateBooks = postUrl("https://books.zoho.com/api/v3/crm/account/" + straccid + "/import?organization_id=649389939",mp,true);
+					info resultUpdateBooks;
+				}
+			}
+		}
+	}
+}
